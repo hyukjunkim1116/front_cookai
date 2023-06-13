@@ -1,6 +1,14 @@
 export const FRONT_DEVELOP_URL = "http://127.0.0.1:5500";
 export const BACKEND_DEVELOP_URL = "http://127.0.0.1:8000";
 
+// 로그아웃
+export function handleLogout() {
+	localStorage.removeItem("access");
+	localStorage.removeItem("refresh");
+	localStorage.removeItem("payload");
+	window.location.replace(`${FRONT_DEVELOP_URL}/`);
+}
+
 // 로그인 상태에서 로그인, 회원가입 페이지 접속 시 홈으로 이동하는 함수
 export function checkLogin() {
 	const payload = localStorage.getItem("payload");
@@ -13,6 +21,19 @@ export function checkNotLogin() {
 	const payload = localStorage.getItem("payload");
 	if (payload == null) {
 		window.location.replace(`${FRONT_DEVELOP_URL}/`);
+	}
+}
+// 강제 로그아웃
+export function forceLogout() {
+	const payload = localStorage.getItem("payload");
+	let current_time = String(new Date().getTime()).substring(0, 10);
+	if (payload) {
+		const payload_parse = JSON.parse(payload).exp;
+		if (payload_parse < current_time) {
+			handleLogout();
+		} else {
+			return;
+		}
 	}
 }
 
@@ -183,10 +204,65 @@ export async function getNaverToken(naver_code, state) {
 	setLocalStorage(response);
 }
 
-// 로그아웃
-export function handleLogout() {
-	localStorage.removeItem("access");
-	localStorage.removeItem("refresh");
-	localStorage.removeItem("payload");
-	window.location.replace(`${FRONT_DEVELOP_URL}/`);
+// 비밀번호 리셋 - 이메일 확인
+export async function handleEmailConfirm() {
+	const email = document.getElementById("email").value;
+	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/reset-password/`, {
+		headers: {
+			"content-type": "application/json"
+		},
+		method: "POST",
+		body: JSON.stringify({
+			email: email
+		})
+	});
+	return response;
+}
+// 비밀번호 리셋 - 새로운 비밀번호 설정
+export async function handleChangePasswordConfirm() {
+	const userId = new URLSearchParams.get("uid");
+	const newFirstPassword = document.getElementById("new_first_password").value;
+	const newSecondPassword = document.getElementById(
+		"new_second_password"
+	).value;
+	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/reset-password/`, {
+		headers: {
+			"content-type": "application/json"
+		},
+		method: "PUT",
+		body: JSON.stringify({
+			new_first_password: newFirstPassword,
+			new_second_password: newSecondPassword,
+			user_id: userId
+		})
+	});
+	return response;
+}
+
+export async function handleUpdatePassword() {
+	const token = localStorage.getItem("access");
+	const oldPassword = document.getElementById("old_password").value;
+	const newPassword = document.getElementById("new_password").value;
+	const response = await fetch(
+		`${BACKEND_DEVELOP_URL}/users/change-password/`,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`,
+				"content-type": "application/json"
+			},
+			method: "PUT",
+			body: JSON.stringify({
+				old_password: oldPassword,
+				new_password: newPassword
+			})
+		}
+	);
+	if (response.status == 200) {
+		alert("비밀번호가 변경되었습니다!");
+		handleLogout();
+		window.location = `${FRONT_DEVELOP_URL}/users/login.html`;
+		return response;
+	} else {
+		alert("현재 비밀번호가 일치하지 않습니다!");
+	}
 }

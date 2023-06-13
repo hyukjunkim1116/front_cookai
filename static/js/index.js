@@ -1,14 +1,11 @@
 import {
-	handleLogout,
 	getKakaoToken,
 	getGoogleToken,
-	getNaverToken
+	getNaverToken,
+	FRONT_DEVELOP_URL,
+	handleUpdatePassword,
+	handleLogout
 } from "./api.js";
-
-export const logoutBtn = document.getElementById("logout-btn");
-logoutBtn.addEventListener("click", () => {
-	handleLogout();
-});
 
 // 받아온 토큰을 로컬 스토리지에 저장
 // 에러 발생 시, 에러 문구를 띄워주고 이전 페이지(로그인페이지)로
@@ -51,3 +48,12 @@ if (localStorage.getItem("payload")) {
 		getGoogleToken(google_token);
 	}
 }
+
+export const logoutBtn = document.getElementById("logout-btn");
+logoutBtn.addEventListener("click", () => {
+	handleLogout();
+});
+export const updatePasswordBtn = document.getElementById("update-password-btn");
+updatePasswordBtn.addEventListener("click", () => {
+	handleUpdatePassword();
+});

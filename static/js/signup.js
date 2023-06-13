@@ -1,4 +1,6 @@
-import { handleSignUp } from "./api.js";
+import { handleSignUp, checkLogin } from "./api.js";
+
+checkLogin();
 
 export function setThumbnail(event) {
 	let reader = new FileReader();

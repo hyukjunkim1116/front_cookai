@@ -1,4 +1,13 @@
-import { handleLogin, kakaoLogin, googleLogin, naverLogin } from "./api.js";
+import {
+	handleLogin,
+	kakaoLogin,
+	googleLogin,
+	naverLogin,
+	checkLogin,
+	FRONT_DEVELOP_URL
+} from "./api.js";
+
+checkLogin();
 
 // 로그인 폼 다 쓰고 로그인 눌렀을 때 실행되는 함수
 export async function handleLoginBtn() {
