@@ -107,17 +107,6 @@ export async function handleLogin() {
 	return response;
 }
 // 로그인 버튼 클릭 시 해당 auth에 코드 요청, redirect_uri로 URL 파라미터와 함께 이동
-export async function googleLogin() {
-	const response = await fetch(`${backend_base_url}/api/users/google/`, {
-		method: "GET"
-	});
-	const google_id = await response.json();
-	const redirect_uri = `${frontend_base_url}/index.html`;
-	const scope =
-		"https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile";
-	const param = `scope=${scope}&include_granted_scopes=true&response_type=token&state=pass-through value&prompt=consent&client_id=${google_id}&redirect_uri=${redirect_uri}`;
-	window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${param}`;
-}
 export async function kakaoLogin() {
 	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/oauth/kakao/`, {
 		method: "GET"
@@ -127,6 +116,17 @@ export async function kakaoLogin() {
 	const response_type = "code";
 	const scope = "profile_nickname,profile_image,account_email,gender";
 	window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${kakao_id}&redirect_uri=${redirect_uri}&response_type=${response_type}&scope=${scope}`;
+}
+export async function googleLogin() {
+	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/oauth/google/`, {
+		method: "GET"
+	});
+	const client_id = await response.json();
+	const redirect_uri = `${FRONT_DEVELOP_URL}/index.html`;
+	const scope =
+		"https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile";
+	const param = `scope=${scope}&include_granted_scopes=true&response_type=token&state=pass-through value&prompt=consent&client_id=${client_id}&redirect_uri=${redirect_uri}`;
+	window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${param}`;
 }
 
 export async function naverLogin() {
@@ -143,9 +143,7 @@ export async function naverLogin() {
 export async function getKakaoToken(kakao_code) {
 	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/oauth/kakao/`, {
 		headers: {
-			"Content-Type": "application/json",
-			"Access-Control-Allow-Origin": "http://127.0.0.1:8000",
-			"Access-Control-Allow-Credentials": "true"
+			"Content-Type": "application/json;charset=utf-8"
 		},
 		method: "POST",
 		body: JSON.stringify({ code: kakao_code })
@@ -166,6 +164,7 @@ export async function getGoogleToken(google_token) {
 		},
 		body: JSON.stringify({ access_token: google_token })
 	});
+	console.log(response);
 	response_json = await response.json();
 	setLocalStorage(response);
 }
@@ -178,6 +177,7 @@ export async function getNaverToken(naver_code, state) {
 		},
 		body: JSON.stringify({ naver_code: naver_code, state: state })
 	});
+	console.log(response);
 	response_json = await response.json();
 	setLocalStorage(response);
 }

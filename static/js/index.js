@@ -2,8 +2,7 @@ import {
 	handleLogout,
 	getKakaoToken,
 	getGoogleToken,
-	getNaverToken,
-	BACKEND_DEVELOP_URL
+	getNaverToken
 } from "./api.js";
 
 export const logoutBtn = document.getElementById("logout-btn");

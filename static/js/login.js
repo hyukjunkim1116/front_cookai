@@ -20,7 +20,6 @@ export async function handleLoginBtn() {
 				})
 				.join("")
 		);
-
 		localStorage.setItem("payload", jsonPayload);
 		alert("환영합니다!");
 		window.location.replace(`${FRONT_DEVELOP_URL}/`);
@@ -33,6 +32,7 @@ const login = document.getElementById("login-btn");
 login.addEventListener("click", () => {
 	handleLoginBtn();
 });
+
 const googleLoginBtn = document.getElementById("social-btn-google");
 googleLoginBtn.addEventListener("click", () => {
 	googleLogin();
