@@ -107,7 +107,7 @@ export async function handleLogin() {
 	return response;
 }
 // 로그인 버튼 클릭 시 해당 auth에 코드 요청, redirect_uri로 URL 파라미터와 함께 이동
-export async function kakaoLogin() {
+export const kakaoLogin = async () => {
 	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/oauth/kakao/`, {
 		method: "GET"
 	});
@@ -116,8 +116,8 @@ export async function kakaoLogin() {
 	const response_type = "code";
 	const scope = "profile_nickname,profile_image,account_email,gender";
 	window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${kakao_id}&redirect_uri=${redirect_uri}&response_type=${response_type}&scope=${scope}`;
-}
-export async function googleLogin() {
+};
+export const googleLogin = async () => {
 	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/oauth/google/`, {
 		method: "GET"
 	});
@@ -127,9 +127,9 @@ export async function googleLogin() {
 		"https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile";
 	const param = `scope=${scope}&include_granted_scopes=true&response_type=token&state=pass-through value&prompt=consent&client_id=${client_id}&redirect_uri=${redirect_uri}`;
 	window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${param}`;
-}
+};
 
-export async function naverLogin() {
+export const naverLogin = async () => {
 	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/oauth/naver/`, {
 		method: "GET"
 	});
@@ -138,12 +138,13 @@ export async function naverLogin() {
 	const state = new Date().getTime().toString(36);
 	const response_type = "code";
 	window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=${response_type}&client_id=${naver_id}&redirect_uri=${redirect_uri}&state=${state}`;
-}
+};
+
 // 각각 해당하는 url로 데이터를 실어서 요청을 보내고 액세스 토큰을 받아오는 함수
 export async function getKakaoToken(kakao_code) {
 	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/oauth/kakao/`, {
 		headers: {
-			"Content-Type": "application/json;charset=utf-8"
+			"Content-Type": "application/json"
 		},
 		method: "POST",
 		body: JSON.stringify({ code: kakao_code })
