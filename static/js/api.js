@@ -1,5 +1,5 @@
-const FRONT_DEVELOP_URL = "http://127.0.0.1:5500";
-const BACKEND_DEVELOP_URL = "http://127.0.0.1:8000";
+export const FRONT_DEVELOP_URL = "http://127.0.0.1:5500";
+export const BACKEND_DEVELOP_URL = "http://127.0.0.1:8000";
 
 // 로그인 상태에서 로그인, 회원가입 페이지 접속 시 홈으로 이동하는 함수
 export function checkLogin() {
@@ -105,4 +105,87 @@ export async function handleLogin() {
 	});
 
 	return response;
+}
+// 로그인 버튼 클릭 시 해당 auth에 코드 요청, redirect_uri로 URL 파라미터와 함께 이동
+export async function googleLogin() {
+	const response = await fetch(`${backend_base_url}/api/users/google/`, {
+		method: "GET"
+	});
+	const google_id = await response.json();
+	const redirect_uri = `${frontend_base_url}/index.html`;
+	const scope =
+		"https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile";
+	const param = `scope=${scope}&include_granted_scopes=true&response_type=token&state=pass-through value&prompt=consent&client_id=${google_id}&redirect_uri=${redirect_uri}`;
+	window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${param}`;
+}
+export async function kakaoLogin() {
+	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/oauth/kakao/`, {
+		method: "GET"
+	});
+	const kakao_id = await response.json();
+	const redirect_uri = `${FRONT_DEVELOP_URL}/index.html`;
+	const response_type = "code";
+	const scope = "profile_nickname,profile_image,account_email,gender";
+	window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${kakao_id}&redirect_uri=${redirect_uri}&response_type=${response_type}&scope=${scope}`;
+}
+
+export async function naverLogin() {
+	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/oauth/naver/`, {
+		method: "GET"
+	});
+	const naver_id = await response.json();
+	const redirect_uri = `${FRONT_DEVELOP_URL}/index.html`;
+	const state = new Date().getTime().toString(36);
+	const response_type = "code";
+	window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=${response_type}&client_id=${naver_id}&redirect_uri=${redirect_uri}&state=${state}`;
+}
+// 각각 해당하는 url로 데이터를 실어서 요청을 보내고 액세스 토큰을 받아오는 함수
+export async function getKakaoToken(kakao_code) {
+	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/oauth/kakao/`, {
+		headers: {
+			"Content-Type": "application/json",
+			"Access-Control-Allow-Origin": "http://127.0.0.1:8000",
+			"Access-Control-Allow-Credentials": "true"
+		},
+		method: "POST",
+		body: JSON.stringify({ code: kakao_code })
+	});
+	// if (response.status == 400) {
+	// 	alert("해당 이메일로 가입한 계정이 있습니다!");
+	// 	window.location.replace(`${FRONT_DEVELOP_URL}/`);
+	// }
+	console.log(response);
+	response_json = await response.json();
+	setLocalStorage(response);
+}
+export async function getGoogleToken(google_token) {
+	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/oauth/google/`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify({ access_token: google_token })
+	});
+	response_json = await response.json();
+	setLocalStorage(response);
+}
+
+export async function getNaverToken(naver_code, state) {
+	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/oauth/naver/`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify({ naver_code: naver_code, state: state })
+	});
+	response_json = await response.json();
+	setLocalStorage(response);
+}
+
+// 로그아웃
+export function handleLogout() {
+	localStorage.removeItem("access");
+	localStorage.removeItem("refresh");
+	localStorage.removeItem("payload");
+	window.location.replace(`${FRONT_DEVELOP_URL}/`);
 }

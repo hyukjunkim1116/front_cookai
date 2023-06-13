@@ -31,19 +31,21 @@
                     <div class="text-center mb-3">
                         <a href="/users/signup.html" style="text-decoration: none;" class="link-primary">회원가입은 여기로!</a>
                     </div>
+                    <div class="text-center mb-3">
+                        <a href="/users/find_password.html" style="text-decoration: none;" class="link-primary">비밀번호를 잊으셨나요?</a>
+                    </div>
                     <div class="text-center">
                         <button type="button" class="sign-btn btn btn-outline-primary"
-                            onclick="handleLoginBtn()">로그인</button>
+                            id="login-btn">로그인</button>
                     </div>
                 </form>
                 <div class="social-login">
-                    <button class="social-btn" onclick="googleLoginBtn()"><img class="social-btn-img"
+                    <button class="social-btn" id="social-btn-google" ><img class="social-btn-img"
                             src="/static/img/google.png"></button>
-                    <button class="social-btn" onclick="kakaoLoginBtn()"><img class="social-btn-img"
+                    <button class="social-btn" id="social-btn-kakao"><img class="social-btn-img"
                             src="/static/img/kakao.png"></button>
-                    <button class="social-btn" onclick="naverLoginBtn()"><img class=" social-btn-img"
+                    <button class="social-btn" id="social-btn-naver"><img class=" social-btn-img"
                             src="/static/img/naver.png"></button>
-                    <!-- <button class="social-btn"><img class="social-btn-img" src="/static/image/github.png"></button> -->
                 </div>
             </div>
         </div>
