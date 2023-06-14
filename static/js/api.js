@@ -186,3 +186,164 @@ async function handleChangePasswordConfirm() {
 	});
 	return response;
 }
+
+//로그인 한 유저 정보 조회
+async function getLoginUser() {
+	const payload = localStorage.getItem("payload");
+	if (payload) {
+		const payload_parse = JSON.parse(payload);
+		const response = await fetch(
+			`${BACKEND_DEVELOP_URL}/users/${payload_parse.user_id}/`,
+			{
+				method: "GET"
+			}
+		);
+		if (response.status == 200) {
+			response_json = await response.json();
+			return response_json;
+		} else {
+			alert(response.statusText);
+		}
+	}
+}
+
+async function getUserDetail() {
+	let getParams = window.location.search;
+	let userParams = getParams.split("=")[1];
+	const user_id = userParams;
+	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/${user_id}/`, {
+		method: "GET"
+	});
+	response_json = await response.json();
+	return response_json;
+}
+async function putUserDetail() {
+	let token = localStorage.getItem("access");
+	let getParams = window.location.search;
+	let userParams = getParams.split("=")[1];
+	const user_id = userParams;
+	const username = document.getElementById("username").value;
+	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/${user_id}/`, {
+		headers: {
+			Authorization: `Bearer ${token}`,
+			"content-type": "application/json"
+		},
+		method: "PUT",
+		body: JSON.stringify({
+			username: username
+		})
+	});
+	response_json = await response.json();
+	return response_json;
+}
+async function deleteUser() {
+	let token = localStorage.getItem("access");
+	let getParams = window.location.search;
+	let userParams = getParams.split("=")[1];
+	const user_id = userParams;
+
+	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/${user_id}/`, {
+		headers: {
+			Authorization: `Bearer ${token}`
+		},
+		method: "DELETE"
+	});
+	return response;
+}
+
+async function getUserFridge() {
+	let token = localStorage.getItem("access");
+	let getParams = window.location.search;
+	let userParams = getParams.split("=")[1];
+	const user_id = userParams;
+	const response = await fetch(
+		`${BACKEND_DEVELOP_URL}/users/${user_id}/fridge/`,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`
+			},
+			method: "GET"
+		}
+	);
+	response_json = await response.json();
+	return response_json;
+}
+async function postUserFridge() {
+	let token = localStorage.getItem("access");
+	let getParams = window.location.search;
+	let userParams = getParams.split("=")[1];
+	const user_id = userParams;
+	const response = await fetch(
+		`${BACKEND_DEVELOP_URL}/users/${user_id}/fridge/`,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`
+			},
+			method: "POST"
+		}
+	);
+	response_json = await response.json();
+	return response_json;
+}
+async function deleteUserFridge() {
+	let token = localStorage.getItem("access");
+	let getParams = window.location.search;
+	let userParams = getParams.split("=")[1];
+	const user_id = userParams;
+	const response = await fetch(
+		`${BACKEND_DEVELOP_URL}/users/${user_id}/fridge/`,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`
+			},
+			method: "DELETE"
+		}
+	);
+	response_json = await response.json();
+	return response_json;
+}
+
+// 팔로우한 유저 보기
+async function getUserFollowing() {
+	let getParams = window.location.search;
+	let userParams = getParams.split("=")[1];
+	const user_id = userParams;
+	const response = await fetch(
+		`${BACKEND_DEVELOP_URL}/users/${user_id}/follow/`,
+		{
+			method: "GET"
+		}
+	);
+	response_json = await response.json();
+	return response_json;
+}
+
+// 특정 유저 팔로잉하기
+async function userFollowing() {
+	let token = localStorage.getItem("access");
+	let getParams = window.location.search;
+	let userParams = getParams.split("=")[1];
+	const user_id = userParams;
+
+	const response = await fetch(
+		`${BACKEND_DEVELOP_URL}/users/${user_id}/follow/`,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`
+			},
+			method: "POST"
+		}
+	);
+	response_json = await response.json();
+
+	// 팔로우 버튼 변경
+	if (response_json == "follow") {
+		const followBtn = document.getElementById("followBtn");
+		followBtn.innerText.replace("팔로우 »", "언팔로우 »");
+		window.location.reload();
+	} else if (response_json == "unfollow") {
+		const followBtn = document.getElementById("followBtn");
+		followBtn.innerText.replace("언팔로우 »", "팔로우 »");
+		window.location.reload();
+	}
+}
