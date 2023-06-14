@@ -1,8 +1,4 @@
-import { handleSignUp, checkLogin } from "./api.js";
-
-checkLogin();
-
-export function setThumbnail(event) {
+function setThumbnail(event) {
 	let reader = new FileReader();
 
 	reader.onload = function (event) {
@@ -29,3 +25,7 @@ const submit = document.getElementById("button");
 submit.addEventListener("click", () => {
 	handleSignUp();
 });
+
+window.onload = async function () {
+	checkLogin();
+};

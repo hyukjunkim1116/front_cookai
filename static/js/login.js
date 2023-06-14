@@ -1,16 +1,5 @@
-import {
-	handleLogin,
-	kakaoLogin,
-	googleLogin,
-	naverLogin,
-	checkLogin,
-	FRONT_DEVELOP_URL
-} from "./api.js";
-
-checkLogin();
-
 // 로그인 폼 다 쓰고 로그인 눌렀을 때 실행되는 함수
-export async function handleLoginBtn() {
+async function handleLoginBtn() {
 	const response = await handleLogin();
 
 	if (response.status == 200) {
@@ -36,7 +25,6 @@ export async function handleLoginBtn() {
 		alert("회원정보가 일치하지 않습니다!");
 	}
 }
-
 const login = document.getElementById("login-btn");
 login.addEventListener("click", () => {
 	handleLoginBtn();
@@ -54,3 +42,7 @@ const naverLoginBtn = document.getElementById("social-btn-naver");
 naverLoginBtn.addEventListener("click", () => {
 	naverLogin();
 });
+
+window.onload = async function () {
+	checkLogin();
+};
