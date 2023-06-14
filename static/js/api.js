@@ -188,6 +188,7 @@ export async function getGoogleToken(google_token) {
 	});
 	console.log(response);
 	response_json = await response.json();
+	console.log(response_json);
 	setLocalStorage(response);
 }
 
@@ -202,41 +203,6 @@ export async function getNaverToken(naver_code, state) {
 	console.log(response);
 	response_json = await response.json();
 	setLocalStorage(response);
-}
-
-// 비밀번호 리셋 - 이메일 확인
-export async function handleEmailConfirm() {
-	const email = document.getElementById("email").value;
-	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/reset-password/`, {
-		headers: {
-			"content-type": "application/json"
-		},
-		method: "POST",
-		body: JSON.stringify({
-			email: email
-		})
-	});
-	return response;
-}
-// 비밀번호 리셋 - 새로운 비밀번호 설정
-export async function handleChangePasswordConfirm() {
-	const userId = new URLSearchParams.get("uid");
-	const newFirstPassword = document.getElementById("new_first_password").value;
-	const newSecondPassword = document.getElementById(
-		"new_second_password"
-	).value;
-	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/reset-password/`, {
-		headers: {
-			"content-type": "application/json"
-		},
-		method: "PUT",
-		body: JSON.stringify({
-			new_first_password: newFirstPassword,
-			new_second_password: newSecondPassword,
-			user_id: userId
-		})
-	});
-	return response;
 }
 
 export async function handleUpdatePassword() {
