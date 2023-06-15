@@ -2,7 +2,7 @@
 // 토큰이 없고, url에 파라미터가 있다면, 해당 값을 판별해서 해당하는 함수를 호출
 // 각각 해당하는 url로 데이터를 실어서 요청을 보내고 액세스 토큰을 받아오는 함수
 async function getKakaoToken(kakao_code) {
-	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/oauth/kakao/`, {
+	const response = await fetch(`${BACKEND_BASE_URL}/users/oauth/kakao/`, {
 		headers: {
 			"Content-Type": "application/json"
 		},
@@ -13,7 +13,7 @@ async function getKakaoToken(kakao_code) {
 	setLocalStorage(response);
 }
 async function getGoogleToken(google_token) {
-	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/oauth/google/`, {
+	const response = await fetch(`${BACKEND_BASE_URL}/users/oauth/google/`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json"
@@ -25,7 +25,7 @@ async function getGoogleToken(google_token) {
 }
 
 async function getNaverToken(naver_code, state) {
-	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/oauth/naver/`, {
+	const response = await fetch(`${BACKEND_BASE_URL}/users/oauth/naver/`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json"
@@ -79,14 +79,14 @@ async function goUserDetail(user_id) {
 	// 인자값이 존재한다면 해당 인자값의 유저 프로필로 이동
 	if (user_id) {
 		user_id = user_id;
-		window.location.href = `${FRONT_DEVELOP_URL}/users/user_detail.html?user_id=${user_id}`;
+		window.location.href = `${FRONT_BASE_URL}/users/user_detail.html?user_id=${user_id}`;
 	} else {
 		// 인자값이 없다면 현재 로그인한 유저의 프로필로 이동
 		const payload = localStorage.getItem("payload");
 		const payload_parse = JSON.parse(payload);
 		console.log(payload_parse);
 		user_id = payload_parse.user_id;
-		window.location.href = `${FRONT_DEVELOP_URL}/users/user_detail.html?user_id=${user_id}`;
+		window.location.href = `${FRONT_BASE_URL}/users/user_detail.html?user_id=${user_id}`;
 	}
 }
 const goUserDetailBtn = document.getElementById("user-detail-btn");
@@ -95,7 +95,7 @@ goUserDetailBtn.addEventListener("click", () => {
 });
 const goLoginBtn = document.getElementById("show-login-btn");
 goLoginBtn.addEventListener("click", () => {
-	window.location.href = `${FRONT_DEVELOP_URL}/users/login.html`;
+	window.location.href = `${FRONT_BASE_URL}/users/login.html`;
 });
 
 const logoutBtn = document.getElementById("logout-btn");
