@@ -1,5 +1,5 @@
-const FRONT_DEVELOP_URL = "http://127.0.0.1:5500";
-const BACKEND_DEVELOP_URL = "http://127.0.0.1:8000";
+const FRONT_BASE_URL = "http://127.0.0.1:5500";
+const BACKEND_BASE_URL = "http://127.0.0.1:8000";
 
 // 일반 회원가입하는 함수 .
 async function handleSignUp() {
@@ -12,7 +12,7 @@ async function handleSignUp() {
 	const file = document.getElementById("file").files[0];
 	if (firstPassword === secondPassword) {
 		if (file) {
-			const responseURL = await fetch(`${BACKEND_DEVELOP_URL}/users/get-url/`, {
+			const responseURL = await fetch(`${BACKEND_BASE_URL}/users/get-url/`, {
 				method: "POST"
 			});
 			const dataURL = await responseURL.json();
@@ -25,7 +25,7 @@ async function handleSignUp() {
 			});
 			const results = await responseRealURL.json();
 			const realFileURL = results.result.variants[0];
-			const response = await fetch(`${BACKEND_DEVELOP_URL}/users/`, {
+			const response = await fetch(`${BACKEND_BASE_URL}/users/`, {
 				headers: {
 					"content-type": "application/json"
 				},
@@ -43,11 +43,11 @@ async function handleSignUp() {
 				alert("다시 입력하세요!");
 			} else {
 				alert("이메일 인증을 진행해 주세요!");
-				window.location.replace(`${FRONT_DEVELOP_URL}/users/login.html`);
+				window.location.replace(`${FRONT_BASE_URL}/users/login.html`);
 				return response;
 			}
 		} else {
-			const response = await fetch(`${BACKEND_DEVELOP_URL}/users/`, {
+			const response = await fetch(`${BACKEND_BASE_URL}/users/`, {
 				headers: {
 					"content-type": "application/json"
 				},
@@ -64,7 +64,7 @@ async function handleSignUp() {
 				alert("다시 입력하세요!");
 			} else {
 				alert("이메일 인증을 진행해 주세요!");
-				window.location.replace(`${FRONT_DEVELOP_URL}/users/login.html`);
+				window.location.replace(`${FRONT_BASE_URL}/users/login.html`);
 				return response;
 			}
 		}
@@ -77,7 +77,7 @@ async function handleLogin() {
 	const email = document.getElementById("email").value;
 	const password = document.getElementById("password").value;
 
-	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/login/`, {
+	const response = await fetch(`${BACKEND_BASE_URL}/users/login/`, {
 		headers: {
 			"content-type": "application/json"
 		},
@@ -92,21 +92,21 @@ async function handleLogin() {
 }
 // 로그인 버튼 클릭 시 해당 auth에 코드 요청, redirect_uri로 URL 파라미터와 함께 이동
 const kakaoLogin = async () => {
-	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/oauth/kakao/`, {
+	const response = await fetch(`${BACKEND_BASE_URL}/users/oauth/kakao/`, {
 		method: "GET"
 	});
 	const kakao_id = await response.json();
-	const redirect_uri = `${FRONT_DEVELOP_URL}/index.html`;
+	const redirect_uri = `${FRONT_BASE_URL}/index.html`;
 	const response_type = "code";
 	const scope = "profile_nickname,profile_image,account_email,gender";
 	window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${kakao_id}&redirect_uri=${redirect_uri}&response_type=${response_type}&scope=${scope}`;
 };
 const googleLogin = async () => {
-	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/oauth/google/`, {
+	const response = await fetch(`${BACKEND_BASE_URL}/users/oauth/google/`, {
 		method: "GET"
 	});
 	const client_id = await response.json();
-	const redirect_uri = `${FRONT_DEVELOP_URL}/index.html`;
+	const redirect_uri = `${FRONT_BASE_URL}/index.html`;
 	const scope =
 		"https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile";
 	const param = `scope=${scope}&include_granted_scopes=true&response_type=token&state=pass-through value&prompt=consent&client_id=${client_id}&redirect_uri=${redirect_uri}`;
@@ -114,11 +114,11 @@ const googleLogin = async () => {
 };
 
 const naverLogin = async () => {
-	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/oauth/naver/`, {
+	const response = await fetch(`${BACKEND_BASE_URL}/users/oauth/naver/`, {
 		method: "GET"
 	});
 	const naver_id = await response.json();
-	const redirect_uri = `${FRONT_DEVELOP_URL}/index.html`;
+	const redirect_uri = `${FRONT_BASE_URL}/index.html`;
 	const state = new Date().getTime().toString(36);
 	const response_type = "code";
 	window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=${response_type}&client_id=${naver_id}&redirect_uri=${redirect_uri}&state=${state}`;
@@ -126,7 +126,7 @@ const naverLogin = async () => {
 // 비밀번호 리셋 - 이메일 확인
 async function handleEmailConfirm() {
 	const email = document.getElementById("email").value;
-	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/reset-password/`, {
+	const response = await fetch(`${BACKEND_BASE_URL}/users/reset-password/`, {
 		headers: {
 			"content-type": "application/json"
 		},
@@ -142,24 +142,21 @@ async function handleUpdatePassword() {
 	const token = localStorage.getItem("access");
 	const oldPassword = document.getElementById("old_password").value;
 	const newPassword = document.getElementById("new_password").value;
-	const response = await fetch(
-		`${BACKEND_DEVELOP_URL}/users/change-password/`,
-		{
-			headers: {
-				Authorization: `Bearer ${token}`,
-				"content-type": "application/json"
-			},
-			method: "PUT",
-			body: JSON.stringify({
-				old_password: oldPassword,
-				new_password: newPassword
-			})
-		}
-	);
+	const response = await fetch(`${BACKEND_BASE_URL}/users/change-password/`, {
+		headers: {
+			Authorization: `Bearer ${token}`,
+			"content-type": "application/json"
+		},
+		method: "PUT",
+		body: JSON.stringify({
+			old_password: oldPassword,
+			new_password: newPassword
+		})
+	});
 	if (response.status == 200) {
 		alert("비밀번호가 변경되었습니다!");
 		handleLogout();
-		window.location = `${FRONT_DEVELOP_URL}/users/login.html`;
+		window.location = `${FRONT_BASE_URL}/users/login.html`;
 		return response;
 	} else {
 		alert("현재 비밀번호가 일치하지 않습니다!");
@@ -173,7 +170,7 @@ async function handleChangePasswordConfirm() {
 	const newSecondPassword = document.getElementById(
 		"new_second_password"
 	).value;
-	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/reset-password/`, {
+	const response = await fetch(`${BACKEND_BASE_URL}/users/reset-password/`, {
 		headers: {
 			"content-type": "application/json"
 		},
@@ -193,7 +190,7 @@ async function getLoginUser() {
 	if (payload) {
 		const payload_parse = JSON.parse(payload);
 		const response = await fetch(
-			`${BACKEND_DEVELOP_URL}/users/${payload_parse.user_id}/`,
+			`${BACKEND_BASE_URL}/users/${payload_parse.user_id}/`,
 			{
 				method: "GET"
 			}
@@ -211,7 +208,7 @@ async function getUserDetail() {
 	let getParams = window.location.search;
 	let userParams = getParams.split("=")[1];
 	const user_id = userParams;
-	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/${user_id}/`, {
+	const response = await fetch(`${BACKEND_BASE_URL}/users/${user_id}/`, {
 		method: "GET"
 	});
 	response_json = await response.json();
@@ -223,7 +220,7 @@ async function putUserDetail() {
 	let userParams = getParams.split("=")[1];
 	const user_id = userParams;
 	const username = document.getElementById("username").value;
-	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/${user_id}/`, {
+	const response = await fetch(`${BACKEND_BASE_URL}/users/${user_id}/`, {
 		headers: {
 			Authorization: `Bearer ${token}`,
 			"content-type": "application/json"
@@ -242,7 +239,7 @@ async function deleteUser() {
 	let userParams = getParams.split("=")[1];
 	const user_id = userParams;
 
-	const response = await fetch(`${BACKEND_DEVELOP_URL}/users/${user_id}/`, {
+	const response = await fetch(`${BACKEND_BASE_URL}/users/${user_id}/`, {
 		headers: {
 			Authorization: `Bearer ${token}`
 		},
@@ -256,15 +253,12 @@ async function getUserFridge() {
 	let getParams = window.location.search;
 	let userParams = getParams.split("=")[1];
 	const user_id = userParams;
-	const response = await fetch(
-		`${BACKEND_DEVELOP_URL}/users/${user_id}/fridge/`,
-		{
-			headers: {
-				Authorization: `Bearer ${token}`
-			},
-			method: "GET"
-		}
-	);
+	const response = await fetch(`${BACKEND_BASE_URL}/users/${user_id}/fridge/`, {
+		headers: {
+			Authorization: `Bearer ${token}`
+		},
+		method: "GET"
+	});
 	response_json = await response.json();
 	return response_json;
 }
@@ -273,15 +267,12 @@ async function postUserFridge() {
 	let getParams = window.location.search;
 	let userParams = getParams.split("=")[1];
 	const user_id = userParams;
-	const response = await fetch(
-		`${BACKEND_DEVELOP_URL}/users/${user_id}/fridge/`,
-		{
-			headers: {
-				Authorization: `Bearer ${token}`
-			},
-			method: "POST"
-		}
-	);
+	const response = await fetch(`${BACKEND_BASE_URL}/users/${user_id}/fridge/`, {
+		headers: {
+			Authorization: `Bearer ${token}`
+		},
+		method: "POST"
+	});
 	response_json = await response.json();
 	return response_json;
 }
@@ -290,15 +281,12 @@ async function deleteUserFridge() {
 	let getParams = window.location.search;
 	let userParams = getParams.split("=")[1];
 	const user_id = userParams;
-	const response = await fetch(
-		`${BACKEND_DEVELOP_URL}/users/${user_id}/fridge/`,
-		{
-			headers: {
-				Authorization: `Bearer ${token}`
-			},
-			method: "DELETE"
-		}
-	);
+	const response = await fetch(`${BACKEND_BASE_URL}/users/${user_id}/fridge/`, {
+		headers: {
+			Authorization: `Bearer ${token}`
+		},
+		method: "DELETE"
+	});
 	response_json = await response.json();
 	return response_json;
 }
@@ -308,12 +296,9 @@ async function getUserFollowing() {
 	let getParams = window.location.search;
 	let userParams = getParams.split("=")[1];
 	const user_id = userParams;
-	const response = await fetch(
-		`${BACKEND_DEVELOP_URL}/users/${user_id}/follow/`,
-		{
-			method: "GET"
-		}
-	);
+	const response = await fetch(`${BACKEND_BASE_URL}/users/${user_id}/follow/`, {
+		method: "GET"
+	});
 	response_json = await response.json();
 	return response_json;
 }
@@ -325,15 +310,12 @@ async function userFollowing() {
 	let userParams = getParams.split("=")[1];
 	const user_id = userParams;
 
-	const response = await fetch(
-		`${BACKEND_DEVELOP_URL}/users/${user_id}/follow/`,
-		{
-			headers: {
-				Authorization: `Bearer ${token}`
-			},
-			method: "POST"
-		}
-	);
+	const response = await fetch(`${BACKEND_BASE_URL}/users/${user_id}/follow/`, {
+		headers: {
+			Authorization: `Bearer ${token}`
+		},
+		method: "POST"
+	});
 	response_json = await response.json();
 
 	// 팔로우 버튼 변경
