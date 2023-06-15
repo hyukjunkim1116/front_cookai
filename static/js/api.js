@@ -1,5 +1,5 @@
-const FRONT_BASE_URL = "http://127.0.0.1:5500";
-const BACKEND_BASE_URL = "http://127.0.0.1:8000";
+const FRONT_BASE_URL = "https://cookai.today";
+const BACKEND_BASE_URL = "https://www.backend.cookai.today";
 
 // 일반 회원가입하는 함수 .
 async function handleSignUp() {
