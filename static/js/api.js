@@ -32,7 +32,8 @@ async function handleSignUp() {
 				method: "POST",
 				body: JSON.stringify({
 					email: email,
-					password: secondPassword,
+					password: firstPassword,
+					password2: secondPassword,
 					username: username,
 					gender: gender,
 					age: age,
@@ -55,6 +56,7 @@ async function handleSignUp() {
 				body: JSON.stringify({
 					email: email,
 					password: firstPassword,
+					password2: secondPassword,
 					username: username,
 					gender: gender,
 					age: age
@@ -64,7 +66,7 @@ async function handleSignUp() {
 				alert("다시 입력하세요!");
 			} else {
 				alert("이메일 인증을 진행해 주세요!");
-				window.location.replace(`${FRONT_BASE_URL}/users/login.html`);
+				// window.location.replace(`${FRONT_BASE_URL}/users/login.html`);
 				return response;
 			}
 		}
@@ -205,10 +207,14 @@ async function getLoginUser() {
 }
 
 async function getUserDetail() {
+	let token = localStorage.getItem("access");
 	let getParams = window.location.search;
 	let userParams = getParams.split("=")[1];
 	const user_id = userParams;
 	const response = await fetch(`${BACKEND_BASE_URL}/users/${user_id}/`, {
+		headers: {
+			Authorization: `Bearer ${token}`
+		},
 		method: "GET"
 	});
 	response_json = await response.json();
@@ -291,7 +297,7 @@ async function deleteUserFridge() {
 	return response_json;
 }
 
-// 팔로우한 유저 보기
+// 내가 팔로우한 유저 보기
 async function getUserFollowing() {
 	let getParams = window.location.search;
 	let userParams = getParams.split("=")[1];
@@ -310,12 +316,15 @@ async function userFollowing() {
 	let userParams = getParams.split("=")[1];
 	const user_id = userParams;
 
-	const response = await fetch(`${BACKEND_BASE_URL}/users/${user_id}/follow/`, {
-		headers: {
-			Authorization: `Bearer ${token}`
-		},
-		method: "POST"
-	});
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/users/${user_id}/following/`,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`
+			},
+			method: "POST"
+		}
+	);
 	response_json = await response.json();
 
 	// 팔로우 버튼 변경
@@ -328,4 +337,112 @@ async function userFollowing() {
 		followBtn.innerText.replace("언팔로우 »", "팔로우 »");
 		window.location.reload();
 	}
+}
+// 특정유저를 팔로우한 유저 보기
+async function getUserFollower() {
+	let token = localStorage.getItem("access");
+	let getParams = window.location.search;
+	let userParams = getParams.split("=")[1];
+	const user_id = userParams;
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/users/${user_id}/follower/`,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`
+			},
+			method: "GET"
+		}
+	);
+	response_json = await response.json();
+	return response_json;
+}
+// 특정유저를 팔로우한 유저 보기
+async function getUserComment() {
+	let token = localStorage.getItem("access");
+	let getParams = window.location.search;
+	let userParams = getParams.split("=")[1];
+	const user_id = userParams;
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/users/${user_id}/comments/`,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`
+			},
+			method: "GET"
+		}
+	);
+	response_json = await response.json();
+	return response_json;
+}
+// 특정유저를 팔로우한 유저 보기
+async function getUserArticle() {
+	let token = localStorage.getItem("access");
+	let getParams = window.location.search;
+	let userParams = getParams.split("=")[1];
+	const user_id = userParams;
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/users/${user_id}/articles/`,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`
+			},
+			method: "GET"
+		}
+	);
+	response_json = await response.json();
+	return response_json;
+}
+// 특정유저를 팔로우한 유저 보기
+async function getUserArticleLikes() {
+	let token = localStorage.getItem("access");
+	let getParams = window.location.search;
+	let userParams = getParams.split("=")[1];
+	const user_id = userParams;
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/users/${user_id}/articles/likes/`,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`
+			},
+			method: "GET"
+		}
+	);
+	response_json = await response.json();
+	return response_json;
+}
+// 특정유저를 팔로우한 유저 보기
+async function getUserCommentLikes() {
+	let token = localStorage.getItem("access");
+	let getParams = window.location.search;
+	let userParams = getParams.split("=")[1];
+	const user_id = userParams;
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/users/${user_id}/comments/likes/`,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`
+			},
+			method: "GET"
+		}
+	);
+	response_json = await response.json();
+	return response_json;
+}
+// 특정유저를 팔로우한 유저 보기
+async function getUserArticleBookmarks() {
+	let token = localStorage.getItem("access");
+	let getParams = window.location.search;
+	let userParams = getParams.split("=")[1];
+	const user_id = userParams;
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/users/${user_id}/articles/bookmarks/`,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`
+			},
+			method: "GET"
+		}
+	);
+	response_json = await response.json();
+	return response_json;
 }
