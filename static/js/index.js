@@ -102,8 +102,3 @@ const logoutBtn = document.getElementById("logout-btn");
 logoutBtn.addEventListener("click", () => {
 	handleLogout();
 });
-
-const updatePasswordBtn = document.getElementById("update-password-btn");
-updatePasswordBtn.addEventListener("click", () => {
-	handleUpdatePassword();
-});

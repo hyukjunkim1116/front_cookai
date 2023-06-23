@@ -15,17 +15,9 @@
     <title>Cookai</title>
 </head>
 <body>
-    </h1>마이페이지!</h1>
-    <div class="user-detail" id="user-detail"></div>
-    
-    <div class="text-center">
-        <button type="button" class="sign-btn btn btn-outline-primary"
-            id="show-login-btn">로그인</button>
-    </div>
-    <div class="text-center">
-        <button type="button" class="sign-btn btn btn-outline-primary"
-            id="user-detail-btn">마이페이지</button>
-    </div>
+    <h1 class="text-center" id="my-page">마이페이지!</h1>
+    <h2 class="text-center" id="following-title">팔로잉 목록</h2>
+    <h2 class="text-center" id="follower-title">팔로워 목록</h2>
     <form>
     <h2 class="text-center">회원정보 바꾸기</h2>
         <div class="mb-3">
@@ -58,6 +50,25 @@
     <div class="text-center">
         <button type="button" class="sign-btn btn btn-outline-primary"
             id="add-ingredient-btn">추가하기</button>
+    </div>
+</form>
+<form>
+    <h2 class="text-center">비밀번호 바꾸기</h2>
+        <div class="mb-3">
+            <label for="old_password" class="form-label">현재 비밀번호</label>
+            <input type="password" class="form-control" name="old_password" id="old_password" placeholder="비밀번호">
+        </div>
+        <div class="mb-3">
+            <label for="new_password" class="form-label">새로운 비밀번호</label>
+            <input type="password" class="form-control" name="new_password" id="new_password" placeholder="비밀번호">
+        </div>
+        <div class="mb-3">
+            <label for="new_password2" class="form-label">새로운 비밀번호</label>
+            <input type="password" class="form-control" name="new_password2" id="new_password2" placeholder="비밀번호">
+        </div>
+    <div class="text-center">
+        <button type="button" class="sign-btn btn btn-outline-primary"
+            id="update-password-btn">비밀번호 바꾸기</button>
     </div>
 </form>
     <script src="../static/js/api.js"></script>
