@@ -1,4 +1,4 @@
-const FRONT_BASE_URL = "http://127.0.0.1:5500";
+const FRONT_BASE_URL = "http://127.0.0.1:5501";
 const BACKEND_BASE_URL = "http://127.0.0.1:8000";
 
 // 일반 회원가입하는 함수
@@ -33,7 +33,7 @@ async function handleSignUp() {
 				body: JSON.stringify({
 					email: email,
 					password: firstPassword,
-					password2: secondPassword,
+					psssword2: secondPassword,
 					username: username,
 					gender: gender,
 					age: age,
@@ -56,6 +56,7 @@ async function handleSignUp() {
 				body: JSON.stringify({
 					email: email,
 					password: firstPassword,
+					psssword2: secondPassword,
 					password2: secondPassword,
 					username: username,
 					gender: gender,
@@ -367,18 +368,23 @@ async function userFollowing() {
 	}
 }
 
-// 특정유저를 팔로우한 유저 보기
-async function getUserFollower() {
-	let token = localStorage.getItem("access");
-	const userId = new URLSearchParams(window.location.search).get("user_id");
-	const response = await fetch(
-		`${BACKEND_BASE_URL}/users/${userId}/follower/`,
-		{
-			headers: {
-				Authorization: `Bearer ${token}`
-			},
-			method: "GET"
-		}
-	);
-	return response.json();
+
+async function submitRecipeAPI(recipeData) {
+	const response = await fetch(`${BACKEND_BASE_URL}/articles`, {
+	method: "POST",
+	headers: {
+		"Content-Type": "application/json",
+		// 필요한 경우 API 토큰 또는 인증 헤더를 추가합니다.
+	},
+	body: JSON.stringify(recipeData),
+	});
+
+	if (!response.ok) {
+	throw new Error("API 요청 실패!");
+	}
+
+	const responseData = await response.json();
+	console.log("레시피가 성공적으로 등록되었습니다.", responseData);
 }
+
+window.submitRecipeAPI = submitRecipeAPI;
