@@ -308,9 +308,8 @@ async function postUserFridge() {
 	});
 	return response;
 }
-async function deleteUserFridge() {
+async function deleteUserFridge(fridgeId) {
 	let token = localStorage.getItem("access");
-	const fridgeId = new URLSearchParams(window.location.search).get("fridge_id");
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/users/fridge/${fridgeId}/`,
 		{
@@ -320,6 +319,7 @@ async function deleteUserFridge() {
 			method: "DELETE"
 		}
 	);
+	window.location.reload();
 	return response;
 }
 
@@ -340,10 +340,9 @@ async function getUserFollowing() {
 }
 
 // 특정 유저 팔로잉하기
-async function userFollowing() {
+async function userFollowing(userId) {
+	console.log(userId);
 	let token = localStorage.getItem("access");
-	const userId = new URLSearchParams(window.location.search).get("user_id");
-
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/users/${userId}/following/`,
 		{
@@ -353,16 +352,16 @@ async function userFollowing() {
 			method: "POST"
 		}
 	);
+	window.location.reload();
 	response_json = await response.json();
-
 	// 팔로우 버튼 변경
 	if (response_json == "follow") {
-		const followBtn = document.getElementById("followBtn");
-		followBtn.innerText.replace("팔로우 »", "언팔로우 »");
+		const followBtn = document.getElementById("following-btn");
+		followBtn.innerText.replace("팔로우", "언팔로우");
 		window.location.reload();
 	} else if (response_json == "unfollow") {
-		const followBtn = document.getElementById("followBtn");
-		followBtn.innerText.replace("언팔로우 »", "팔로우 »");
+		const followBtn = document.getElementById("following-btn");
+		followBtn.innerText.replace("언팔로우", "팔로우");
 		window.location.reload();
 	}
 }
