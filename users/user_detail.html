@@ -36,9 +36,28 @@
         <button type="button" class="sign-btn btn btn-outline-primary"
             id="update-user-btn">수정하기</button>
     </div>
+</form>
+<form>
+    <h2 class="text-center">회원 탈퇴</h2>
+    <div class="mb-3">
+        <label for="Password" class="form-label">비밀번호</label>
+        <input type="password" class="form-control" name="password" id="password" placeholder="비밀번호 확인">
+    </div>
     <div class="text-center">
         <button type="button" class="sign-btn btn btn-outline-primary"
             id="delete-user-btn">유저 삭제하기</button>
+    </div>
+</form>
+<h2 class="text-center" id="fridge-title">나의 냉장고</h2>
+<form>
+    <h2 class="text-center">재료 등록하기</h2>
+        <div class="mb-3">
+            <label for="ingredient" class="form-label">재료</label>
+            <input type="text" class="form-control" name="ingredient" id="ingredient" placeholder="재료">
+        </div>
+    <div class="text-center">
+        <button type="button" class="sign-btn btn btn-outline-primary"
+            id="add-ingredient-btn">추가하기</button>
     </div>
 </form>
     <script src="../static/js/api.js"></script>
