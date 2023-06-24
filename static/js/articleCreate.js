@@ -37,11 +37,11 @@ const handleAddRecipe = () => {
 	div.classList.add("mb-3");
 	div.setAttribute("id", `recipe-${recipeNumber}`);
 	div.innerHTML = `
-	<label for="recipe-${recipeNumber}" class="form-label">레시피 ${recipeNumber}</label>
-	<textarea class="form-control" id="recipe-${recipeNumber}" name="recipe-${recipeNumber}" rows="3"></textarea>
+	<label for="recipe-${recipeNumber}-textarea" class="form-label">레시피 ${recipeNumber}</label>
+	<textarea class="form-control recipe-textarea" id="recipe-${recipeNumber}-textarea" name="recipe-${recipeNumber}-textarea" rows="3"></textarea>
 	<label for="recipe-image-${recipeNumber}" class="form-label">이미지</label>
-	<input type="file" onchange="setRecipeThumbnail(${recipeNumber},event);" class="form-control" id="recipe-image-${recipeNumber}" accept="image/*">
-	<div id="recipe-image-${recipeNumber}-container" class="recipe-image-${recipeNumber}-container"></div>
+	<input type="file" onchange="setRecipeThumbnail(${recipeNumber},event);" class="form-control recipe-file" id="recipe-image-${recipeNumber}" name="recipe-image-${recipeNumber}" accept="image/*">
+	<div id="recipe-image-${recipeNumber}-container" class="recipe-image-${recipeNumber}-container recipe-image-container"></div>
 	<button class="btn btn-primary" id="delete-recipe-image" onclick="deleteRecipeDiv(${recipeNumber})">레시피 삭제하기</button>
 	`;
 	recipeContainer.appendChild(div);
@@ -49,7 +49,59 @@ const handleAddRecipe = () => {
 	console.log(recipeContainer);
 };
 async function postArticle() {
-	// 카테고리는 중간발표 이후에 추가하기.
+	for (let i = 1; i < 10; i++) {
+		console.log(i);
+		let recipeTextarea = document.getElementById(`recipe-${i}-textarea`);
+		console.log(recipeTextarea);
+		if (!recipeTextarea) break;
+
+		try {
+			let recipeText = document.getElementById(`recipe-${i}-textarea`).value;
+			console.log(recipeText);
+			recipeTextarea.innerText = recipeText;
+			console.log(recipeTextarea);
+		} catch {
+			continue;
+		}
+		//썸네일 제거
+		let recipeImageContainer = document.getElementById(
+			`recipe-image-${i}-container`
+		);
+		console.log(recipeImageContainer);
+		try {
+			let childRecipeImageContainer = document.getElementById(
+				`recipe-${i}-thumbnail`
+			);
+			console.log(childRecipeImageContainer);
+			recipeImageContainer.removeChild(childRecipeImageContainer);
+		} catch {
+			continue;
+		}
+		try {
+			let recipeImage = document.getElementById(`recipe-image-${i}`).files[0];
+			console.log(recipeImage);
+			let responseURL = await fetch(`${BACKEND_BASE_URL}/articles/get-url/`, {
+				method: "POST"
+			});
+			let dataURL = await responseURL.json();
+			//실제로 클라우드플레어에 업로드
+			let formData = new FormData();
+			formData.append("file", recipeImage);
+			let responseRealURL = await fetch(`${dataURL["uploadURL"]}`, {
+				body: formData,
+				method: "POST"
+			});
+			let results = await responseRealURL.json();
+			let realFileURL = results.result.variants[0];
+			let recipeImageUrl = document.createElement("img");
+			recipeImageUrl.setAttribute("src", realFileURL);
+			recipeImageUrl.setAttribute("id", `recipe-url-${i}`);
+			recipeImageContainer.appendChild(recipeImageUrl);
+		} catch {
+			continue;
+		}
+	}
+
 	const uploadBtn = document.getElementById("submit-article");
 	uploadBtn.innerText = "";
 	const span = document.createElement("span");
@@ -61,7 +113,6 @@ async function postArticle() {
 	const title = document.getElementById("article_title").value;
 	const content = document.getElementById("article_content").value;
 	const tags = document.getElementById("article_tag").value;
-	console.log(tags.split(","));
 	const file = document.getElementById("article_image").files[0];
 	const recipeContainer = document.getElementById("recipe_container");
 	const category = document.getElementById("category");

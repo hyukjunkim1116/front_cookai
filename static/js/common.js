@@ -55,6 +55,7 @@ function setRecipeThumbnail(id, event) {
 	reader.onload = function (event) {
 		let img = document.createElement("img");
 		img.setAttribute("src", event.target.result);
+		img.setAttribute("id", `recipe-${id}-thumbnail`);
 
 		// 썸네일 크기 조절
 		img.setAttribute("style", "max-height: 300px;"); // 높이 제한 300px
