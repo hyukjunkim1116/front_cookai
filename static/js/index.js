@@ -97,6 +97,10 @@ const goLoginBtn = document.getElementById("show-login-btn");
 goLoginBtn.addEventListener("click", () => {
 	window.location.href = `${FRONT_BASE_URL}/users/login.html`;
 });
+const goArticleCreateBtn = document.getElementById("create-article-btn");
+goArticleCreateBtn.addEventListener("click", () => {
+	window.location.href = `${FRONT_BASE_URL}/articles/article_create.html`;
+});
 
 const logoutBtn = document.getElementById("logout-btn");
 logoutBtn.addEventListener("click", () => {

@@ -1,52 +1,127 @@
-const frontend_base_url = "http://127.0.0.1:5500";
-const backend_base_url = "http://127.0.0.1:8000";
+let ingredientNumber = 1;
+let recipeNumber = 1;
+const setCategory = async () => {
+	const categories = await getCategory();
+	const select = document.querySelector(".category");
+	categories.forEach((category) => {
+		const option = document.createElement("option");
+		option.setAttribute("value", `${category.id}`);
+		option.innerText = `${category.name}`;
+		select.appendChild(option);
+	});
+};
+const handleAddIngredient = () => {
+	const ingredientContainer = document.getElementById("ingredient_container");
 
-// 요청 보낼 파일들을 먼저 정의
-// 파일들을 모아 적절한 url로 요청 보내기
-// 서버에서 받은 응답에 따라 적절히 조절하기
+	const div = document.createElement("div");
+	div.setAttribute("id", `ingredient-${ingredientNumber}`);
+	div.classList.add("mb-3");
+	div.innerHTML = `
+	<label for="ingredient-title-${ingredientNumber}" class="form-label">재료 제목</label>
+	<input type="text" class="form-control" id="ingredient-title-${ingredientNumber}" name="ingredient-title-${ingredientNumber}" placeholder="재료 제목을 입력하세요">
+	<label for="ingredient-amount-${ingredientNumber}" class="form-label">수량</label>
+	<input type="text" class="form-control" id="ingredient-amount-${ingredientNumber}" name="ingredient-amount-${ingredientNumber}" placeholder="수량을 입력하세요">
+	<label for="ingredient-unit-${ingredientNumber}" class="form-label">단위</label>
+	<input type="text" class="form-control" id="ingredient-unit-${ingredientNumber}" name="ingredient-unit-${ingredientNumber}" placeholder="단위를 입력하세요">
+	<button class="btn btn-primary" id="delete-ingredient-div" onclick="deleteIngredientDiv(${ingredientNumber})">재료 삭제하기</button>
+	`;
 
+	ingredientContainer.appendChild(div);
+	ingredientNumber++;
+	console.log(div);
+};
+const handleAddRecipe = () => {
+	const recipeContainer = document.getElementById("recipe_container");
+
+	const div = document.createElement("div");
+	div.classList.add("mb-3");
+	div.setAttribute("id", `recipe-${recipeNumber}`);
+	div.innerHTML = `
+	<label for="recipe-${recipeNumber}-textarea" class="form-label">레시피 ${recipeNumber}</label>
+	<textarea class="form-control recipe-textarea" id="recipe-${recipeNumber}-textarea" name="recipe-${recipeNumber}-textarea" rows="3"></textarea>
+	<label for="recipe-image-${recipeNumber}" class="form-label">이미지</label>
+	<input type="file" onchange="setRecipeThumbnail(${recipeNumber},event);" class="form-control recipe-file" id="recipe-image-${recipeNumber}" name="recipe-image-${recipeNumber}" accept="image/*">
+	<div id="recipe-image-${recipeNumber}-container" class="recipe-image-${recipeNumber}-container recipe-image-container"></div>
+	<button class="btn btn-primary" id="delete-recipe-div" onclick="deleteRecipeDiv(${recipeNumber})">레시피 삭제하기</button>
+	`;
+	recipeContainer.appendChild(div);
+	recipeNumber++;
+	console.log(recipeContainer);
+};
 async function postArticle() {
-    // document.getElementById() 메서드를 사용하여 HTML 문서의 다양한 요소에 대한 참조를 검색하고 저장하는 것으로 시작합니다.
-	const updateBtn = document.getElementById("submit-btn");
-	// 코드는 ID가 "submit-btn"인 단추의 텍스트 내용을 빈 문자열로 설정하여 수정합니다.
-	updateBtn.innerText = "";
+	for (let i = 1; i < 10; i++) {
+		console.log(i);
+		let recipeTextarea = document.getElementById(`recipe-${i}-textarea`);
+		console.log(recipeTextarea);
+		if (!recipeTextarea) break;
+
+		try {
+			let recipeText = document.getElementById(`recipe-${i}-textarea`).value;
+			console.log(recipeText);
+			recipeTextarea.innerText = recipeText;
+			console.log(recipeTextarea);
+		} catch {
+			continue;
+		}
+		//썸네일 제거
+		let recipeImageContainer = document.getElementById(
+			`recipe-image-${i}-container`
+		);
+		console.log(recipeImageContainer);
+		try {
+			let childRecipeImageContainer = document.getElementById(
+				`recipe-${i}-thumbnail`
+			);
+			console.log(childRecipeImageContainer);
+			recipeImageContainer.removeChild(childRecipeImageContainer);
+		} catch {
+			continue;
+		}
+		try {
+			let recipeImage = document.getElementById(`recipe-image-${i}`).files[0];
+			console.log(recipeImage);
+			let responseURL = await fetch(`${BACKEND_BASE_URL}/articles/get-url/`, {
+				method: "POST"
+			});
+			let dataURL = await responseURL.json();
+			//실제로 클라우드플레어에 업로드
+			let formData = new FormData();
+			formData.append("file", recipeImage);
+			let responseRealURL = await fetch(`${dataURL["uploadURL"]}`, {
+				body: formData,
+				method: "POST"
+			});
+			let results = await responseRealURL.json();
+			let realFileURL = results.result.variants[0];
+			let recipeImageUrl = document.createElement("img");
+			recipeImageUrl.setAttribute("src", realFileURL);
+			recipeImageUrl.setAttribute("id", `recipe-url-${i}`);
+			recipeImageContainer.appendChild(recipeImageUrl);
+		} catch {
+			continue;
+		}
+	}
+
+	const uploadBtn = document.getElementById("submit-article");
+	uploadBtn.innerText = "";
 	const span = document.createElement("span");
 	span.setAttribute("id", "spinner-span");
 	span.setAttribute("class", "spinner-border spinner-border-sm");
 	span.setAttribute("role", "status");
 	span.setAttribute("aria-hidden", "true");
-	// 이것은 <span> 요소를 생성하고 스팬에 대한 다양한 속성을 설정한 후 앞에서 언급한 버튼에 추가합니다. 
-	// 이 스팬 요소는 로드 스피너를 나타냅니다.
-    const token = localStorage.getItem("access");
-    const title = document.getElementById("article_title").value;
+	const token = localStorage.getItem("access");
+	const title = document.getElementById("article_title").value;
 	const content = document.getElementById("article_content").value;
-	const file = document.getElementById("file").files[0];
-
-    const formdata = new FormData();
-    formdata.append("title", title);
-    formdata.append("content", content);
-
-    const response = await fetch(`${backend_base_url}/articles/`, {
-		headers: {
-			Authorization: `Bearer ${token}`
-		},
-		body: formdata,
-		method: "POST"
-	});
-	// 코드는 fetch() 함수를 사용하여 백엔드 API 끝점(${backend_base_url}/api/articles/)에 대한 POST 요청을 수행합니다. 
-	// 요청 헤더에 액세스 토큰을 포함하고 양식 데이터를 요청 본문으로 전송합니다.
-	const responseData = await response.json();
-
-    if (file) {
-		const responseURL = await fetch(
-			`${backend_base_url}/articles/get-url/`,
-			{
-				method: "POST"
-			}
-		);
+	const tags = document.getElementById("article_tag").value;
+	const file = document.getElementById("article_image").files[0];
+	const recipeContainer = document.getElementById("recipe_container");
+	const category = document.getElementById("category");
+	const categoryValue = category.options[category.selectedIndex].value;
+	if (file) {
+		const responseURL = await fetch(`${BACKEND_BASE_URL}/articles/get-url/`, {
+			method: "POST"
+		});
 		const dataURL = await responseURL.json();
-		// ID "file"인 파일을 선택하면 코드는 다른 API 끝점(${backend_base_url}/api/media/photos/get-url/)으로 다른 POST 요청을 보내
-		// 파일을 업로드하기 위한 URL을 가져옵니다.
 
 		//실제로 클라우드플레어에 업로드
 		const formData = new FormData();
@@ -55,39 +130,140 @@ async function postArticle() {
 			body: formData,
 			method: "POST"
 		});
-		// 응답 URL은 JSON으로 구문 분석되며, 얻은 URL을 사용하여 클라우드 서비스(예: Cloudflare)에 파일 업로드 요청이 이루어집니다.
 		const results = await responseRealURL.json();
 		const realFileURL = results.result.variants[0];
-		// 클라우드 서비스의 응답은 JSON으로 구문 분석되며 업로드된 파일의 URL이 추출됩니다.
-		// 아티클 사진 백엔드로 업로드
-		const responseUpload = await fetch(
-			`${backend_base_url}/api/articles/${responseData.id}/photos/`,
-			{
-				headers: {
-					// "X-CSRFToken": Cookie.get("csrftoken") || "",
-					Authorization: `Bearer ${token}`,
-					"content-type": "application/json"
-				},
-				body: JSON.stringify({
-					file: realFileURL
-				}),
-				method: "POST"
+		const response = await fetch(`${BACKEND_BASE_URL}/articles/`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+				"content-type": "application/json"
+			},
+			body: JSON.stringify({
+				title: title,
+				content: content,
+				recipe: recipeContainer.outerHTML,
+				tags: tags.split(","),
+				category: categoryValue,
+				file: realFileURL
+			}),
+			method: "POST"
+		});
+		if (response.status === 200) {
+			const articleResponse = await response.json();
+			console.log(articleResponse, articleResponse.id);
+			for (let i = 1; i < 30; i++) {
+				console.log(i);
+				let ingredientTitle = document.getElementById(`ingredient-title-${i}`);
+				console.log(ingredientTitle);
+				if (!ingredientTitle) break;
+				let ingredientQuantity = document.getElementById(
+					`ingredient-amount-${i}`
+				).value;
+				let ingredientUnit = document.getElementById(
+					`ingredient-unit-${i}`
+				).value;
+				const ingredientResponse = await fetch(
+					`${BACKEND_BASE_URL}/articles/${articleResponse.id}/recipeingredient/`,
+					{
+						headers: {
+							Authorization: `Bearer ${token}`,
+							"content-type": "application/json"
+						},
+						body: JSON.stringify({
+							ingredient: ingredientTitle.value,
+							ingredient_quantity: ingredientQuantity,
+							ingredient_unit: ingredientUnit
+						}),
+						method: "POST"
+					}
+				);
+
+				console.log(ingredientResponse);
 			}
-		);
-	}
-	if (response.status === 200) {
-		alert("작성 완료!");
-		window.location.replace(
-			`${frontend_base_url}/articles/article_detail.html?article_id=${responseData.id}`
-		);
+			window.location.replace(
+				`${BACKEND_BASE_URL}/articles/article_detail.html?article_id=${articleResponse.id}`
+			);
+		} else {
+			alert("작성 실패!");
+		}
 	} else {
-		alert("작성 실패!");
-		window.location.replace(`${frontend_base_url}/`);
+		const response = await fetch(`${BACKEND_BASE_URL}/articles/`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+				"content-type": "application/json"
+			},
+			body: JSON.stringify({
+				title: title,
+				content: content,
+				recipe: recipeContainer.outerHTML,
+				tags: tags.split(","),
+				category: categoryValue
+			}),
+			method: "POST"
+		});
+		if (response.status === 200) {
+			const articleResponse = await response.json();
+			console.log(articleResponse, articleResponse.id);
+			for (let i = 1; i < 30; i++) {
+				console.log(i);
+				let ingredientTitle = document.getElementById(`ingredient-title-${i}`);
+				console.log(ingredientTitle);
+				if (!ingredientTitle) break;
+				let ingredientQuantity = document.getElementById(
+					`ingredient-amount-${i}`
+				).value;
+				let ingredientUnit = document.getElementById(
+					`ingredient-unit-${i}`
+				).value;
+				const ingredientResponse = await fetch(
+					`${BACKEND_BASE_URL}/articles/${articleResponse.id}/recipeingredient/`,
+					{
+						headers: {
+							Authorization: `Bearer ${token}`,
+							"content-type": "application/json"
+						},
+						body: JSON.stringify({
+							ingredient: ingredientTitle.value,
+							ingredient_quantity: ingredientQuantity,
+							ingredient_unit: ingredientUnit
+						}),
+						method: "POST"
+					}
+				);
+				console.log(ingredientResponse);
+			}
+			window.location.replace(
+				`${BACKEND_BASE_URL}/articles/article_detail.html?article_id=${articleResponse.id}`
+			);
+		} else {
+			alert("작성 실패!");
+		}
 	}
 }
-
-
+const addIngredientButton = document.getElementById("add-ingredient");
+addIngredientButton.addEventListener("click", () => {
+	handleAddIngredient();
+});
+const addRecipeButton = document.getElementById("add-recipe");
+addRecipeButton.addEventListener("click", () => {
+	handleAddRecipe();
+});
+const submitArticleButton = document.getElementById("submit-article");
+submitArticleButton.addEventListener("click", (event) => {
+	postArticle();
+	event.preventDefault();
+});
+const deleteRecipeDiv = (id, event) => {
+	const recipeDiv = document.getElementById(`recipe-${id}`);
+	recipeDiv.remove();
+	event.preventDefault();
+};
+const deleteIngredientDiv = (id, event) => {
+	const ingredientDiv = document.getElementById(`ingredient-${id}`);
+	ingredientDiv.remove();
+	event.preventDefault();
+};
 window.onload = async function () {
-	checkNotLogin(); // 로그인 한 사용자만 게시글 작성 가능
-	forceLogout();  // 로그아웃은 안 했지만 토큰이 만료된 경우 강제 로그아웃
-}
+	checkNotLogin();
+	forceLogout();
+	setCategory();
+};
