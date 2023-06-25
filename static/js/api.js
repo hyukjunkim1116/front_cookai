@@ -366,6 +366,7 @@ async function userFollowing(userId) {
 		window.location.reload();
 	}
 }
+
 async function getCategory() {
 	let token = localStorage.getItem("access");
 	const response = await fetch(`${BACKEND_BASE_URL}/articles/category/`, {
@@ -376,3 +377,4 @@ async function getCategory() {
 	});
 	return response.json();
 }
+
