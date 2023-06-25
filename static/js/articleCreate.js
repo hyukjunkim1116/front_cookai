@@ -120,7 +120,7 @@ async function postArticle() {
 	if (file) {
 		const responseURL = await fetch(`${BACKEND_BASE_URL}/articles/get-url/`, {
 			headers: {
-				Accept: "application / json"
+				"content-type": "application/json"
 			},
 			method: "POST"
 		});
