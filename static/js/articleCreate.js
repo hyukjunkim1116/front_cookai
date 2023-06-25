@@ -132,6 +132,7 @@ async function postArticle() {
 		});
 		const results = await responseRealURL.json();
 		const realFileURL = results.result.variants[0];
+		console.log(realFileURL);
 		const response = await fetch(`${BACKEND_BASE_URL}/articles/`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
@@ -143,7 +144,7 @@ async function postArticle() {
 				recipe: recipeContainer.outerHTML,
 				tags: tags.split(","),
 				category: categoryValue,
-				file: realFileURL
+				image: realFileURL
 			}),
 			method: "POST"
 		});
