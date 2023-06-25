@@ -13,6 +13,9 @@ async function handleSignUp() {
 	if (firstPassword === secondPassword) {
 		if (file) {
 			const responseURL = await fetch(`${BACKEND_BASE_URL}/users/get-url/`, {
+				headers: {
+					Accept: "application / json"
+				},
 				method: "POST"
 			});
 			const dataURL = await responseURL.json();
