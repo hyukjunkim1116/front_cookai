@@ -180,7 +180,7 @@ async function postArticle() {
 				console.log(ingredientResponse);
 			}
 			window.location.replace(
-				`${BACKEND_BASE_URL}/articles/article_detail.html?article_id=${articleResponse.id}`
+				`${FRONT_BASE_URL}/articles/article_detail.html?article_id=${articleResponse.id}`
 			);
 		} else {
 			alert("작성 실패!");
@@ -232,7 +232,7 @@ async function postArticle() {
 				console.log(ingredientResponse);
 			}
 			window.location.replace(
-				`${BACKEND_BASE_URL}/articles/article_detail.html?article_id=${articleResponse.id}`
+				`${FRONT_BASE_URL}/articles/article_detail.html?article_id=${articleResponse.id}`
 			);
 		} else {
 			alert("작성 실패!");
