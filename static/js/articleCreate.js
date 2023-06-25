@@ -22,8 +22,8 @@ const handleAddIngredient = () => {
 	<label for="ingredient-amount-${ingredientNumber}" class="form-label">수량</label>
 	<input type="text" class="form-control" id="ingredient-amount-${ingredientNumber}" name="ingredient-amount-${ingredientNumber}" placeholder="수량을 입력하세요">
 	<label for="ingredient-unit-${ingredientNumber}" class="form-label">단위</label>
-	<input type="text" class="form-control-${ingredientNumber}" id="ingredient-unit" name="ingredient-unit-${ingredientNumber}" placeholder="단위를 입력하세요">
-	<button class="btn btn-primary" id="delete-recipe-image" onclick="deleteIngredientDiv(${ingredientNumber})">재료 삭제하기</button>
+	<input type="text" class="form-control" id="ingredient-unit-${ingredientNumber}" name="ingredient-unit-${ingredientNumber}" placeholder="단위를 입력하세요">
+	<button class="btn btn-primary" id="delete-ingredient-div" onclick="deleteIngredientDiv(${ingredientNumber})">재료 삭제하기</button>
 	`;
 
 	ingredientContainer.appendChild(div);
@@ -42,7 +42,7 @@ const handleAddRecipe = () => {
 	<label for="recipe-image-${recipeNumber}" class="form-label">이미지</label>
 	<input type="file" onchange="setRecipeThumbnail(${recipeNumber},event);" class="form-control recipe-file" id="recipe-image-${recipeNumber}" name="recipe-image-${recipeNumber}" accept="image/*">
 	<div id="recipe-image-${recipeNumber}-container" class="recipe-image-${recipeNumber}-container recipe-image-container"></div>
-	<button class="btn btn-primary" id="delete-recipe-image" onclick="deleteRecipeDiv(${recipeNumber})">레시피 삭제하기</button>
+	<button class="btn btn-primary" id="delete-recipe-div" onclick="deleteRecipeDiv(${recipeNumber})">레시피 삭제하기</button>
 	`;
 	recipeContainer.appendChild(div);
 	recipeNumber++;
@@ -148,13 +148,42 @@ async function postArticle() {
 			method: "POST"
 		});
 		if (response.status === 200) {
-			alert("작성 완료!");
-			// window.location.replace(
-			// 	`${frontend_base_url}/articles/article_detail.html?article_id=${responseData.id}`
-			// );
+			const articleResponse = await response.json();
+			console.log(articleResponse, articleResponse.id);
+			for (let i = 1; i < 30; i++) {
+				console.log(i);
+				let ingredientTitle = document.getElementById(`ingredient-title-${i}`);
+				console.log(ingredientTitle);
+				if (!ingredientTitle) break;
+				let ingredientQuantity = document.getElementById(
+					`ingredient-amount-${i}`
+				).value;
+				let ingredientUnit = document.getElementById(
+					`ingredient-unit-${i}`
+				).value;
+				const ingredientResponse = await fetch(
+					`${BACKEND_BASE_URL}/articles/${articleResponse.id}/recipeingredient/`,
+					{
+						headers: {
+							Authorization: `Bearer ${token}`,
+							"content-type": "application/json"
+						},
+						body: JSON.stringify({
+							ingredient: ingredientTitle.value,
+							ingredient_quantity: ingredientQuantity,
+							ingredient_unit: ingredientUnit
+						}),
+						method: "POST"
+					}
+				);
+
+				console.log(ingredientResponse);
+			}
+			window.location.replace(
+				`${BACKEND_BASE_URL}/articles/article_detail.html?article_id=${articleResponse.id}`
+			);
 		} else {
 			alert("작성 실패!");
-			// window.location.replace(`${frontend_base_url}/`);
 		}
 	} else {
 		const response = await fetch(`${BACKEND_BASE_URL}/articles/`, {
@@ -172,68 +201,44 @@ async function postArticle() {
 			method: "POST"
 		});
 		if (response.status === 200) {
-			alert("작성 완료!");
-			// window.location.replace(
-			// 	`${frontend_base_url}/articles/article_detail.html?article_id=${responseData.id}`
-			// );
+			const articleResponse = await response.json();
+			console.log(articleResponse, articleResponse.id);
+			for (let i = 1; i < 30; i++) {
+				console.log(i);
+				let ingredientTitle = document.getElementById(`ingredient-title-${i}`);
+				console.log(ingredientTitle);
+				if (!ingredientTitle) break;
+				let ingredientQuantity = document.getElementById(
+					`ingredient-amount-${i}`
+				).value;
+				let ingredientUnit = document.getElementById(
+					`ingredient-unit-${i}`
+				).value;
+				const ingredientResponse = await fetch(
+					`${BACKEND_BASE_URL}/articles/${articleResponse.id}/recipeingredient/`,
+					{
+						headers: {
+							Authorization: `Bearer ${token}`,
+							"content-type": "application/json"
+						},
+						body: JSON.stringify({
+							ingredient: ingredientTitle.value,
+							ingredient_quantity: ingredientQuantity,
+							ingredient_unit: ingredientUnit
+						}),
+						method: "POST"
+					}
+				);
+				console.log(ingredientResponse);
+			}
+			window.location.replace(
+				`${BACKEND_BASE_URL}/articles/article_detail.html?article_id=${articleResponse.id}`
+			);
 		} else {
 			alert("작성 실패!");
-			// window.location.replace(`${frontend_base_url}/`);
 		}
 	}
 }
-// document.addEventListener("DOMContentLoaded", function () {
-// 	const form = document.getElementById("recipe-form");
-//
-
-// 	if (addStepButton) {
-// 		addStepButton.addEventListener("click", handleAddStep);
-// 	}
-
-// 	if (form) {
-// 		form.addEventListener("submit", async function (event) {
-// 			event.preventDefault();
-
-// 			// 폼 데이터를 가져오고 처리합니다.
-// 			const titleInput = document.getElementById("title");
-// 			const titleValue = titleInput.value;
-// 			const steps = Array.from(document.querySelectorAll("[id^='step-']")).map(
-// 				(step) => step.value
-// 			);
-
-// 			const recipeData = {
-// 				title: titleValue,
-// 				steps: JSON.stringify(steps)
-// 			};
-
-// 			try {
-// 				await submitRecipeAPI(recipeData);
-// 			} catch (error) {
-// 				console.error("API 요청 중 오류가 발생했습니다.", error);
-// 			}
-// 		});
-// 	}
-// });
-
-// function postArticle() {
-// 	const token = localStorage.getItem("access");
-// 	const title = document.getElementById("article_title").value;
-// 	const content = document.getElementById("article_content").value;
-// 	const image = document.getElementById("image").files[0];
-
-// 	const formdata = new FormData();
-// 	formdata.append("category", category);
-// 	formdata.append("title", title);
-// 	formdata.append("content", content);
-// 	formdata.append("image", image);
-// 	const request = fetch(`${BACKEND_BASE_URL}/api/articles/`, {
-// 		headers: {
-// 			Authorization: `Bearer ${token}`
-// 		},
-// 		body: formdata,
-// 		method: "POST"
-// 	});
-// }
 const addIngredientButton = document.getElementById("add-ingredient");
 addIngredientButton.addEventListener("click", () => {
 	handleAddIngredient();
