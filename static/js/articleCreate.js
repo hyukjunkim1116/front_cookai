@@ -124,8 +124,10 @@ async function postArticle() {
 			},
 			method: "POST"
 		});
+		console.log(responseURL);
+		console.log(responseURL["uploadURL"]);
+
 		const dataURL = await responseURL.json();
-		console.log(await responseURL.json());
 		//실제로 클라우드플레어에 업로드
 		const formData = new FormData();
 		formData.append("file", file);
