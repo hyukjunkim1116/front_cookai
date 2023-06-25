@@ -63,7 +63,6 @@ async function postArticle() {
 		} catch {
 			continue;
 		}
-		//썸네일 제거
 		let recipeImageContainer = document.getElementById(
 			`recipe-image-${i}-container`
 		);
@@ -84,7 +83,6 @@ async function postArticle() {
 				method: "POST"
 			});
 			let dataURL = await responseURL.json();
-			//실제로 클라우드플레어에 업로드
 			let formData = new FormData();
 			formData.append("file", recipeImage);
 			let responseRealURL = await fetch(`${dataURL["uploadURL"]}`, {
@@ -101,7 +99,6 @@ async function postArticle() {
 			continue;
 		}
 	}
-
 	const uploadBtn = document.getElementById("submit-article");
 	uploadBtn.innerText = "";
 	const span = document.createElement("span");
@@ -122,8 +119,6 @@ async function postArticle() {
 			method: "POST"
 		});
 		const dataURL = await responseURL.json();
-
-		//실제로 클라우드플레어에 업로드
 		const formData = new FormData();
 		formData.append("file", file);
 		const responseRealURL = await fetch(`${dataURL["uploadURL"]}`, {
@@ -177,8 +172,6 @@ async function postArticle() {
 						method: "POST"
 					}
 				);
-
-				console.log(ingredientResponse);
 			}
 			window.location.replace(
 				`${FRONT_BASE_URL}/articles/article_detail.html?article_id=${articleResponse.id}`
@@ -205,9 +198,7 @@ async function postArticle() {
 			const articleResponse = await response.json();
 			console.log(articleResponse, articleResponse.id);
 			for (let i = 1; i < 30; i++) {
-				console.log(i);
 				let ingredientTitle = document.getElementById(`ingredient-title-${i}`);
-				console.log(ingredientTitle);
 				if (!ingredientTitle) break;
 				let ingredientQuantity = document.getElementById(
 					`ingredient-amount-${i}`
@@ -230,7 +221,6 @@ async function postArticle() {
 						method: "POST"
 					}
 				);
-				console.log(ingredientResponse);
 			}
 			window.location.replace(
 				`${FRONT_BASE_URL}/articles/article_detail.html?article_id=${articleResponse.id}`
