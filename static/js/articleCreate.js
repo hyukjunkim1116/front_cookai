@@ -119,9 +119,6 @@ async function postArticle() {
 	const categoryValue = category.options[category.selectedIndex].value;
 	if (file) {
 		const responseURL = await fetch(`${BACKEND_BASE_URL}/articles/get-url/`, {
-			headers: {
-				"content-type": "application/json"
-			},
 			method: "POST"
 		});
 		const dataURL = await responseURL.json();
