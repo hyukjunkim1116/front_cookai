@@ -1,4 +1,3 @@
-// 배포환경 BASE_URL
 const FRONT_BASE_URL = "https://cookai.today";
 const BACKEND_BASE_URL = "https://www.backend.cookai.today";
 
