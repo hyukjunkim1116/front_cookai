@@ -1,5 +1,3 @@
-//s3 upload test
-const URL = "https://cookai.today";
 const FRONT_BASE_URL = "https://cookai.today";
 const BACKEND_BASE_URL = "https://www.backend.cookai.today";
 
