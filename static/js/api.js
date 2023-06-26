@@ -218,7 +218,7 @@ async function getUserDetail() {
 		},
 		method: "GET"
 	});
-	return response.json();
+	return await response.json();
 }
 async function putUserDetail() {
 	let token = localStorage.getItem("access");
@@ -267,7 +267,7 @@ async function getUserArticle() {
 		}
 	);
 
-	return response.json();
+	return await response.json();
 }
 async function getUserComment() {
 	let token = localStorage.getItem("access");
@@ -282,7 +282,7 @@ async function getUserComment() {
 		}
 	);
 
-	return response.json();
+	return await response.json();
 }
 async function getUserFridge() {
 	let token = localStorage.getItem("access");
@@ -292,7 +292,7 @@ async function getUserFridge() {
 		},
 		method: "GET"
 	});
-	return response.json();
+	return await response.json();
 }
 async function postUserFridge() {
 	let token = localStorage.getItem("access");
@@ -387,3 +387,135 @@ async function submitRecipeAPI(recipeData) {
 }
 
 window.submitRecipeAPI = submitRecipeAPI;
+
+async function getArticleDetail(articleId){
+	const token= localStorage.getItem("access")
+	if(token){
+		const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/`,{
+			headers: {
+				"Authorization": `Bearer ${token}`
+			},
+		})
+	
+		return response
+	}else{
+		const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/`)
+	
+		return response
+	}
+    
+}
+
+async function getComments(articleId,comment_page=1){
+    const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/comment/?comment_page=${comment_page}`)
+
+    if(response.status == 200) {
+        response_json = await response.json()
+        return response_json
+    } else {
+        alert(response.status)
+		return null
+    }
+}
+async function postComment(articleId, newComment){
+    const token= localStorage.getItem("access")
+    const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/comment/`, {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json',
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            "comment": newComment,
+        })
+    })
+
+    return response
+}
+
+async function bookmarkArticle(articleId){
+    const token= localStorage.getItem("access")
+    const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/bookmark/`, {
+        method: 'POST',   
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
+
+    if(response.status == 200 || response.status == 204) {
+        const response_json = await response.json()
+        alert(response_json)
+        location.reload();
+    } else {
+        alert(response.status)
+    }
+}
+
+async function likeArticle(articleId){
+    const token= localStorage.getItem("access")
+
+    const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/like/`, {
+        method: 'POST',   
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
+
+    if(response.status == 200 || response.status == 204) {
+        const response_json = await response.json()
+        alert(response_json)
+        location.reload();
+    } else {
+        alert(response.status)
+    }
+}
+
+async function deleteComment(commentId){
+	const token= localStorage.getItem("access")
+
+    const response = await fetch(`${BACKEND_BASE_URL}/articles/1/comment/${commentId}/`, {
+        method: 'DELETE',   
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
+	return response
+}
+async function updateComment(commentId, newComment){
+    const token= localStorage.getItem("access")
+    const response = await fetch(`${BACKEND_BASE_URL}/articles/1/comment/${commentId}/`, {
+        method: 'PUT',
+        headers: {
+            'content-type': 'application/json',
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            "comment": newComment,
+        })
+    })
+
+    return response
+}
+
+async function likeComment(commentId){
+	const token= localStorage.getItem("access")
+    const response = await fetch(`${BACKEND_BASE_URL}/articles/comment/${commentId}/like/`, {
+        method: 'POST',
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
+
+    return response
+}
+async function deleteArticle(articleId){
+	const token= localStorage.getItem("access")
+
+    const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/`, {
+        method: 'DELETE',   
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
+	return response
+}
