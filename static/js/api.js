@@ -1,4 +1,4 @@
-const FRONT_BASE_URL = "http://127.0.0.1:5501";
+const FRONT_BASE_URL = "http://127.0.0.1:5500";
 const BACKEND_BASE_URL = "http://127.0.0.1:8000";
 
 // 일반 회원가입하는 함수
@@ -367,23 +367,15 @@ async function userFollowing(userId) {
 	}
 }
 
-
-async function submitRecipeAPI(recipeData) {
-	const response = await fetch(`${BACKEND_BASE_URL}/articles`, {
-	method: "POST",
-	headers: {
-		"Content-Type": "application/json",
-		// 필요한 경우 API 토큰 또는 인증 헤더를 추가합니다.
-	},
-	body: JSON.stringify(recipeData),
+async function getCategory() {
+	let token = localStorage.getItem("access");
+	const response = await fetch(`${BACKEND_BASE_URL}/articles/category/`, {
+		headers: {
+			Authorization: `Bearer ${token}`
+		},
+		method: "GET"
 	});
-
-	if (!response.ok) {
-	throw new Error("API 요청 실패!");
-	}
-
-	const responseData = await response.json();
-	console.log("레시피가 성공적으로 등록되었습니다.", responseData);
+	return response.json();
 }
 
 window.submitRecipeAPI = submitRecipeAPI;
@@ -519,3 +511,4 @@ async function deleteArticle(articleId){
     })
 	return response
 }
+
