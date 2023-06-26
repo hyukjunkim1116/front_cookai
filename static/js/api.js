@@ -33,7 +33,7 @@ async function handleSignUp() {
 				body: JSON.stringify({
 					email: email,
 					password: firstPassword,
-					psssword2: secondPassword,
+					second_psssword: secondPassword,
 					username: username,
 					gender: gender,
 					age: age,
@@ -56,8 +56,7 @@ async function handleSignUp() {
 				body: JSON.stringify({
 					email: email,
 					password: firstPassword,
-					psssword2: secondPassword,
-					password2: secondPassword,
+					second_psssword: secondPassword,
 					username: username,
 					gender: gender,
 					age: age
@@ -378,8 +377,6 @@ async function getCategory() {
 	return response.json();
 }
 
-window.submitRecipeAPI = submitRecipeAPI;
-
 async function getArticleDetail(articleId){
 	const token= localStorage.getItem("access")
 	if(token){
@@ -511,4 +508,3 @@ async function deleteArticle(articleId){
     })
 	return response
 }
-
