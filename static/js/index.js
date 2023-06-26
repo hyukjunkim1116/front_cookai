@@ -106,3 +106,12 @@ const logoutBtn = document.getElementById("logout-btn");
 logoutBtn.addEventListener("click", () => {
 	handleLogout();
 });
+
+const aiObjBtn = document.getElementById("ai-obj-btn");
+aiObjBtn.addEventListener("click", () => {
+	window.location.href=`${FRONT_BASE_URL}/image_upload.html`;
+});
+const aiRecommBtn = document.getElementById("ai-recomm-btn");
+aiRecommBtn.addEventListener("click", () => {
+	window.location.href=`${FRONT_BASE_URL}/users/feed.html`;
+});

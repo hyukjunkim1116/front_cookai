@@ -509,3 +509,13 @@ async function deleteArticle(articleId){
 	return response
 }
 
+async function getRecommend(choice){
+	const token= localStorage.getItem("access")
+
+    const response = await fetch(`${BACKEND_BASE_URL}/ai_process/?recommmend=${choice}`, { 
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
+	return response
+}
