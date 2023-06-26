@@ -121,8 +121,9 @@ async function postArticle() {
 		const responseURL = await fetch(`${BACKEND_BASE_URL}/articles/get-url/`, {
 			method: "POST"
 		});
+		console.log(responseURL);
 		const dataURL = await responseURL.json();
-
+		console.log(dataURL);
 		//실제로 클라우드플레어에 업로드
 		const formData = new FormData();
 		formData.append("file", file);

@@ -1,5 +1,5 @@
-const FRONT_BASE_URL = "http://127.0.0.1:5500";
-const BACKEND_BASE_URL = "http://127.0.0.1:8000";
+const FRONT_BASE_URL = "https://cookai.today";
+const BACKEND_BASE_URL = "https://www.backend.cookai.today";
 
 // 일반 회원가입하는 함수
 async function handleSignUp() {
@@ -33,7 +33,7 @@ async function handleSignUp() {
 				body: JSON.stringify({
 					email: email,
 					password: firstPassword,
-					psssword2: secondPassword,
+					second_psssword: secondPassword,
 					username: username,
 					gender: gender,
 					age: age,
@@ -56,8 +56,7 @@ async function handleSignUp() {
 				body: JSON.stringify({
 					email: email,
 					password: firstPassword,
-					psssword2: secondPassword,
-					password2: secondPassword,
+					second_psssword: secondPassword,
 					username: username,
 					gender: gender,
 					age: age
@@ -377,7 +376,6 @@ async function getCategory() {
 	});
 	return response.json();
 }
-
 
 async function getArticleDetail(articleId){
 	const token= localStorage.getItem("access")
