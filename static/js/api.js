@@ -519,3 +519,9 @@ async function deleteArticle(articleId){
     })
 	return response
 }
+async function getArticleList(querystring,page=1){
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/articles/${querystring}&page=${page}`,
+	);
+	return response;
+}
