@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/css/navbar.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <!-- 폰트 임포트 -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@700&display=swap');
+        @import url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff');
+    </style>
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+    <!-- import axios need to append all .html-->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <title>Cookai</title>
+</head>
+
+<body class="body">
+    <!-- 상단 네비게이션 바 -->
+    <nav class="navbar fixed-top bg-body-tertiary">
+        <div class="navbar-top">
+            <a class="navbar-top-brand" href="/index.html">cookai</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">cookai</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="#">mypage</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    noname
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                        </li>
+                    </ul>
+                    <form class="d-flex mt-3" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main">
+        <img src="/static/img/main.png" class="main-img">
+            <div class="main-title">
+                <h1>오늘 뭐 먹지?</h1>
+            </div>
+
+        <div class="main-search">
+            <img src="/static/img/search_black.png" alt="search" class="search-icon1">
+            <form action="search.html" method="get">
+                <input type="text" name="search" id="search" placeholder="검색">
+                <button type="submit" class="search-btn">
+                    <img src="/static/img/camera.png" alt="search" class="search-icon2">
+                </button>
+            </form>
+        </div>
+
+        <div class="main-info">
+            <div class="main-info-contents1">
+                <h1>소개글 제목</h1>
+                <p>소개글 내용</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 하단 네비게이션 바 -->
+    <nav class="navbar fixed-bottom bg-body-tertiary">
+        <div class="navbar-bottom">
+            <a href="search.html">
+                <div class="navbar-bottom-item">
+                    <img src="/static/img/search.png" alt="search" class="navbar-bottom-icon">
+                    <span>SEARCH</span>
+                </div>
+            </a>
+            <a href="home.html">
+                <div class="navbar-bottom-item">
+                    <img src="/static/img/home.png" alt="home" class="navbar-bottom-icon">
+                    <span>HOME</span>
+                </div>
+            </a>
+            <a href="mypage.html">
+                <div class="navbar-bottom-item">
+                    <img src="/static/img/mypage.png" alt="mypage" class="navbar-bottom-icon">
+                    <span>MY</span>
+                </div>
+            </a>
+        </div>
+    </nav>
+
+    <!-- 푸터 -->
+    <footer>
+        <div class="footer-container">
+            <h2>Project cookai</h2>
+            <div class="team-members">
+                <h3>팀 구성원</h3>
+                <ul>
+                    <li>최창수</li>
+                    <li>김혁준</li>
+                    <li>이기웅</li>
+                    <li>이정민</li>
+                    <li>임라온</li>
+                </ul>
+            </div>
+            <hr>
+            <p class="footer-copy">&copy; 2023 cookai team. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+
+<script src="/static/js/api.js"></script>
+<script src="/static/js/common.js"></script>
+<script src="/static/js/index.js"></script>
+</html>
