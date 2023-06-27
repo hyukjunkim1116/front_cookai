@@ -97,13 +97,21 @@ const goLoginBtn = document.getElementById("show-login-btn");
 goLoginBtn.addEventListener("click", () => {
 	window.location.href = `${FRONT_BASE_URL}/users/login.html`;
 });
+const goArticleCreateBtn = document.getElementById("create-article-btn");
+goArticleCreateBtn.addEventListener("click", () => {
+	window.location.href = `${FRONT_BASE_URL}/articles/article_create.html`;
+});
 
 const logoutBtn = document.getElementById("logout-btn");
 logoutBtn.addEventListener("click", () => {
 	handleLogout();
 });
 
-const updatePasswordBtn = document.getElementById("update-password-btn");
-updatePasswordBtn.addEventListener("click", () => {
-	handleUpdatePassword();
+const aiObjBtn = document.getElementById("ai-obj-btn");
+aiObjBtn.addEventListener("click", () => {
+	window.location.href=`${FRONT_BASE_URL}/image_upload.html`;
+});
+const aiRecommBtn = document.getElementById("ai-recomm-btn");
+aiRecommBtn.addEventListener("click", () => {
+	window.location.href=`${FRONT_BASE_URL}/users/feed.html`;
 });

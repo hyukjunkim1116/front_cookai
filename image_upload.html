@@ -19,9 +19,7 @@
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
-    <script src="/static/js/api.js"></script>
-    <script src="/static/js/loader.js"></script>
-    <script src="/static/js/articlesList.js"></script>
+
 
     <title>Cookai | 게시글 목록</title>
 </head>
@@ -30,9 +28,27 @@
     <!-- 상세 게시글 카드 하나씩 게시 -->
     <div class="card_list">
         <div id="card_box" class="row row-cols-1 row-cols-md-5 g-4">
+            <div class="mb-3">
+                <form id="image_form">
+                    <label for="image" class="form-label">이미지</label>
+                    <input type="file" onchange="setThumbnail(event);" class="form-control image-control" id="image"
+                        name="image" accept="image/*">
+                    <div id="image_container" class="image_container"></div>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+            <div id="result"></div>
+
+
         </div>
-        <div id="page" class="page">
-        </div>
+
+    </div>
+    <button onclick="" id="goback" class="btn btn-outline-primary">돌아가기</button>
     </div>
 </body>
+<script src="/static/js/api.js"></script>
+<script src="/static/js/common.js"></script>
+<script src="/static/js/loader.js"></script>
+<script src="/static/js/imageUpload.js"></script>
+
 </html>

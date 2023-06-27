@@ -1,7 +1,7 @@
-const FRONT_BASE_URL = "http://127.0.0.1:5500";
-const BACKEND_BASE_URL = "http://127.0.0.1:8000";
+const FRONT_BASE_URL = "https://cookai.today";
+const BACKEND_BASE_URL = "https://www.backend.cookai.today";
 
-// 일반 회원가입하는 함수 .
+// 일반 회원가입하는 함수
 async function handleSignUp() {
 	const email = document.getElementById("email").value;
 	const firstPassword = document.getElementById("first_password").value;
@@ -32,7 +32,8 @@ async function handleSignUp() {
 				method: "POST",
 				body: JSON.stringify({
 					email: email,
-					password: secondPassword,
+					password: firstPassword,
+					second_psssword: secondPassword,
 					username: username,
 					gender: gender,
 					age: age,
@@ -55,6 +56,7 @@ async function handleSignUp() {
 				body: JSON.stringify({
 					email: email,
 					password: firstPassword,
+					second_psssword: secondPassword,
 					username: username,
 					gender: gender,
 					age: age
@@ -87,7 +89,6 @@ async function handleLogin() {
 			password: password
 		})
 	});
-
 	return response;
 }
 // 로그인 버튼 클릭 시 해당 auth에 코드 요청, redirect_uri로 URL 파라미터와 함께 이동
@@ -123,6 +124,7 @@ const naverLogin = async () => {
 	const response_type = "code";
 	window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=${response_type}&client_id=${naver_id}&redirect_uri=${redirect_uri}&state=${state}`;
 };
+
 // 비밀번호 리셋 - 이메일 확인
 async function handleEmailConfirm() {
 	const email = document.getElementById("email").value;
@@ -136,31 +138,6 @@ async function handleEmailConfirm() {
 		})
 	});
 	return response;
-}
-
-async function handleUpdatePassword() {
-	const token = localStorage.getItem("access");
-	const oldPassword = document.getElementById("old_password").value;
-	const newPassword = document.getElementById("new_password").value;
-	const response = await fetch(`${BACKEND_BASE_URL}/users/change-password/`, {
-		headers: {
-			Authorization: `Bearer ${token}`,
-			"content-type": "application/json"
-		},
-		method: "PUT",
-		body: JSON.stringify({
-			old_password: oldPassword,
-			new_password: newPassword
-		})
-	});
-	if (response.status == 200) {
-		alert("비밀번호가 변경되었습니다!");
-		handleLogout();
-		window.location = `${FRONT_BASE_URL}/users/login.html`;
-		return response;
-	} else {
-		alert("현재 비밀번호가 일치하지 않습니다!");
-	}
 }
 
 // 비밀번호 리셋 - 새로운 비밀번호 설정
@@ -184,6 +161,33 @@ async function handleChangePasswordConfirm() {
 	return response;
 }
 
+async function handleUpdatePassword() {
+	const token = localStorage.getItem("access");
+	const oldPassword = document.getElementById("old_password").value;
+	const newPassword = document.getElementById("new_password").value;
+	const newPassword2 = document.getElementById("new_password2").value;
+	const response = await fetch(`${BACKEND_BASE_URL}/users/change-password/`, {
+		headers: {
+			Authorization: `Bearer ${token}`,
+			"content-type": "application/json"
+		},
+		method: "PUT",
+		body: JSON.stringify({
+			old_password: oldPassword,
+			new_password: newPassword,
+			new_password2: newPassword2
+		})
+	});
+	if (response.status == 200) {
+		alert("비밀번호가 변경되었습니다!");
+		handleLogout();
+		window.location = `${FRONT_BASE_URL}/users/login.html`;
+		return response;
+	} else {
+		alert("현재 비밀번호가 일치하지 않습니다!");
+	}
+}
+
 //로그인 한 유저 정보 조회
 async function getLoginUser() {
 	const payload = localStorage.getItem("payload");
@@ -203,24 +207,23 @@ async function getLoginUser() {
 		}
 	}
 }
-
+//해당 유저 정보 조회
 async function getUserDetail() {
-	let getParams = window.location.search;
-	let userParams = getParams.split("=")[1];
-	const user_id = userParams;
-	const response = await fetch(`${BACKEND_BASE_URL}/users/${user_id}/`, {
+	let token = localStorage.getItem("access");
+	const userId = new URLSearchParams(window.location.search).get("user_id");
+	const response = await fetch(`${BACKEND_BASE_URL}/users/${userId}/`, {
+		headers: {
+			Authorization: `Bearer ${token}`
+		},
 		method: "GET"
 	});
-	response_json = await response.json();
-	return response_json;
+	return await response.json();
 }
 async function putUserDetail() {
 	let token = localStorage.getItem("access");
-	let getParams = window.location.search;
-	let userParams = getParams.split("=")[1];
-	const user_id = userParams;
+	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const username = document.getElementById("username").value;
-	const response = await fetch(`${BACKEND_BASE_URL}/users/${user_id}/`, {
+	const response = await fetch(`${BACKEND_BASE_URL}/users/${userId}/`, {
 		headers: {
 			Authorization: `Bearer ${token}`,
 			"content-type": "application/json"
@@ -230,102 +233,326 @@ async function putUserDetail() {
 			username: username
 		})
 	});
-	response_json = await response.json();
-	return response_json;
+	return response;
 }
 async function deleteUser() {
 	let token = localStorage.getItem("access");
-	let getParams = window.location.search;
-	let userParams = getParams.split("=")[1];
-	const user_id = userParams;
+	const userId = new URLSearchParams(window.location.search).get("user_id");
+	const password = document.getElementById("password").value;
 
-	const response = await fetch(`${BACKEND_BASE_URL}/users/${user_id}/`, {
+	const response = await fetch(`${BACKEND_BASE_URL}/users/${userId}/`, {
 		headers: {
-			Authorization: `Bearer ${token}`
+			Authorization: `Bearer ${token}`,
+			"content-type": "application/json"
 		},
-		method: "DELETE"
+		method: "PATCH",
+		body: JSON.stringify({
+			password: password
+		})
 	});
 	return response;
 }
 
+async function getUserArticle() {
+	let token = localStorage.getItem("access");
+	const userId = new URLSearchParams(window.location.search).get("user_id");
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/users/${userId}/articles/`,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`
+			},
+			method: "GET"
+		}
+	);
+
+	return await response.json();
+}
+async function getUserComment() {
+	let token = localStorage.getItem("access");
+	const userId = new URLSearchParams(window.location.search).get("user_id");
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/users/${userId}/comments/`,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`
+			},
+			method: "GET"
+		}
+	);
+
+	return await response.json();
+}
 async function getUserFridge() {
 	let token = localStorage.getItem("access");
-	let getParams = window.location.search;
-	let userParams = getParams.split("=")[1];
-	const user_id = userParams;
-	const response = await fetch(`${BACKEND_BASE_URL}/users/${user_id}/fridge/`, {
+	const response = await fetch(`${BACKEND_BASE_URL}/users/fridge/`, {
 		headers: {
 			Authorization: `Bearer ${token}`
 		},
 		method: "GET"
 	});
-	response_json = await response.json();
-	return response_json;
+	return await response.json();
 }
 async function postUserFridge() {
 	let token = localStorage.getItem("access");
-	let getParams = window.location.search;
-	let userParams = getParams.split("=")[1];
-	const user_id = userParams;
-	const response = await fetch(`${BACKEND_BASE_URL}/users/${user_id}/fridge/`, {
+	const ingredient = document.getElementById("ingredient").value;
+	const response = await fetch(`${BACKEND_BASE_URL}/users/fridge/`, {
 		headers: {
-			Authorization: `Bearer ${token}`
+			Authorization: `Bearer ${token}`,
+			"content-type": "application/json"
 		},
+		body: JSON.stringify({
+			ingredient: ingredient
+		}),
 		method: "POST"
 	});
-	response_json = await response.json();
-	return response_json;
+	return response;
 }
-async function deleteUserFridge() {
+async function deleteUserFridge(fridgeId) {
 	let token = localStorage.getItem("access");
-	let getParams = window.location.search;
-	let userParams = getParams.split("=")[1];
-	const user_id = userParams;
-	const response = await fetch(`${BACKEND_BASE_URL}/users/${user_id}/fridge/`, {
-		headers: {
-			Authorization: `Bearer ${token}`
-		},
-		method: "DELETE"
-	});
-	response_json = await response.json();
-	return response_json;
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/users/fridge/${fridgeId}/`,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`
+			},
+			method: "DELETE"
+		}
+	);
+	window.location.reload();
+	return response;
 }
 
-// 팔로우한 유저 보기
+// 내가 팔로우한 유저 보기
 async function getUserFollowing() {
-	let getParams = window.location.search;
-	let userParams = getParams.split("=")[1];
-	const user_id = userParams;
-	const response = await fetch(`${BACKEND_BASE_URL}/users/${user_id}/follow/`, {
-		method: "GET"
-	});
-	response_json = await response.json();
-	return response_json;
+	let token = localStorage.getItem("access");
+	const userId = new URLSearchParams(window.location.search).get("user_id");
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/users/${userId}/following/`,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`
+			},
+			method: "GET"
+		}
+	);
+	return response.json();
+}
+//나를 팔로우한 유저 보기
+async function getUserFollower() {
+	let token = localStorage.getItem("access");
+	const userId = new URLSearchParams(window.location.search).get("user_id");
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/users/${userId}/follower/`,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`
+			},
+			method: "GET"
+		}
+	);
+	return response.json();
 }
 
 // 특정 유저 팔로잉하기
-async function userFollowing() {
+async function userFollowing(userId) {
+	console.log(userId);
 	let token = localStorage.getItem("access");
-	let getParams = window.location.search;
-	let userParams = getParams.split("=")[1];
-	const user_id = userParams;
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/users/${userId}/following/`,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`
+			},
+			method: "POST"
+		}
+	);
+	window.location.reload();
+	response_json = await response.json();
+	// 팔로우 버튼 변경
+	if (response_json == "follow") {
+		const followBtn = document.getElementById("following-btn");
+		followBtn.innerText.replace("팔로우", "언팔로우");
+		window.location.reload();
+	} else if (response_json == "unfollow") {
+		const followBtn = document.getElementById("following-btn");
+		followBtn.innerText.replace("언팔로우", "팔로우");
+		window.location.reload();
+	}
+}
 
-	const response = await fetch(`${BACKEND_BASE_URL}/users/${user_id}/follow/`, {
+async function getCategory() {
+	let token = localStorage.getItem("access");
+	const response = await fetch(`${BACKEND_BASE_URL}/articles/category/`, {
 		headers: {
 			Authorization: `Bearer ${token}`
 		},
-		method: "POST"
+		method: "GET"
 	});
-	response_json = await response.json();
+	return response.json();
+}
 
-	// 팔로우 버튼 변경
-	if (response_json == "follow") {
-		const followBtn = document.getElementById("followBtn");
-		followBtn.innerText.replace("팔로우 »", "언팔로우 »");
-		window.location.reload();
-	} else if (response_json == "unfollow") {
-		const followBtn = document.getElementById("followBtn");
-		followBtn.innerText.replace("언팔로우 »", "팔로우 »");
-		window.location.reload();
+async function getArticleDetail(articleId) {
+	const token = localStorage.getItem("access");
+	if (token) {
+		const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/`, {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		});
+
+		return response;
+	} else {
+		const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/`);
+
+		return response;
 	}
+}
+
+async function getComments(articleId, comment_page = 1) {
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/articles/${articleId}/comment/?comment_page=${comment_page}`
+	);
+
+	if (response.status == 200) {
+		response_json = await response.json();
+		return response_json;
+	} else {
+		alert(response.status);
+		return null;
+	}
+}
+async function postComment(articleId, newComment) {
+	const token = localStorage.getItem("access");
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/articles/${articleId}/comment/`,
+		{
+			method: "POST",
+			headers: {
+				"content-type": "application/json",
+				Authorization: `Bearer ${token}`
+			},
+			body: JSON.stringify({
+				comment: newComment
+			})
+		}
+	);
+
+	return response;
+}
+
+async function bookmarkArticle(articleId) {
+	const token = localStorage.getItem("access");
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/articles/${articleId}/bookmark/`,
+		{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		}
+	);
+
+	if (response.status == 200 || response.status == 204) {
+		const response_json = await response.json();
+		alert(response_json);
+		location.reload();
+	} else {
+		alert(response.status);
+	}
+}
+
+async function likeArticle(articleId) {
+	const token = localStorage.getItem("access");
+
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/articles/${articleId}/like/`,
+		{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		}
+	);
+
+	if (response.status == 200 || response.status == 204) {
+		const response_json = await response.json();
+		alert(response_json);
+		location.reload();
+	} else {
+		alert(response.status);
+	}
+}
+
+async function deleteComment(commentId) {
+	const token = localStorage.getItem("access");
+
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/articles/1/comment/${commentId}/`,
+		{
+			method: "DELETE",
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		}
+	);
+	return response;
+}
+async function updateComment(commentId, newComment) {
+	const token = localStorage.getItem("access");
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/articles/1/comment/${commentId}/`,
+		{
+			method: "PUT",
+			headers: {
+				"content-type": "application/json",
+				Authorization: `Bearer ${token}`
+			},
+			body: JSON.stringify({
+				comment: newComment
+			})
+		}
+	);
+
+	return response;
+}
+
+async function likeComment(commentId) {
+	const token = localStorage.getItem("access");
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/articles/comment/${commentId}/like/`,
+		{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		}
+	);
+
+	return response;
+}
+async function deleteArticle(articleId) {
+	const token = localStorage.getItem("access");
+
+	const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/`, {
+		method: "DELETE",
+		headers: {
+			Authorization: `Bearer ${token}`
+		}
+	});
+	return response;
+}
+
+async function getRecommend(choice) {
+	const token = localStorage.getItem("access");
+
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/ai_process/?recommmend=${choice}`,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		}
+	);
+	return response;
 }
