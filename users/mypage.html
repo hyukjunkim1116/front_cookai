@@ -28,7 +28,7 @@
     <!-- 상단 네비게이션 바 -->
     <nav class="navbar fixed-top bg-body-tertiary">
         <div class="navbar-top">
-            <a class="navbar-top-brand" href="/mainpage.html">cookai</a>
+            <a class="navbar-top-brand" href="/index.html">cookai</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -68,12 +68,10 @@
         </div>
     </nav>
 
-    <div class="main" id="content">
+    <div class="main">
         <img src="/static/img/main.png" class="main-img">
             <div class="main-title">
-                <h1>오늘 뭐 먹지 ?</h1><br>
-                <p>고민하지 마세요,</p>
-                <p>저희가 도와드릴게요.</p>
+                <h1>오늘 뭐 먹지?</h1>
             </div>
 
         <div class="main-search">
@@ -88,9 +86,8 @@
 
         <div class="main-info">
             <div class="main-info-contents1">
-                <h1>cookai 서비스는?</h1><br>
-                <p>기존의 레시피가 아닌<br>가지고 있는 식재료를 포함하는 레시피를 보여드릴게요</p>
-                <p>레시피 공유는 물론이고, SNS기능은 덤이에요!</p>
+                <h1>소개글 제목</h1>
+                <p>소개글 내용</p>
             </div>
         </div>
     </div>
@@ -98,18 +95,24 @@
     <!-- 하단 네비게이션 바 -->
     <nav class="navbar fixed-bottom bg-body-tertiary">
         <div class="navbar-bottom">
-            <div class="navbar-bottom-item">
-                <img id="explorationPage" src="/static/img/search.png" alt="exploration" class="navbar-bottom-icon" style="cursor: pointer;">
-                <span>탐색</span>
-            </div>
-            <div class="navbar-bottom-item">
-                <img id="mainPage" src="/static/img/home.png" alt="home" class="navbar-bottom-icon" style="cursor: pointer;">
-                <span>홈</span>
-            </div>
-            <div class="navbar-bottom-item">
-                <img id="myPage" src="/static/img/mypage.png" alt="mypage" class="navbar-bottom-icon" style="cursor: pointer;">
-                <span>마이</span>
-            </div>
+            <a href="search.html">
+                <div class="navbar-bottom-item">
+                    <img src="/static/img/search.png" alt="search" class="navbar-bottom-icon">
+                    <span>SEARCH</span>
+                </div>
+            </a>
+            <a href="home.html">
+                <div class="navbar-bottom-item">
+                    <img src="/static/img/home.png" alt="home" class="navbar-bottom-icon">
+                    <span>HOME</span>
+                </div>
+            </a>
+            <a href="mypage.html">
+                <div class="navbar-bottom-item">
+                    <img src="/static/img/mypage.png" alt="mypage" class="navbar-bottom-icon">
+                    <span>MY</span>
+                </div>
+            </a>
         </div>
     </nav>
 
@@ -131,14 +134,6 @@
             <p class="footer-copy">&copy; 2023 cookai team. All rights reserved.</p>
         </div>
     </footer>
-
-    <!-- 스크롤 버튼 -->
-    <button id="scrollTopBtn" class="scroll-top-btn">
-        <img src="/static/img/top-button.png" alt="top">
-    </button>
-    <script src="/static/js/scroll.js"></script>
-
-<script src="/static/js/mainpage.js"></script>
 </body>
 
 <script src="/static/js/api.js"></script>
