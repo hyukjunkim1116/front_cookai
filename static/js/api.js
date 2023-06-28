@@ -377,3 +377,21 @@ async function getCategory() {
 	});
 	return response.json();
 }
+
+async function deleteArticle(articleId){
+	const token= localStorage.getItem("access")
+
+    const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/`, {
+        method: 'DELETE',   
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
+	return response
+}
+async function getArticleList(querystring,page=1){
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/articles/${querystring}&page=${page}`,
+	);
+	return response;
+}

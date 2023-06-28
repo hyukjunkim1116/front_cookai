@@ -1,9 +1,15 @@
 // 유저 게시글 목록 UI
-function articleListView(articles, list_div) {
+
+var query =``
+async function articleListView(page=1) {
+	const response= await getArticleList(query,page)
+	const response_json=await response.json()
+
+	const list_div = document.getElementById("")
 	list_div.innerHTML = "";
 	const newCardBox = document.createElement("div");
 	newCardBox.setAttribute("class", "card-box");
-	for (const article of articles) {
+	for (const article of response_json.result) {
         // 새로운 div 요소를 생성하고, class 속성을 "card"로 설정합니다.
         // 또한, 클릭 이벤트 핸들러와 id 속성을 게시물의 고유 식별자(pk)로 설정합니다.
         // 이렇게 생성한 카드를 newCardBox에 추가합니다.
@@ -66,7 +72,10 @@ window.onload = async function () {
 
 // 상세 게시글로 이동하는 함수입니다.
 function redirectToArticlePage(articleId) {
-const url = `http://127.0.0.1:8000/articles/${articleId}`;
+const url = `http://127.0.0.1:8000/articles/?article_id=${articleId}`;
 window.location.href = url;
 }
-  
+async function getQuery(){
+	// 1. 검색타입, 2. 검색자, 3. 카테고리선별 4. 순서
+
+}
