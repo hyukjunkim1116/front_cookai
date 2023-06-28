@@ -91,5 +91,5 @@ function setRecipeThumbnail(id, event) {
 	reader.readAsDataURL(event.target.files[0]);
 }
 
- injectNavbar()
- injectfooter()
+//  injectNavbar()
+//  injectfooter()

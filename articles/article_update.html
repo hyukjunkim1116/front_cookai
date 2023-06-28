@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/css/navbar.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <!-- 폰트 임포트 -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@700&display=swap');
+        @import url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff');
+    </style>
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+    <!-- import axios need to append all .html-->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <title>cookai | 글 수정하기</title>
+</head>
+
+<body>
+    <div class="container mt-4">
+        <h1>게시글 수정 페이지</h1>
+        <form>
+            <div class="mb-3">
+                <label for="article_title" class="form-label">제목</label>
+                <input type="text" class="form-control" id="article_title" placeholder="제목을 입력하세요">
+            </div>
+            <select class="category" name="category" id="category">
+                <option value="" disabled selected>카테고리를 선택하세요</option>
+            </select>
+            <div class="mb-3">
+                <label for="article_content" class="form-label">내용</label>
+                <textarea class="form-control" id="article_content" rows="6" placeholder="내용을 입력하세요"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="article_image" class="form-label">이미지</label>
+                <input type="file" onchange="setThumbnail(event);" class="form-control image-control" id="article_image"
+                    accept="image/*">
+                <div id="image_container" class="image_container"></div>
+            </div>
+            <div class="mb-3" id="ingredient_wrapper">
+                <div id="ingredient_container">
+                </div>
+                <button type="button" class="btn btn-primary" id="add-ingredient">재료 추가하기</button>
+            </div>
+            <div class="mb-3" id="recipe_wrapper"></div>
+            <div id="recipe_container"></div>
+            <button type="button" id="add-recipe" class="btn btn-secondary mb-3">레시피 추가하기</button>
+    </div>
+    <div class="mb-3" id="tag">
+        <label for="article_tag" class="form-label">태그</label>
+        <input type="text" class="form-control" id="article_tag" placeholder="태그를 입력하세요. 콤마(,)로 구분해야합니다.">
+    </div>
+    <button type="submit" class="btn btn-primary" id="update_article">게시글 수정하기
+    </button>
+    </form>
+    </div>
+    <script defer="defer" src="../static/js/api.js"></script>
+    <script defer="defer" src="../static/js/common.js"></script>
+    <script defer="defer" src="../static/js/articleCreate.js"></script>
+    <script defer="defer" src="../static/js/articleUpdate.js"></script>
+</body>
