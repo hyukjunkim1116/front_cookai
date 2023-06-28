@@ -145,3 +145,6 @@ body {
     line-height: 22px;
 }
 
+.scrolling-wrapper{
+	overflow-x: auto;
+}
