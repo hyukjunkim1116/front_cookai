@@ -1,3 +1,26 @@
+// 네비게이션 바 불러오기, 
+async function injectNavbar(){
+    
+    let navbarHtml = await fetch("/navbar.html")
+    let data = await navbarHtml.text()
+	const original=document.querySelector("body").innerHTML
+    document.querySelector("body").innerHTML = original+data;
+
+	// 여기서 부터 동적인 부분 작성하면 됩니다.
+
+
+	}
+//푸터 불러오기
+async function injectfooter(){
+    
+    let footer = await fetch("/footer.html")
+    let data = await footer.text()
+	document.querySelector("footer").innerHTML = data;
+
+	// 여기서 부터 동적인 부분 작성하면 됩니다.
+
+
+	}
 // 로그인 상태에서 로그인, 회원가입 페이지 접속 시 홈으로 이동하는 함수
 function checkLogin() {
 	const payload = localStorage.getItem("payload");
@@ -67,3 +90,6 @@ function setRecipeThumbnail(id, event) {
 	};
 	reader.readAsDataURL(event.target.files[0]);
 }
+
+ injectNavbar()
+ injectfooter()
