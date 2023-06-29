@@ -18,7 +18,7 @@
                         <a class="nav-link active" aria-current="page" href="/index.html">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/mypage.html">mypage</a>
+                        <a class="nav-link" onclick="goUserDetail(user_id)">mypage</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="/login.html" role="button" data-bs-toggle="dropdown"
@@ -27,7 +27,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="/login.html">Login</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" onclick="handleLogout()">LogOut</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
@@ -59,7 +59,7 @@
                 <span>HOME</span>
             </div>
         </a>
-        <a href="/mypage.html">
+        <a href="javascript:void(0);" onclick="goMypage()">
             <div class="navbar-bottom-item">
                 <img src="/static/img/mypage.png" alt="mypage" class="navbar-bottom-icon" >
                 <span>MY</span>

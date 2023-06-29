@@ -1,80 +1,6 @@
 const FRONT_BASE_URL = "http://127.0.0.1:5500";
 const BACKEND_BASE_URL = "http://127.0.0.1:8000";
 
-// 일반 회원가입하는 함수
-async function handleSignUp() {
-	const email = document.getElementById("email").value;
-	const firstPassword = document.getElementById("first_password").value;
-	const secondPassword = document.getElementById("second_password").value;
-	const username = document.getElementById("username").value;
-	const gender = document.getElementById("gender").value;
-	const age = document.getElementById("age").value;
-	const file = document.getElementById("file").files[0];
-	if (firstPassword === secondPassword) {
-		if (file) {
-			const responseURL = await fetch(`${BACKEND_BASE_URL}/users/get-url/`, {
-				method: "POST"
-			});
-			const dataURL = await responseURL.json();
-			//실제로 클라우드플레어에 업로드
-			const formData = new FormData();
-			formData.append("file", file);
-			const responseRealURL = await fetch(`${dataURL["uploadURL"]}`, {
-				body: formData,
-				method: "POST"
-			});
-			const results = await responseRealURL.json();
-			const realFileURL = results.result.variants[0];
-			const response = await fetch(`${BACKEND_BASE_URL}/users/`, {
-				headers: {
-					"content-type": "application/json"
-				},
-				method: "POST",
-				body: JSON.stringify({
-					email: email,
-					password: firstPassword,
-					psssword2: secondPassword,
-					username: username,
-					gender: gender,
-					age: age,
-					avatar: realFileURL
-				})
-			});
-			if (response.status == 400) {
-				alert("다시 입력하세요!");
-			} else {
-				alert("이메일 인증을 진행해 주세요!");
-				window.location.replace(`${FRONT_BASE_URL}/users/login.html`);
-				return response;
-			}
-		} else {
-			const response = await fetch(`${BACKEND_BASE_URL}/users/`, {
-				headers: {
-					"content-type": "application/json"
-				},
-				method: "POST",
-				body: JSON.stringify({
-					email: email,
-					password: firstPassword,
-					psssword2: secondPassword,
-					password2: secondPassword,
-					username: username,
-					gender: gender,
-					age: age
-				})
-			});
-			if (response.status == 400) {
-				alert("다시 입력하세요!");
-			} else {
-				alert("이메일 인증을 진행해 주세요!");
-				window.location.replace(`${FRONT_BASE_URL}/users/login.html`);
-				return response;
-			}
-		}
-	} else {
-		alert("비밀번호가 일치하지 않습니다.");
-	}
-}
 // 로그인
 async function handleLogin() {
 	const email = document.getElementById("email").value;
@@ -159,14 +85,19 @@ async function handleChangePasswordConfirm() {
 			user_id: userId
 		})
 	});
-	return response;
+	if (response.status == 200) {
+		alert("비밀번호 변경 완료!");
+		window.location.replace(`${FRONT_BASE_URL}/`);
+	} else {
+		alert("다시 입력하세요!");
+	}
 }
 
 async function handleUpdatePassword() {
 	const token = localStorage.getItem("access");
 	const oldPassword = document.getElementById("old_password").value;
 	const newPassword = document.getElementById("new_password").value;
-	const newPassword2 = document.getElementById("new_password2").value;
+	const newPasswordCheck = document.getElementById("new_password_check").value;
 	const response = await fetch(`${BACKEND_BASE_URL}/users/change-password/`, {
 		headers: {
 			Authorization: `Bearer ${token}`,
@@ -176,7 +107,7 @@ async function handleUpdatePassword() {
 		body: JSON.stringify({
 			old_password: oldPassword,
 			new_password: newPassword,
-			new_password2: newPassword2
+			new_password2: newPasswordCheck
 		})
 	});
 	if (response.status == 200) {
@@ -220,38 +151,29 @@ async function getUserDetail() {
 	});
 	return response.json();
 }
-async function putUserDetail() {
-	let token = localStorage.getItem("access");
-	const userId = new URLSearchParams(window.location.search).get("user_id");
-	const username = document.getElementById("username").value;
-	const response = await fetch(`${BACKEND_BASE_URL}/users/${userId}/`, {
-		headers: {
-			Authorization: `Bearer ${token}`,
-			"content-type": "application/json"
-		},
-		method: "PUT",
-		body: JSON.stringify({
-			username: username
-		})
-	});
-	return response;
-}
 async function deleteUser() {
 	let token = localStorage.getItem("access");
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const password = document.getElementById("password").value;
-
-	const response = await fetch(`${BACKEND_BASE_URL}/users/${userId}/`, {
-		headers: {
-			Authorization: `Bearer ${token}`,
-			"content-type": "application/json"
-		},
-		method: "PATCH",
-		body: JSON.stringify({
-			password: password
-		})
-	});
-	return response;
+	const secondPassword = document.getElementById("password-check").value;
+	if (password === secondPassword) {
+		const response = await fetch(`${BACKEND_BASE_URL}/users/${userId}/`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+				"content-type": "application/json"
+			},
+			method: "PATCH",
+			body: JSON.stringify({
+				password: password
+			})
+		});
+		if (response.status == 200) {
+			alert("탈퇴 완료!");
+			handleLogout();
+		}
+	} else {
+		alert("비밀번호가 일치하지 않습니다!");
+	}
 }
 
 async function getUserArticle() {
@@ -369,44 +291,40 @@ async function userFollowing(userId) {
 
 async function getCategory() {
 	const response = await fetch(`${BACKEND_BASE_URL}/articles/category/`, {
-		
 		method: "GET"
 	});
 	return await response.json();
 }
 
-async function deleteArticle(articleId){
-	const token= localStorage.getItem("access")
+async function deleteArticle(articleId) {
+	const token = localStorage.getItem("access");
 
-    const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/`, {
-        method: 'DELETE',   
-        headers: {
-            "Authorization": `Bearer ${token}`
-        }
-    })
-	return response
+	const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/`, {
+		method: "DELETE",
+		headers: {
+			Authorization: `Bearer ${token}`
+		}
+	});
+	return response;
 }
-async function getArticleList(querystring,page=1){
-	console.log(querystring)
-	if (querystring==``){
-		var pageQuery=`?page=${page}`
-	}else{
-		var pageQuery=`&page=${page}`
+async function getArticleList(querystring, page = 1) {
+	console.log(querystring);
+	if (querystring == ``) {
+		var pageQuery = `?page=${page}`;
+	} else {
+		var pageQuery = `&page=${page}`;
 	}
 	const response = await fetch(
-		`${BACKEND_BASE_URL}/articles/${querystring}${pageQuery}`,
+		`${BACKEND_BASE_URL}/articles/${querystring}${pageQuery}`
 	);
 	return response;
 }
-async function getTagList(selector){
-	if(selector){
-		var query = `?tag=${selector}`
-	}else{
-		var query = ``
+async function getTagList(selector) {
+	if (selector) {
+		var query = `?tag=${selector}`;
+	} else {
+		var query = ``;
 	}
-	const response = await fetch(
-		`${BACKEND_BASE_URL}/articles/tags/${query}`,
-	);
+	const response = await fetch(`${BACKEND_BASE_URL}/articles/tags/${query}`);
 	return response;
-
 }

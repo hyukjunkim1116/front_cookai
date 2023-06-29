@@ -74,7 +74,6 @@ function setLocalStorage(response) {
 		window.history.back();
 	}
 }
-
 // const goLoginBtn = document.getElementById("show-login-btn");
 // goLoginBtn.addEventListener("click", () => {
 // 	window.location.href = `${FRONT_BASE_URL}/users/login.html`;
