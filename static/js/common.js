@@ -65,6 +65,7 @@ function handleLogout() {
 	window.location.replace(`${FRONT_BASE_URL}/`);
 }
 function setThumbnail(event) {
+	alert("setThumbnail");
 	let reader = new FileReader();
 
 	reader.onload = function (event) {
@@ -82,6 +83,7 @@ function setThumbnail(event) {
 	reader.readAsDataURL(event.target.files[0]);
 }
 function setRecipeThumbnail(id, event) {
+	alert("setRecipeThumbnail");
 	let reader = new FileReader();
 
 	reader.onload = function (event) {
@@ -110,5 +112,6 @@ async function goMypage() {
 	user_id = payload_parse.user_id;
 	window.location.href = `${FRONT_BASE_URL}/mypage.html?user_id=${user_id}`;
 }
+
 injectNavbar();
 injectfooter();

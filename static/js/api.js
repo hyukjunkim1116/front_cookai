@@ -334,11 +334,189 @@ async function getArticleList(querystring, page = 1) {
 	);
 	return response;
 }
-async function getTagList(selector) {
-	if (selector) {
-		var query = `?tag=${selector}`;
+
+
+
+async function getArticleDetail(articleId){
+	const token= localStorage.getItem("access")
+	if(token){
+		const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/`,{
+			headers: {
+				"Authorization": `Bearer ${token}`
+			},
+		})
+
+		return response
+	}else{
+		const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/`)
+
+		return response
+	}
+
+}
+
+async function getComments(articleId,comment_page=1){
+    const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/comment/?comment_page=${comment_page}`)
+
+    if(response.status == 200) {
+        response_json = await response.json()
+        return response_json
+    } else {
+        alert(response.status)
+		return null
+    }
+}
+async function postComment(articleId, newComment){
+    const token= localStorage.getItem("access")
+    const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/comment/`, {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json',
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            "comment": newComment,
+        })
+    })
+
+    return response
+}
+
+async function bookmarkArticle(articleId){
+    const token= localStorage.getItem("access")
+    const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/bookmark/`, {
+        method: 'POST',   
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
+
+    if(response.status == 200 || response.status == 204) {
+        const response_json = await response.json()
+        alert(response_json)
+        location.reload();
+    } else {
+        alert(response.status)
+    }
+}
+
+async function likeArticle(articleId){
+    const token= localStorage.getItem("access")
+
+    const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/like/`, {
+        method: 'POST',   
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
+
+    if(response.status == 200 || response.status == 204) {
+        const response_json = await response.json()
+        alert(response_json)
+        location.reload();
+    } else {
+        alert(response.status)
+    }
+}
+
+async function deleteComment(commentId){
+	const token= localStorage.getItem("access")
+
+    const response = await fetch(`${BACKEND_BASE_URL}/articles/1/comment/${commentId}/`, {
+        method: 'DELETE',   
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
+	return response
+}
+async function updateComment(commentId, newComment){
+    const token= localStorage.getItem("access")
+    const response = await fetch(`${BACKEND_BASE_URL}/articles/1/comment/${commentId}/`, {
+        method: 'PUT',
+        headers: {
+            'content-type': 'application/json',
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            "comment": newComment,
+        })
+    })
+
+    return response
+}
+
+async function likeComment(commentId){
+	const token= localStorage.getItem("access")
+    const response = await fetch(`${BACKEND_BASE_URL}/articles/comment/${commentId}/like/`, {
+        method: 'POST',
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
+
+    return response
+}
+async function deleteArticle(articleId){
+	const token= localStorage.getItem("access")
+
+    const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/`, {
+        method: 'DELETE',   
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
+	return response
+}
+
+async function getArticle(articleId) {
+	const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/`);
+
+	if (!response.ok) {
+	throw new Error(`Error fetching article detail: ${response.statusText}`);
+	}
+
+	const article_data = await response.json(); // JSON 형식으로 데이터 추출
+	return article_data;
+}
+
+async function fetchMissingIngredients(articleId, token) {
+	const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/order/`, {
+	headers: {
+		'Authorization': `Bearer ${token}`
+	}
+	});
+
+	if (response.ok) {
+		const ingredientLink = await response.json();
+        console.log('쿠팡 링크:', ingredientLink);
+		console.log('서버에서 반환한 JSON:', ingredientLink);
+
+        const missingLinksList = document.createElement('div');
+        missingLinksList.style.display = "flex"; // 가로로 나열되는 스타일 추가
+        missingLinksList.style.flexWrap = "wrap"; // 영역을 넘어가면 다음 줄로 이동
+
+		ingredientLink.forEach(link => {
+            const listItem = document.createElement('div');
+            listItem.style.padding = "10px";
+            listItem.innerHTML = `
+                ${link.link ? `<a href="${link.link}" target="_blank">${link.link_img ? `<img src="${link.link_img}" style="width: 50px; height: auto;"/>` : '링크'}</a>` : ''}
+            `;
+            missingLinksList.appendChild(listItem);
+        });
+
+        const container = document.querySelector('.ingredientslink_list');
+        container.appendChild(missingLinksList);
 	} else {
-		var query = ``;
+	console.error('API 요청 실패:', response.statusText);
+	}
+}
+
+async function getTagList(selector){
+	if(selector){
+		var query = `?tag=${selector}`
+	}else{
+		var query = ``
 	}
 	const response = await fetch(`${BACKEND_BASE_URL}/articles/tags/${query}`);
 	return response;
