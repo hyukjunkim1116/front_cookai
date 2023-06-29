@@ -4,7 +4,22 @@ async function injectNavbar() {
 	let data = await navbarHtml.text();
 	const original = document.querySelector("body").innerHTML;
 	document.querySelector("body").innerHTML = original + data;
-
+	const payload = localStorage.getItem("payload");
+	if (payload) {
+		const loginUser = await getLoginUser();
+		if (loginUser.avatar !== "") {
+			const avatar = document.getElementById("avatar");
+			avatar.setAttribute("src", `${loginUser.avatar}`);
+			avatar.style.visibility = "visible";
+		} else {
+		}
+		const intro = document.getElementById("intro");
+		intro.innerText = `${loginUser.username}님`;
+		let loginOnlyElements = document.querySelectorAll(".hd-login-only");
+		loginOnlyElements.forEach((element) => {
+			element.classList.remove("hd-login-only");
+		});
+	}
 	// 여기서 부터 동적인 부분 작성하면 됩니다.
 }
 //푸터 불러오기
@@ -95,6 +110,5 @@ async function goMypage() {
 	user_id = payload_parse.user_id;
 	window.location.href = `${FRONT_BASE_URL}/mypage.html?user_id=${user_id}`;
 }
-
 injectNavbar();
 injectfooter();

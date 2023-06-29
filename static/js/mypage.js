@@ -2,7 +2,7 @@ checkNotLogin();
 async function loadUserDetail() {
 	const response = await getUserDetail();
 	console.log(response);
-	const userDetailList = document.getElementById("my-page");
+	const userDetailList = document.getElementById("mypage");
 	const newUserDetail = document.createElement("span");
 	newUserDetail.innerText = ` 유저네임 : ${response.username}`;
 	userDetailList.appendChild(newUserDetail);
@@ -64,14 +64,6 @@ async function loadUserFollower() {
 		userFollowingTitle.appendChild(userFollowingList);
 	}
 }
-const addIngredientBtn = document.getElementById("add-ingredient-btn");
-addIngredientBtn.addEventListener("click", () => {
-	const response = postUserFridge();
-	if (response.status == 200) {
-		alert("추가 완료!");
-		window.location.reload();
-	}
-});
 function goDeleteUser() {
 	// 인자값이 존재한다면 해당 인자값의 유저 프로필로 이동
 	const payload = localStorage.getItem("payload");

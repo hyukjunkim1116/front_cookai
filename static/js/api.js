@@ -261,6 +261,21 @@ async function getUserFollowing() {
 	);
 	return response.json();
 }
+// 나를 팔로우한 유저 보기
+async function getUserFollower() {
+	let token = localStorage.getItem("access");
+	const userId = new URLSearchParams(window.location.search).get("user_id");
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/users/${userId}/follower/`,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`
+			},
+			method: "GET"
+		}
+	);
+	return response.json();
+}
 
 // 특정 유저 팔로잉하기
 async function userFollowing(userId) {
