@@ -74,44 +74,24 @@ function setLocalStorage(response) {
 		window.history.back();
 	}
 }
+// const goLoginBtn = document.getElementById("show-login-btn");
+// goLoginBtn.addEventListener("click", () => {
+// 	window.location.href = `${FRONT_BASE_URL}/users/login.html`;
+// });
+// const goArticleCreateBtn = document.getElementById("create-article-btn");
+// goArticleCreateBtn.addEventListener("click", () => {
+// 	window.location.href = `${FRONT_BASE_URL}/articles/article_create.html`;
+// });
+// const logoutBtn = document.getElementById("logout-btn");
+// logoutBtn.addEventListener("click", () => {
+// 	handleLogout();
+// });
 
-async function goUserDetail(user_id) {
-	// 인자값이 존재한다면 해당 인자값의 유저 프로필로 이동
-	if (user_id) {
-		user_id = user_id;
-		window.location.href = `${FRONT_BASE_URL}/users/user_detail.html?user_id=${user_id}`;
-	} else {
-		// 인자값이 없다면 현재 로그인한 유저의 프로필로 이동
-		const payload = localStorage.getItem("payload");
-		const payload_parse = JSON.parse(payload);
-		console.log(payload_parse);
-		user_id = payload_parse.user_id;
-		window.location.href = `${FRONT_BASE_URL}/users/user_detail.html?user_id=${user_id}`;
-	}
-}
-const goUserDetailBtn = document.getElementById("user-detail-btn");
-goUserDetailBtn.addEventListener("click", () => {
-	goUserDetail();
-});
-const goLoginBtn = document.getElementById("show-login-btn");
-goLoginBtn.addEventListener("click", () => {
-	window.location.href = `${FRONT_BASE_URL}/users/login.html`;
-});
-const goArticleCreateBtn = document.getElementById("create-article-btn");
-goArticleCreateBtn.addEventListener("click", () => {
-	window.location.href = `${FRONT_BASE_URL}/articles/article_create.html`;
-});
-
-const logoutBtn = document.getElementById("logout-btn");
-logoutBtn.addEventListener("click", () => {
-	handleLogout();
-});
-
-const aiObjBtn = document.getElementById("ai-obj-btn");
-aiObjBtn.addEventListener("click", () => {
-	window.location.href=`${FRONT_BASE_URL}/image_upload.html`;
-});
-const aiRecommBtn = document.getElementById("ai-recomm-btn");
-aiRecommBtn.addEventListener("click", () => {
-	window.location.href=`${FRONT_BASE_URL}/users/feed.html`;
-});
+// const aiObjBtn = document.getElementById("ai-obj-btn");
+// aiObjBtn.addEventListener("click", () => {
+// 	window.location.href=`${FRONT_BASE_URL}/image_upload.html`;
+// });
+// const aiRecommBtn = document.getElementById("ai-recomm-btn");
+// aiRecommBtn.addEventListener("click", () => {
+// 	window.location.href=`${FRONT_BASE_URL}/users/feed.html`;
+// });

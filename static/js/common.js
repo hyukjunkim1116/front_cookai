@@ -1,26 +1,20 @@
-// 네비게이션 바 불러오기, 
-async function injectNavbar(){
-    
-    let navbarHtml = await fetch("/navbar.html")
-    let data = await navbarHtml.text()
-	const original=document.querySelector("body").innerHTML
-    document.querySelector("body").innerHTML = original+data;
+// 네비게이션 바 불러오기,
+async function injectNavbar() {
+	let navbarHtml = await fetch("/navbar.html");
+	let data = await navbarHtml.text();
+	const original = document.querySelector("body").innerHTML;
+	document.querySelector("body").innerHTML = original + data;
 
 	// 여기서 부터 동적인 부분 작성하면 됩니다.
-
-
-	}
+}
 //푸터 불러오기
-async function injectfooter(){
-    
-    let footer = await fetch("/footer.html")
-    let data = await footer.text()
+async function injectfooter() {
+	let footer = await fetch("/footer.html");
+	let data = await footer.text();
 	document.querySelector("footer").innerHTML = data;
 
 	// 여기서 부터 동적인 부분 작성하면 됩니다.
-
-
-	}
+}
 // 로그인 상태에서 로그인, 회원가입 페이지 접속 시 홈으로 이동하는 함수
 function checkLogin() {
 	const payload = localStorage.getItem("payload");
@@ -28,7 +22,7 @@ function checkLogin() {
 		window.location.replace(`${FRONT_BASE_URL}/`);
 	}
 }
-// 비로그인 상태에서 글쓰기 페이지 접속 시 홈으로 이동하는 함수
+// 비로그인 상태에서 페이지 접속 시 홈으로 이동하는 함수
 function checkNotLogin() {
 	const payload = localStorage.getItem("payload");
 	if (payload == null) {
@@ -92,6 +86,18 @@ function setRecipeThumbnail(id, event) {
 	};
 	reader.readAsDataURL(event.target.files[0]);
 }
+async function goMypage() {
+	// 인자값이 존재한다면 해당 인자값의 유저 프로필로 이동
+	const payload = localStorage.getItem("payload");
+	if (payload == null) {
+		window.location.replace(`${FRONT_BASE_URL}/login.html`);
+	}
+	const payload_parse = JSON.parse(payload);
+	console.log(payload_parse);
+	user_id = payload_parse.user_id;
+	window.location.href = `${FRONT_BASE_URL}/mypage.html?user_id=${user_id}`;
+}
+
 
 //  injectNavbar()
 //  injectfooter()

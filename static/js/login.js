@@ -25,24 +25,6 @@ async function handleLoginBtn() {
 		alert("회원정보가 일치하지 않습니다!");
 	}
 }
-const login = document.getElementById("login-btn");
-login.addEventListener("click", () => {
-	handleLoginBtn();
-});
-
-const googleLoginBtn = document.getElementById("social-btn-google");
-googleLoginBtn.addEventListener("click", () => {
-	googleLogin();
-});
-const kakaoLoginBtn = document.getElementById("social-btn-kakao");
-kakaoLoginBtn.addEventListener("click", () => {
-	kakaoLogin();
-});
-const naverLoginBtn = document.getElementById("social-btn-naver");
-naverLoginBtn.addEventListener("click", () => {
-	naverLogin();
-});
-
 window.onload = async function () {
 	checkLogin();
 };
