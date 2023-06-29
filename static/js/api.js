@@ -368,12 +368,45 @@ async function userFollowing(userId) {
 }
 
 async function getCategory() {
-	let token = localStorage.getItem("access");
 	const response = await fetch(`${BACKEND_BASE_URL}/articles/category/`, {
-		headers: {
-			Authorization: `Bearer ${token}`
-		},
+		
 		method: "GET"
 	});
-	return response.json();
+	return await response.json();
+}
+
+async function deleteArticle(articleId){
+	const token= localStorage.getItem("access")
+
+    const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/`, {
+        method: 'DELETE',   
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
+	return response
+}
+async function getArticleList(querystring,page=1){
+	console.log(querystring)
+	if (querystring==``){
+		var pageQuery=`?page=${page}`
+	}else{
+		var pageQuery=`&page=${page}`
+	}
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/articles/${querystring}${pageQuery}`,
+	);
+	return response;
+}
+async function getTagList(selector){
+	if(selector){
+		var query = `?tag=${selector}`
+	}else{
+		var query = ``
+	}
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/articles/tags/${query}`,
+	);
+	return response;
+
 }

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/main.css">
+    <link rel="stylesheet" href="../static/css/articleList.css">
+
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Font Awesome Import -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
+    <link rel="stylesheet" href="/static/css/styles.css" />
+
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
+
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/articleList.js"></script>
+    <title>cookai | 목록페이지</title>
+</head>
+
+<body>
+    <header></header>
+    <div class="container mt-4">
+        <h3>게시글 상세보기 페이지</h3>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="input-group" id="search_input">
+
+                    <select class="mb-3 form-select" id="search_type">
+                        <option selected value="?search=1">제목+글내용 검색</option>
+                        <option value="?search=1&recipe=true">레시피만 검색</option>
+                        <option value="?search=0">작성자로 검색</option>
+                        <option value="?search=2">재료로 검색</option>
+                        <option value="?search=3">제목,재료,내용 검색</option>
+                        <option value="?search=4">태그로 검색</option>
+                    </select>
+
+
+                    <input type="text" class="mb-3 form-control" id="selector" placeholder="검색어를 입력해주세요">
+
+                    <button class="mb-3 col-md-1 btn btn-outline-primary" onclick="search()">검색</button>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="card mt-5">
+            <div class="card-body" id="tagBox">
+                <h4 id="tagtitle"></h4>
+                <div class="container" id="tagList"></div>
+            </div>
+
+            <div class="card-body" id="categoryArticleBox">
+                <div class="container">
+                    <h4 class="mt-4" id="category_title">카테고리: 전체</h1>
+                        <div class="scrolling-wrapper row flex-row flex-nowrap mt-4 pb-4 pt-2">
+                            <div id="category" class="btn-group" role="group"
+                                aria-label="Basic radio toggle button group">
+
+                            </div>
+                        </div>
+                </div>
+                <hr>
+                <div id="selectorder"></div>
+                <div id="articleList"></div>
+            </div>
+
+        </div>
+    </div>
+
+
+</body>
+
+</html>
