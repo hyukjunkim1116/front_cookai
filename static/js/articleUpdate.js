@@ -1,9 +1,11 @@
 //아티클 업데이트 하기
 console.log("articleUpdate.js 로드됨");
-
+let originTargets=[]
+let updateOrDelete={}
+let idToIndex={}
 const urlParams = new URLSearchParams(window.location.search);
 const articleId = urlParams.get("article_id");
-
+let lastOriginIngredientIndex=0
 async function generateUpdateFormFields(articleData) {
     // 재료 처리
     articleData.recipeingredient_set.forEach((ingredientData) => {
@@ -12,19 +14,17 @@ async function generateUpdateFormFields(articleData) {
         document.getElementById(`ingredient-title-${lastIndex}`).value = ingredientData.ingredient_id;
         document.getElementById(`ingredient-amount-${lastIndex}`).value = ingredientData.ingredient_quantity;
         document.getElementById(`ingredient-unit-${lastIndex}`).value = ingredientData.ingredient_unit;
+		document.getElementById(`ingredient-unit-${lastIndex}`).nextElementSibling.setAttribute("onclick",`deleteOnUpdate(${lastIndex},${ingredientData.id},event)`)
+		updateOrDelete[ingredientData.id]=false
+		idToIndex[ingredientData.id]=lastIndex
+		originTargets +=[lastIndex]
     });
+	console.log(updateOrDelete)
 
-    // 레시피 처리
-    const recipeSteps = articleData.recipe.split(",").length;
-    for (let i = 0; i < recipeSteps; i++) {
-        handleAddRecipe();
-    }
-
-    
 
     const recipeContainer = document.getElementById("recipe_container");
     const recipeHTML = articleData.recipe;
-    recipeContainer.innerHTML = recipeHTML;
+    recipeContainer.outerHTML = recipeHTML;
 
     // 태그 처리
     const tagInput = document.getElementById("article_tag");
@@ -32,45 +32,42 @@ async function generateUpdateFormFields(articleData) {
 }
 
 window.onload = async function loadUpdatePost() {
-    // 수정창에 기존 내용 보이게
+	// 수정창에 기존 내용 보이게
     checkNotLogin();
     
     // articleId 값이 제대로 설정되었는지 확인
     console.log('Article ID:', articleId);
-
+	
     const exist_post = await getArticle(articleId);
-
+	
     console.log("Existing article data:", exist_post);
     
     const updateTitle = document.getElementById("article_title");
     updateTitle.value = exist_post.title;
-
+	
     const updateContent = document.getElementById("article_content");
     updateContent.value = exist_post.content;
-
+	
     await generateUpdateFormFields(exist_post);
+	await setCategory();
+	const categories=document.getElementById("category")
+
+	for (var i = 0; i < categories.options.length; i++) {
+		var optionValue = categories.options[i].value;
+		if (`${exist_post.category}` === optionValue) {
+			categories.options[i].selected = true;
+		  break; // Exit the loop if a match is found
+		}
+	}
+
 
     // 레시피와 재료를 다루기 위한 코드
     const ingredientsContainer = document.getElementById("ingredient_wrapper");
-    const recipeContainer = document.getElementById("recipe");
+    // const recipeContainer = document.getElementById("recipe");
 
-    exist_post.recipeingredient_set.forEach((ingredientObject) => {
-        const input = document.createElement("input");
-        input.value = ingredientObject.name;
-        ingredientsContainer.appendChild(input);
-    });
+    // // 레시피를 처리하기 위한 코드
+    // recipeContainer.outerHTML = exist_post.recipe;
 
-    // 레시피를 처리하기 위한 코드
-    const dummyElement = document.createElement('div');
-    dummyElement.innerHTML = exist_post.recipe;
-    
-    const recipeSteps = dummyElement.querySelectorAll("textarea");
-    
-    recipeSteps.forEach((step) => {
-        const textarea = document.createElement("textarea");
-        textarea.value = step.value;
-        recipeContainer.appendChild(textarea);
-    });
 
     // 업데이트 버튼 이벤트 리스너
     const updateButton = document.getElementById("update_article");
@@ -93,33 +90,34 @@ window.onload = async function loadUpdatePost() {
 
 
 
-// 아티클 사진 삭제
-async function articlePhotoDelete() {
-	const exist_post = await getArticleDetail(articleId);
-	if (exist_post.photos[0]) {
-		const response = await fetch(
-			`${backend_base_url}/api/medias/photos/${exist_post.photos[0]?.pk}`,
-			{
-				method: "DELETE",
-				headers: {
-					Authorization: `Bearer ${token}`
-				}
-			}
-		);
-		if (response.status == 200) {
-			alert("사진이 삭제되었습니다!");
-		} else {
-			alert("사진 삭제 권한이 없습니다.");
-		}
-	} else {
-		alert("등록된 사진이 없습니다!");
-	}
-	location.reload();
-}
+// // 아티클 사진 삭제
+// async function articlePhotoDelete() {
+// 	const exist_post = await getArticleDetail(articleId);
+// 	if (exist_post.photos[0]) {
+// 		const response = await fetch(
+// 			`${backend_base_url}/api/medias/photos/${exist_post.photos[0]?.pk}`,
+// 			{
+// 				method: "DELETE",
+// 				headers: {
+// 					Authorization: `Bearer ${token}`
+// 				}
+// 			}
+// 		);
+// 		if (response.status == 200) {
+// 			alert("사진이 삭제되었습니다!");
+// 		} else {
+// 			alert("사진 삭제 권한이 없습니다.");
+// 		}
+// 	} else {
+// 		alert("등록된 사진이 없습니다!");
+// 	}
+// 	location.reload();
+// }
 
 //아티클 업데이트 페이지 들어가면 실행되는 함수. file input은 설정 불가
 
 async function articleUpdate() {
+	const token = localStorage.getItem("access")
 	const updateBtn = document.getElementById("submit-btn");
 	updateBtn.innerText = "";
 	const span = document.createElement("span");
@@ -138,72 +136,142 @@ async function articleUpdate() {
 	formdata.append("title", title);
 	formdata.append("content", content);
 
-    const response = await fetch(
-        `${backend_base_url}/api/articles/${articleId}/`,
-        {
-        headers: {
-        Authorization: `Bearer ${token}`
-        },
-        body: formdata,
-        method: "PUT"
-    }
-    );
-
+	
 	if (file) {
 		const responseURL = await fetch(
 			`${backend_base_url}/api/medias/photos/get-url/`,
 			{
 				method: "POST"
 			}
-		);
-		const dataURL = await responseURL.json();
-
-		//실제로 클라우드플레어에 업로드
-		const formData = new FormData();
-		formData.append("file", file);
-		const responseRealURL = await fetch(`${dataURL["uploadURL"]}`, {
-			body: formData,
-			method: "POST"
-		});
-		const results = await responseRealURL.json();
-		const realFileURL = results.result.variants[0];
-
-		// 아티클 사진 백엔드로 업로드
-		if (exist_post.photos[0]) {
-			const responseUpload = await fetch(
-				`${backend_base_url}/api/medias/photos/${exist_post.photos[0].pk}/`,
+			);
+			const dataURL = await responseURL.json();
+			
+			//실제로 클라우드플레어에 업로드
+			const formData = new FormData();
+			formData.append("file", file);
+			const responseRealURL = await fetch(`${dataURL["uploadURL"]}`, {
+				body: formData,
+				method: "POST"
+			});
+			const results = await responseRealURL.json();
+			const realFileURL = results.result.variants[0];
+			formdata.append("image",realFileURL)
+		}
+	//재료 수정 및 삭제 및 새로 작성 여부
+	const updateOrDelete_=Object.entries(updateOrDelete)
+	updateOrDelete_.forEach(async (kv) => {
+		if(kv[1]){
+			// 삭제 절차
+			const ingredientPutResponse = await fetch(
+				`${BACKEND_BASE_URL}/articles/recipeingredient/${kv[0]}/`,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+					method:"DELETE"
+				},
+			)
+		}else{
+			//수정 절차
+			let index = idToIndex[kv[0]]
+			const ingredientPutResponse = await fetch(
+				`${BACKEND_BASE_URL}/articles/recipeingredient/${kv[0]}/`,
 				{
 					headers: {
 						Authorization: `Bearer ${token}`,
 						"content-type": "application/json"
 					},
 					body: JSON.stringify({
-						file: realFileURL
+						ingredient:  document.getElementById(`ingredient-title-${index}`).value,
+						ingredient_quantity: document.getElementById(`ingredient-amount-${index}`).value,
+						ingredient_unit: document.getElementById(`ingredient-unit-${index}`).value
 					}),
 					method: "PUT"
 				}
 			);
-		} else {
-			// 아티클 사진 백엔드로 업로드
-			const response = await fetch(
-				`${backend_base_url}/api/articles/${article_id}/photos/`,
+			
+		}
+		
+	});
+	// 새 재료 추가 절차
+	for(var j = 1;j<=ingredientNumber;j++){
+		if(!originTargets.includes(j)){
+			const title = document.getElementById(`ingredient-title-${j}`);
+			if(!title) continue;
+			let ingredientTitle=title.value
+			let ingredientQuantity = document.getElementById(
+				`ingredient-amount-${i}`
+			).value;
+			let ingredientUnit = document.getElementById(
+				`ingredient-unit-${i}`
+			).value;
+			const ingredientResponse = await fetch(
+				`${BACKEND_BASE_URL}/articles/${articleId}/recipeingredient/`,
 				{
 					headers: {
 						Authorization: `Bearer ${token}`,
 						"content-type": "application/json"
 					},
 					body: JSON.stringify({
-						file: realFileURL
+						ingredient: ingredientTitle.value,
+						ingredient_quantity: ingredientQuantity,
+						ingredient_unit: ingredientUnit
 					}),
 					method: "POST"
 				}
 			);
+			console.log(ingredientResponse);
 		}
 	}
-	if (response.status == 200) {
-		alert("글 수정 완료!");
-	} else {
-		alert("글 수정 실패!");
+	
+	//레시피 수정 여부
+	var fileInputs = document.getElementById("recipe_container").querySelectorAll('input[type="file"]');
+	fileInputs.forEach(async(element) => {
+		const file = element.files[0]
+		if (file){
+			let recipeImage = element.files[0];
+			console.log(recipeImage);
+			let responseURL = await fetch(`${BACKEND_BASE_URL}/articles/get-url/`, {
+				method: "POST"
+			});
+			let dataURL = await responseURL.json();
+			//실제로 클라우드플레어에 업로드
+			let formData = new FormData();
+			formData.append("file", recipeImage);
+			let responseRealURL = await fetch(`${dataURL["uploadURL"]}`, {
+				body: formData,
+				method: "POST"
+			});
+			let results = await responseRealURL.json();
+			let realFileURL = results.result.variants[0];
+			const image = element.nextElementSibling.firstChild
+			image.setAttribute("src",realFileURL)
+			let id =image.getAttribute("id").split("-")[1];
+			image.setAttribute("id", `recipe-url-${id}`);
+		}
+	});
+	formdata.append("recipe",document.getElementById("recipe_container").outerHTML)
+
+
+
+	const response = await fetch(
+		`${backend_base_url}/api/articles/${articleId}/`,
+		{
+		headers: {Authorization: `Bearer ${token}`},
+		body: formdata,
+		method: "PUT"
+		}
+	);
+		if (response.status == 200) {
+			alert("글 수정 완료!");
+		} else {
+			alert("글 수정 실패!");
+		}
+		history.back();
 	}
-	history.back();
+
+const deleteOnUpdate=(id,recipeIngredientId,event)=>{
+	deleteIngredientDiv(id,event)
+	updateOrDelete[recipeIngredientId]=true
+	event.preventDefault()
 }
