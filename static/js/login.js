@@ -42,7 +42,6 @@ const naverLoginBtn = document.getElementById("social-btn-naver");
 naverLoginBtn.addEventListener("click", () => {
 	naverLogin();
 });
-
 window.onload = async function () {
 	checkLogin();
 };

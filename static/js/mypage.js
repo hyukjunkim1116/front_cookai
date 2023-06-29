@@ -1,3 +1,17 @@
+// async function goUserDetail(user_id) {
+// 	// 인자값이 존재한다면 해당 인자값의 유저 프로필로 이동
+// 	if (user_id) {
+// 		user_id = user_id;
+// 		window.location.href = `${FRONT_BASE_URL}/users/user_detail.html?user_id=${user_id}`;
+// 	} else {
+// 		// 인자값이 없다면 현재 로그인한 유저의 프로필로 이동
+// 		const payload = localStorage.getItem("payload");
+// 		const payload_parse = JSON.parse(payload);
+// 		console.log(payload_parse);
+// 		user_id = payload_parse.user_id;
+// 		window.location.href = `${FRONT_BASE_URL}/users/user_detail.html?user_id=${user_id}`;
+// 	}
+// }
 async function loadUserDetail() {
 	const response = await getUserDetail();
 	const userDetailList = document.getElementById("my-page");
@@ -91,6 +105,8 @@ updatePasswordBtn.addEventListener("click", () => {
 	handleUpdatePassword();
 });
 window.onload = async function () {
+	checkNotLogin();
+	goUserDetail();
 	await loadUserDetail();
 	await loadUserFollowing();
 	await loadUserFollower();
