@@ -56,6 +56,7 @@ function handleLogout() {
 	window.location.replace(`${FRONT_BASE_URL}/`);
 }
 function setThumbnail(event) {
+	alert("setThumbnail")
 	let reader = new FileReader();
 
 	reader.onload = function (event) {
@@ -73,6 +74,7 @@ function setThumbnail(event) {
 	reader.readAsDataURL(event.target.files[0]);
 }
 function setRecipeThumbnail(id, event) {
+	alert("setRecipeThumbnail")
 	let reader = new FileReader();
 
 	reader.onload = function (event) {
