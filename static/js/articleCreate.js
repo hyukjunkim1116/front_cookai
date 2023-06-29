@@ -23,7 +23,7 @@ const handleAddIngredient = () => {
 	<input type="text" class="form-control" id="ingredient-amount-${ingredientNumber}" name="ingredient-amount-${ingredientNumber}" placeholder="수량을 입력하세요">
 	<label for="ingredient-unit-${ingredientNumber}" class="form-label">단위</label>
 	<input type="text" class="form-control" id="ingredient-unit-${ingredientNumber}" name="ingredient-unit-${ingredientNumber}" placeholder="단위를 입력하세요">
-	<button class="btn btn-primary" id="delete-ingredient-div" onclick="deleteIngredientDiv(${ingredientNumber})">재료 삭제하기</button>
+	<button class="btn btn-primary" id="delete-ingredient-div" onclick="deleteIngredientDiv(${ingredientNumber},event)">재료 삭제하기</button>
 	`;
 
 	ingredientContainer.appendChild(div);
@@ -42,7 +42,7 @@ const handleAddRecipe = () => {
 	<label for="recipe-image-${recipeNumber}" class="form-label">이미지</label>
 	<input type="file" onchange="setRecipeThumbnail(${recipeNumber},event);" class="form-control recipe-file" id="recipe-image-${recipeNumber}" name="recipe-image-${recipeNumber}" accept="image/*">
 	<div id="recipe-image-${recipeNumber}-container" class="recipe-image-${recipeNumber}-container recipe-image-container"></div>
-	<button class="btn btn-primary" id="delete-recipe-div" onclick="deleteRecipeDiv(${recipeNumber})">레시피 삭제하기</button>
+	<button class="btn btn-primary" id="delete-recipe-div" onclick="deleteRecipeDiv(${recipeNumber},event)">레시피 삭제하기</button>
 	`;
 	recipeContainer.appendChild(div);
 	recipeNumber++;
@@ -115,6 +115,10 @@ async function postArticle() {
 	const tags = document.getElementById("article_tag").value;
 	const file = document.getElementById("article_image").files[0];
 	const recipeContainer = document.getElementById("recipe_container");
+	
+	var recipe_html=recipeContainer.outerHTML
+	recipe_html.replace(/\"/,`\\\"`)
+	alert("213")
 	const category = document.getElementById("category");
 	const categoryValue = category.options[category.selectedIndex].value;
 	if (file) {
@@ -142,7 +146,7 @@ async function postArticle() {
 			body: JSON.stringify({
 				title: title,
 				content: content,
-				recipe: recipeContainer.outerHTML,
+				recipe:recipe_html,
 				tags: tags.split(","),
 				category: categoryValue,
 				image: realFileURL
@@ -249,17 +253,14 @@ const addRecipeButton = document.getElementById("add-recipe");
 addRecipeButton.addEventListener("click", () => {
 	handleAddRecipe();
 });
-const submitArticleButton = document.getElementById("submit-article");
-submitArticleButton.addEventListener("click", (event) => {
-	postArticle();
-	event.preventDefault();
-});
+
 const deleteRecipeDiv = (id, event) => {
 	const recipeDiv = document.getElementById(`recipe-${id}`);
 	recipeDiv.remove();
 	event.preventDefault();
 };
 const deleteIngredientDiv = (id, event) => {
+	alert("asdf")
 	const ingredientDiv = document.getElementById(`ingredient-${id}`);
 	ingredientDiv.remove();
 	event.preventDefault();
@@ -268,4 +269,6 @@ window.onload = async function () {
 	checkNotLogin();
 	forceLogout();
 	setCategory();
+	const submitArticleButton = document.getElementById("submit-article");
+	if(submitArticleButton)submitArticleButton.setAttribute("onclick","postArticle()");
 };
