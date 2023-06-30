@@ -4,41 +4,42 @@
     <div class="navbar-top">
         <a class="navbar-top-brand" href="/index.html">cookai</a>
         <div id="intro" class="intro"></div>
-        <img id="avatar" class="avatar"></img>
-        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-            aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+        <img id="avatar" class="avatar" style="width:2em"></img>
+        <button class="navbar-toggler" type="button" style="display:none" data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <!--드롭다운-->
-        
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="offcanvasNavbarLabel">cookai</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
-                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/index.html">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="create-article-btn" onclick="window.location.href = `${FRONT_BASE_URL}/articles/article_create.html`">Create article</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                My
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="/login.html">Login</a></li>
-                                <li><a class="dropdown-item" onclick="handleLogout()">LogOut</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" onclick="goMypage()">Mypage</a></li>
-                            </ul>
-                        </li>
-                    </ul>
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="create-article-btn"
+                            onclick="window.location.href = `${FRONT_BASE_URL}/articles/article_create.html`">Create
+                            article</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            My
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="logged-out-item"><a class="dropdown-item" href="/login.html">Login</a></li>
+                            <li class="logged-in-item"><a class="dropdown-item" onclick="handleLogout()">LogOut</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li class="logged-in-item"><a class="dropdown-item" onclick="goMypage()">Mypage</a></li>
+                        </ul>
+                    </li>
+                </ul>
                 <form class="d-flex mt-3" role="search">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
@@ -66,7 +67,7 @@
         </a>
         <a href="javascript:void(0);" onclick="goMypage()">
             <div class="navbar-bottom-item">
-                <img src="/static/img/mypage.png" alt="mypage" class="navbar-bottom-icon" >
+                <img src="/static/img/mypage.png" alt="mypage" class="navbar-bottom-icon">
                 <span>MY</span>
             </div>
         </a>

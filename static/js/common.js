@@ -7,19 +7,45 @@ async function injectNavbar() {
 	const payload = localStorage.getItem("payload");
 	if (payload) {
 		const loginUser = await getLoginUser();
-		if (loginUser.avatar !== "") {
+		if (loginUser.avatar && loginUser.avatar !== "" && loginUser.avatar !== "null") {
 			const avatar = document.getElementById("avatar");
 			avatar.setAttribute("src", `${loginUser.avatar}`);
 			avatar.style.visibility = "visible";
 		} else {
+			const avatar = document.getElementById("avatar");
 			avatar.setAttribute("src", "static/img/no_avatar.png");
 			avatar.style.visibility = "visible";
 		}
 		const intro = document.getElementById("intro");
 		intro.innerText = `${loginUser.username}님`;
+		
+		// 로그인 사용자 정보가 설정된 후 handleNavbarMode() 호출
+		await handleNavbarMode(loginUser);
+	} else {
+		// 사용자가 로그인하지 않은 경우
+		await handleNavbarMode(null);
 	}
-	// 여기서 부터 동적인 부분 작성하면 됩니다.
 }
+//드롭다운 불러오기
+async function handleNavbarMode(loginUser) {
+    const loggedInItems = document.querySelectorAll('.logged-in-item');
+    const loggedOutItems = document.querySelectorAll('.logged-out-item');
+    const navbarToggler = document.querySelector(".navbar-toggler");
+
+    if (loginUser) {
+        // 로그인시 드롭다운 및 버튼 표시
+        loggedInItems.forEach(item => item.style.display = 'block');
+        loggedOutItems.forEach(item => item.style.display = 'none');
+        navbarToggler.style.display = "inline-block";
+    } else {
+        // 미로그인시 드롭다운 및 버튼 숨김
+        loggedInItems.forEach(item => item.style.display = 'none');
+        loggedOutItems.forEach(item => item.style.display = 'block');
+        navbarToggler.style.display = "none";
+    }
+}
+
+
 //푸터 불러오기
 async function injectfooter() {
 	let footer = await fetch("/footer.html");
@@ -112,5 +138,5 @@ async function goMypage() {
 	window.location.href = `${FRONT_BASE_URL}/mypage.html?user_id=${user_id}`;
 }
 
-injectNavbar();
-injectfooter();
+injectNavbar()
+injectfooter()
