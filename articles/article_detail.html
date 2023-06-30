@@ -53,7 +53,7 @@
 
             </div>
         </div>
-        <div id="ingredients">
+        <div id="ingredients" class="card">
             <div class="card">
                 <div class="card-body">
                     <p class="card-text">
@@ -61,13 +61,12 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">재료</th>
+                                <th scope="col">재료명</th>
                                 <th scope="col">수량</th>
                                 <th scope="col">단위</th>
                             </tr>
                         </thead>
                         <tbody id="ingredient_table">
-
                         </tbody>
                     </table>
                     </p>
@@ -83,42 +82,43 @@
                 </p>
             </div>
         </div>
-        <div id="buttons1"></div>
-        <div id="buttons2"></div>
-        <div class="ingredientslink_list">
-            <h5>이재료는 어떠세요?</h5>
-        </div>
-    </div>
-
-    <div class="container mt-4">
-        <h5>댓글</h5>
-        <div class="card">
-            <div class="card-body" id="commentbox">
-                <div class="card-text">
-                    댓글 내용<br>
-                    <small><a href="">작성자</a>, 작성시간</small>
-                    <button>삭제</button> <button>수정</button>
-                </div>
+        <div id="coupang_ingredient" class="card">
+            <div class="card-body">
+                <p class="card-text">
+                <h5 class="card-title">이 재료가 필요하신가요?</h5>
+                <div class="ingredientslink_list"></div>
                 <hr>
-                <div class="card-text">
-                    <h6>댓글 내용</h6>
-                    <small><a href="">작성자</a>, 작성시간</small>
-                    <button>삭제</button> <button>수정</button>
-                </div>
-                <hr>
+                <div id="recipe"></div>
+                </p>
             </div>
         </div>
-        <div class="container mt-1">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" id="comment-input" />
-                <button class="btn btn-outline-primary" type="button" onclick="submitComment()"
-                    id="submitCommentButton">
-                    댓글작성
-                </button>
+        <div class="container">
+            <div class="btn-group">
+                <div id="buttons1"></div>
+                <div id="buttons2"></div>
             </div>
         </div>
+        <div id="commnets_list" class="card">
+            <div class="card-body" <p class="card-text">
+                <h5 class="card-title">댓글</h5>
+                <div class="card-text" id="commentbox">
+                </div>
+                <div class="container mt-1">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="comment-input" />
+                        <button class="btn btn-outline-primary" type="button" onclick="submitComment()"
+                            id="submitCommentButton">
+                            댓글작성
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="card">
+            </div>
 
-
+        </div>
 
     </div>
 

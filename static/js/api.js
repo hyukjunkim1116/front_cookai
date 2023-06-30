@@ -499,46 +499,55 @@ async function getArticle(articleId) {
 }
 
 async function fetchMissingIngredients(articleId, token) {
-	const response = await fetch(
-		`${BACKEND_BASE_URL}/articles/${articleId}/order/`,
-		{
-			headers: {
-				Authorization: `Bearer ${token}`
-			}
-		}
-	);
+    const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/order/`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
 
-	if (response.ok) {
-		const ingredientLink = await response.json();
-		console.log("쿠팡 링크:", ingredientLink);
-		console.log("서버에서 반환한 JSON:", ingredientLink);
+    if (response.ok) {
+        const ingredientLinks = await response.json();
+        console.log('서버에서 반환한 JSON:', ingredientLinks);
 
-		const missingLinksList = document.createElement("div");
-		missingLinksList.style.display = "flex"; // 가로로 나열되는 스타일 추가
-		missingLinksList.style.flexWrap = "wrap"; // 영역을 넘어가면 다음 줄로 이동
+        const ingredients = {};
 
-		ingredientLink.forEach((link) => {
-			const listItem = document.createElement("div");
-			listItem.style.padding = "10px";
-			listItem.innerHTML = `
-	${
-		link.link
-			? `<a href="${link.link}" target="_blank">${
-					link.link_img
-						? `<img src="${link.link_img}" style="width: 50px; height: auto;"/>`
-						: "링크"
-			  }</a>`
-			: ""
-	}
-	`;
-			missingLinksList.appendChild(listItem);
-		});
+        // 재료별로 링크 분류
+        ingredientLinks.forEach(link => {
+            if (!ingredients[link.ingredientName]) {
+                ingredients[link.ingredientName] = [];
+            }
+            ingredients[link.ingredientName].push(link);
+        });
+        
+        const missingLinksList = document.createElement('div');
+        missingLinksList.style.display = "flex";
+        missingLinksList.style.flexWrap = "wrap";
 
-		const container = document.querySelector(".ingredientslink_list");
-		container.appendChild(missingLinksList);
-	} else {
-		console.error("API 요청 실패:", response.statusText);
-	}
+        for (const ingredientName in ingredients) {
+            const ingredientLink = ingredients[ingredientName];
+            const randomLinks = [];
+            const length = Math.min(ingredientLink.length, 5);
+
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * ingredientLink.length);
+                randomLinks.push(ingredientLink[randomIndex]);
+                ingredientLink.splice(randomIndex, 1);
+            }
+            
+            randomLinks.forEach(link => {
+                const listItem = document.createElement('div');
+                listItem.style.padding = "10px";
+                listItem.innerHTML = `
+                    ${link.link ? `<a href="${link.link}" target="_blank">${link.link_img ? `<img src="${link.link_img}" style="width: 5em; height: auto;"/>` : '링크'}</a>` : ''}
+                `;
+                missingLinksList.appendChild(listItem);
+            });
+        }
+        const container = document.querySelector('.ingredientslink_list');
+        container.appendChild(missingLinksList);
+    } else {
+        console.error('API 요청 실패:', response.statusText);
+    }
 }
 
 async function getTagList(selector) {
