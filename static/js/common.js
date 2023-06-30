@@ -12,13 +12,11 @@ async function injectNavbar() {
 			avatar.setAttribute("src", `${loginUser.avatar}`);
 			avatar.style.visibility = "visible";
 		} else {
+			avatar.setAttribute("src", "static/img/no_avatar.png");
+			avatar.style.visibility = "visible";
 		}
 		const intro = document.getElementById("intro");
 		intro.innerText = `${loginUser.username}님`;
-		let loginOnlyElements = document.querySelectorAll(".hd-login-only");
-		loginOnlyElements.forEach((element) => {
-			element.classList.remove("hd-login-only");
-		});
 	}
 	// 여기서 부터 동적인 부분 작성하면 됩니다.
 }
