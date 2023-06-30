@@ -492,11 +492,19 @@ async function fetchMissingIngredients(articleId, token) {
         console.log('쿠팡 링크:', ingredientLink);
 		console.log('서버에서 반환한 JSON:', ingredientLink);
 
+		const randomLinks = [];
+        const length = Math.min(ingredientLink.length, 5);
+        for (let i = 0; i < length; i++) {
+            const randomIndex = Math.floor(Math.random() * ingredientLink.length);
+            randomLinks.push(ingredientLink[randomIndex]);
+            ingredientLink.splice(randomIndex, 1);
+        }
+
         const missingLinksList = document.createElement('div');
         missingLinksList.style.display = "flex"; // 가로로 나열되는 스타일 추가
         missingLinksList.style.flexWrap = "wrap"; // 영역을 넘어가면 다음 줄로 이동
 
-		ingredientLink.forEach(link => {
+		randomLinks.forEach(link => {
             const listItem = document.createElement('div');
             listItem.style.padding = "10px";
             listItem.innerHTML = `
