@@ -1,4 +1,5 @@
 // 일반 회원가입하는 함수
+
 async function handleSignUp() {
 	const email = document.getElementById("email").value;
 	const firstPassword = document.getElementById("first_password").value;
@@ -71,16 +72,6 @@ async function handleSignUp() {
 		alert("비밀번호가 일치하지 않습니다.");
 	}
 }
-const preview = document.getElementById("file");
-preview.addEventListener("change", (event) => {
-	setThumbnail(event);
-});
-
-const submit = document.getElementById("button");
-submit.addEventListener("click", () => {
-	handleSignUp();
-});
-
-window.onload = async function () {
+window.onload = function () {
 	checkLogin();
 };

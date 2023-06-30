@@ -36,8 +36,16 @@
         </div>
         <div class="main-info">
             <div class="main-info-contents1">
-                <h1>소개글 제목</h1>
-                <p>소개글 내용</p>
+                <div id="mypage" class="mypage">
+                    <div id="following-title"></div>
+                <div id="follower-title"></div>
+                </div> <!-- 내닉네임, 프사, 정보수정버튼,비번수정버튼,탈퇴버튼,팔로잉,팔로워 수(누르면 목록페이지)-->
+                <div class="fridge" id="fridge">
+                    <div id="fridge-title"></div>
+                </div> <!-- 재료 목록, 재료 추가버튼, 재료 삭제버튼-->
+                <div class="article" id="article"></div> <!-- 내 글 목록(제목,댓글 수, 좋아요 수, 삭제,수정버튼)-->
+                <div class="comment" id="comment"></div><!-- 내 댓글 목록(내가 쓴 댓글 쭉 보여주기. 댓글 누르면 해당 게시글로 보내주기-->
+
                 <div class="text-center">
                     <button type="button" class="sign-btn btn btn-outline-primary" id="delete-user-btn" onClick="goDeleteUser()">회원탈퇴</button>
                 </div>
@@ -45,8 +53,6 @@
                     <button type="button" class="sign-btn btn btn-outline-primary" id="update-user-btn" onClick="goUpdateUser()">정보수정</button>
                 </div>
 <!--    
-                
-                
                 <div class="text-center">
                     <button type="button" class="sign-btn btn btn-outline-primary" id="user-detail-btn">마이페이지</button>
                 </div>
