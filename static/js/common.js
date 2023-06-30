@@ -90,7 +90,8 @@ function setRecipeThumbnail(id, event) {
 		img.setAttribute("id", `recipe-${id}-thumbnail`);
 
 		// 썸네일 크기 조절
-		img.setAttribute("style", "max-height: 300px;"); // 높이 제한 300px
+		img.setAttribute("class","img-thumbnail")
+		img.setAttribute("style","max-height: 120px;") // 높이 제한 120px
 		img.style.width = "80px"; // 너비 200px로 설정
 		img.style.height = "auto"; // 높이 자동 설정
 		// 썸네일 리셋 후 미리보기 보여주기

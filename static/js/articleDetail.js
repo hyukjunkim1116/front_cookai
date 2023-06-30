@@ -51,14 +51,13 @@ async function loadArticle(){
         }
         var p = response_json.recipe
         if (p!=null){
-            console.log(123)
             const articleRecipe=document.getElementById("recipe");
             var p=p.replace(/<textarea[^>]*rows="3">/g,'<p class="col-sm-9">');
             p= p.replace(/div class="mb-3"/g,'div class="mb-3 row" style="min-height: 120px;"')
             p= p.replace(/<label for="recipe-image-[^>]*" class="form-label">이미지<\/label>/g,"");
             p= p.replace(/<input type="file"[^>]*">/g,"");
             p=p.replace(/recipe-image-container"/g,'col-sm-3 d-flex justify-content-end recipe-image-container"')
-            p= p.replace(/img src/g,'img class="img-thumbnail" style="max-height: 120px;" src')
+            // p= p.replace(/img src/g,'img class="img-thumbnail" style="max-height: 120px;" src')
             p= p.replace(/<\/textarea>/g,"</p>")
             p = p.replace(/<button class="btn btn-primary" id="delete-recipe-div" onclick="deleteRecipeDiv([^>]*)">레시피 삭제하기<\/button>/g,"")
             p = p.replace(/class="form-label">레시피/g,'class="form-label">과정')
@@ -68,7 +67,6 @@ async function loadArticle(){
             document.getElementById("recipe_box").remove()
         }
         const buttonArea1=document.getElementById("buttons1")
-        console.log(response_json.is_author)
         if(response_json.is_author){
             let updateBtn = document.createElement("a")
             updateBtn.setAttribute("class","btn btn-outline-secondary")
@@ -170,7 +168,6 @@ async function loadComments(comment_page=1){
     pagination.innerHTML = ""
     const pagecount = response.count/50+1
     if (pagecount >= 2){
-        console.log(123)
         for (i=1; i < pagecount; i++){
             const newPageBtn = document.createElement("li")
             newPageBtn.setAttribute("class", "page-item")
@@ -202,7 +199,6 @@ async function submitComment(){
 
 async function updateCommentButton(commentId, element){
     const comment_content = element.previousElementSibling.innerText
-    console.log(comment_content)
     const commentElement = document.getElementById("comment-input")
     commentElement.value = comment_content
     
@@ -245,7 +241,6 @@ async function deleteCommentButton(commentId){
 async function commentLikeBtn(commentId){
     const response = await likeComment(commentId)
     const response_json = await response.json()
-    console.log(response_json)
     if (response.status==200 || response.status==204){
         alert(response_json)
         loadComments()
