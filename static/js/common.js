@@ -96,7 +96,6 @@ function handleLogout() {
 	window.location.replace(`${FRONT_BASE_URL}/login.html`);
 }
 function setThumbnail(event) {
-	alert("setThumbnail");
 	let reader = new FileReader();
 
 	reader.onload = function (event) {
@@ -108,8 +107,8 @@ function setThumbnail(event) {
 		img.style.width = "80px"; // 너비 200px로 설정
 		img.style.height = "auto"; // 높이 자동 설정
 		// 썸네일 리셋 후 미리보기 보여주기
-		document.querySelector("div#image_container").innerHTML = "";
-		document.querySelector("div#image_container").appendChild(img);
+		document.getElementById("image_container").innerHTML = "";
+		document.getElementById("image_container").appendChild(img);
 	};
 	reader.readAsDataURL(event.target.files[0]);
 }
@@ -166,7 +165,6 @@ async function goUserDeletePage() {
 	user_id = payload_parse.user_id;
 	window.location.href = `${FRONT_BASE_URL}/users/user_delete.html?user_id=${user_id}`;
 }
-
 injectNavbar();
 injectfooter();
 checkTokenExp();
