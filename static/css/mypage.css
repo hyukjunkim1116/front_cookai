@@ -1,0 +1,88 @@
+.main-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.mypage-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 15px 15px 15px 15px;
+    flex-shrink: 0;
+    border-radius: 0.625rem;
+    background: #FFF;
+    /* Drop Shadow */
+    box-shadow: 0px 10px 40px 0px rgba(0, 0, 0, 0.15);
+}
+.mypage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.mypage-avatar {
+    width: 20%;
+    height: auto;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.user-detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.user-detail-child:nth-child() {
+    margin-right: 5px;
+}
+.fridge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 0.625rem;
+    background: #FFF;
+    padding: 15px 15px 15px 15px;
+    /* Drop Shadow */
+    box-shadow: 0px 10px 40px 0px rgba(0, 0, 0, 0.15);
+    margin-bottom: 15px;
+}
+.fridge-title {
+    margin-bottom: 15px;
+}
+.fridge-content {
+    margin-bottom: 15px;
+}
+.fridge-ingredient {
+display: inline-flex;
+padding: 0.5rem 0.75rem;
+justify-content: center;
+align-items: center;
+gap: 0.3125rem;
+border-radius: 1.25rem;
+border: 1px solid #EEE;
+color: #000;
+text-align: right;
+font-size: 0.9375rem;
+font-style: normal;
+font-weight: 600;
+line-height: normal;
+text-transform: capitalize;
+}
+.article {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 0.625rem;
+    background: #FFF;
+    padding: 15px 15px 15px 15px;
+    /* Drop Shadow */
+    box-shadow: 0px 10px 40px 0px rgba(0, 0, 0, 0.15);
+}
+
