@@ -144,6 +144,28 @@ async function goMypage() {
 	user_id = payload_parse.user_id;
 	window.location.href = `${FRONT_BASE_URL}/mypage.html?user_id=${user_id}`;
 }
+async function goUserUpdatePage() {
+	// 인자값이 존재한다면 해당 인자값의 유저 프로필로 이동
+	const payload = localStorage.getItem("payload");
+	if (payload == null) {
+		window.location.replace(`${FRONT_BASE_URL}/login.html`);
+	}
+	const payload_parse = JSON.parse(payload);
+	console.log(payload_parse);
+	user_id = payload_parse.user_id;
+	window.location.href = `${FRONT_BASE_URL}/users/user_update.html?user_id=${user_id}`;
+}
+async function goUserDeletePage() {
+	// 인자값이 존재한다면 해당 인자값의 유저 프로필로 이동
+	const payload = localStorage.getItem("payload");
+	if (payload == null) {
+		window.location.replace(`${FRONT_BASE_URL}/login.html`);
+	}
+	const payload_parse = JSON.parse(payload);
+	console.log(payload_parse);
+	user_id = payload_parse.user_id;
+	window.location.href = `${FRONT_BASE_URL}/users/user_delete.html?user_id=${user_id}`;
+}
 
 injectNavbar();
 injectfooter();

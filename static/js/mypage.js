@@ -21,15 +21,6 @@ async function loadUserDetail() {
 	likeArticle.innerText = `좋아요 누른 게시글 : ${response.total_like_articles}`;
 	const likeComment = document.getElementById("like-comment");
 	likeComment.innerText = `좋아요 누른 댓글 : ${response.total_like_comments}`;
-	const totalArticles = document.getElementById("total_articles");
-	totalArticles.innerText = `게시글 : ${response.total_articles}`;
-	const totalComments = document.getElementById("total_comments");
-	totalComments.innerText = `댓글 : ${response.total_comments}`;
-
-	// const likeArticles = document.getElementById("like-article");
-	// likeArticles.innerText = `좋아요 누른 게시글 수 : ${response.total_like_articles}`;
-	// const likeComments = document.getElementById("like-comment");
-	// likeComments.innerText = `좋아요 누른 댓글 수 : ${response.total_like_comments}`;
 }
 async function loadUserFridge() {
 	const response = await getUserFridge();
@@ -48,6 +39,8 @@ async function loadUserFridge() {
 async function loadUserArticle() {
 	const response = await getUserArticle();
 	console.log("article", response);
+	const totalArticles = document.getElementById("total_articles");
+	totalArticles.innerText = `게시글 : ${response.count}`;
 	const articleContainer = document.getElementById("article");
 	response.results.forEach((result) => {
 		const articleContent = document.createElement(null);
@@ -74,7 +67,8 @@ async function loadUserArticle() {
 async function loadUserComment() {
 	const response = await getUserComment();
 	console.log("comment", response);
-
+	const totalComments = document.getElementById("total_comments");
+	totalComments.innerText = `댓글 : ${response.count}`;
 	const commentContainer = document.getElementById("comment");
 	response.results.forEach((result) => {
 		const commentContent = document.createElement(null);

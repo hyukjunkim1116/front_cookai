@@ -32,12 +32,12 @@
                             My
                         </a>
                         <ul class="dropdown-menu">
-                            <li class="logged-out-item"><a class="dropdown-item" href="/login.html">Login</a></li>
-                            <li class="logged-in-item"><a class="dropdown-item" onclick="handleLogout()">LogOut</a></li>
+                            <li class="logged-in-item" style="cursor: pointer;"><a class="dropdown-item" onclick="handleLogout()" >로그아웃</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li class="logged-in-item"><a class="dropdown-item" onclick="goMypage()">Mypage</a></li>
+                            <li class="logged-in-item" style="cursor: pointer;"><a class="dropdown-item" onclick="goUserUpdatePage()">회원 정보 수정</a></li>
+                            <li class="logged-in-item" style="cursor: pointer;"><a class="dropdown-item" onclick="goUserDeletePage()">회원 탈퇴</a></li>
                         </ul>
                     </li>
                 </ul>

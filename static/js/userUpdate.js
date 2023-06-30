@@ -76,6 +76,6 @@ preview.addEventListener("change", (event) => {
 	setThumbnail(event);
 });
 window.onload = async function () {
-	checkLogin();
+	checkNotLogin();
 	await loadUserData();
 };
