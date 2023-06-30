@@ -27,7 +27,7 @@ body {
     width: 100%;
     margin: 0 auto;
     position: relative;
-    display:contents
+    display:contents;
     justify-content: center;
     min-height: auto;
 
@@ -125,11 +125,10 @@ body {
     align-items: center; /* 버튼 내부 아이콘 세로 정렬 */
     justify-content: center; /* 버튼 내부 아이콘 가로 정렬 */
 }
-  
 .search-btn:focus {
     outline: none; /* 버튼 클릭 시 발생하는 기본 외곽선 제거 */
 }
-  
+
 .search-btn img {
     width: 25px; /* 아이콘 크기 설정 */
     height: auto; /* 아이콘 자동 높이 설정 */
