@@ -19,12 +19,12 @@ async function generateUpdateFormFields(articleData) {
 		idToIndex[ingredientData.id]=lastIndex
 		originTargets +=[lastIndex]
     });
-	console.log(updateOrDelete)
-
 
     const recipeContainer = document.getElementById("recipe_container");
     const recipeHTML = articleData.recipe;
     recipeContainer.outerHTML = recipeHTML;
+	var count = (recipeHTML.match(/recipe-element/g) || []).length;
+	recipeNumber +=count
 
     // 태그 처리
     const tagInput = document.getElementById("article_tag");
@@ -35,12 +35,7 @@ window.onload = async function loadUpdatePost() {
 	// 수정창에 기존 내용 보이게
     checkNotLogin();
     
-    // articleId 값이 제대로 설정되었는지 확인
-    console.log('Article ID:', articleId);
-	
     const exist_post = await getArticle(articleId);
-	
-    console.log("Existing article data:", exist_post);
     
     const updateTitle = document.getElementById("article_title");
     updateTitle.value = exist_post.title;
@@ -69,25 +64,29 @@ window.onload = async function loadUpdatePost() {
     // recipeContainer.outerHTML = exist_post.recipe;
 
 
-    // 업데이트 버튼 이벤트 리스너
-    const updateButton = document.getElementById("update_article");
-    updateButton.addEventListener("click", async () => {
-        // 기존 작성한 내용과 새로 작성한 내용을 함께 생성된 필드에 할당하게 함
-        const newArticleData = {
-        title: updateTitle.value,
-        content: updateContent.value,
-        category: document.getElementById("category").value,
-        ingredients: Array.from(ingredientsContainer.getElementsByTagName("input")).map(
-            (input) => input.value
-        ),
-        recipe: Array.from(recipeContainer.getElementsByTagName("textarea")).map(
-            (textarea) => textarea.value
-        ),
-        };
-        await putApiUpdateArticle(articleId, newArticleData);
-    });
+    
+	// => {
+    //     // 기존 작성한 내용과 새로 작성한 내용을 함께 생성된 필드에 할당하게 함
+    //     const newArticleData = {
+    //     title: updateTitle.value,
+    //     content: updateContent.value,
+    //     category: document.getElementById("category").value,
+    //     ingredients: Array.from(ingredientsContainer.getElementsByTagName("input")).map(
+    //         (input) => input.value
+    //     ),
+    //     recipe: Array.from(recipeContainer.getElementsByTagName("textarea")).map(
+    //         (textarea) => textarea.value
+    //     ),
+    //     };
+    //     await putApiUpdateArticle(articleId, newArticleData);
+    // });
 };
-
+// 업데이트 버튼 이벤트 리스너
+const updateButton = document.getElementById("update_article");
+updateButton.addEventListener("click", (event)=>{
+	articleUpdate();
+	event.preventDefault();
+}) 
 
 
 // // 아티클 사진 삭제
@@ -117,24 +116,19 @@ window.onload = async function loadUpdatePost() {
 //아티클 업데이트 페이지 들어가면 실행되는 함수. file input은 설정 불가
 
 async function articleUpdate() {
+	await arrangeRecipeAndUpload()
 	const token = localStorage.getItem("access")
-	const updateBtn = document.getElementById("submit-btn");
-	updateBtn.innerText = "";
-	const span = document.createElement("span");
-	span.setAttribute("id", "spinner-span");
-	span.setAttribute("class", "spinner-border spinner-border-sm");
-	span.setAttribute("role", "status");
-	span.setAttribute("aria-hidden", "true");
-	updateBtn.appendChild(span);
 
-	const exist_post = await getArticle(articleId);
+	// const exist_post = await getArticle(articleId);
+	const category= document.getElementById("category").value;
 	const title = document.getElementById("article_title").value;
 	const content = document.getElementById("article_content").value;
-	const file = document.getElementById("file").files[0];
+	const file = document.getElementById("article_image").files[0];
 
 	const formdata = new FormData();
 	formdata.append("title", title);
 	formdata.append("content", content);
+	formdata.append("category", category);
 
 	
 	if (file) {
@@ -220,7 +214,6 @@ async function articleUpdate() {
 					method: "POST"
 				}
 			);
-			console.log(ingredientResponse);
 		}
 	}
 	
@@ -230,7 +223,6 @@ async function articleUpdate() {
 		const file = element.files[0]
 		if (file){
 			let recipeImage = element.files[0];
-			console.log(recipeImage);
 			let responseURL = await fetch(`${BACKEND_BASE_URL}/articles/get-url/`, {
 				method: "POST"
 			});
@@ -251,11 +243,18 @@ async function articleUpdate() {
 		}
 	});
 	formdata.append("recipe",document.getElementById("recipe_container").outerHTML)
+	var tags = document.getElementById("article_tag").value
+	if(tags.trim()!==""){
+		var tagsList=tags.replace(/,[\s]*,/g,",").split(",");
+		var last =tagsList.pop()
+		if(last!='') tagsList +=[last]
+		formdata.append("tags",tagsList)
+	}
 
 
 
 	const response = await fetch(
-		`${backend_base_url}/api/articles/${articleId}/`,
+		`${BACKEND_BASE_URL}/articles/${articleId}/`,
 		{
 		headers: {Authorization: `Bearer ${token}`},
 		body: formdata,
@@ -264,10 +263,11 @@ async function articleUpdate() {
 	);
 		if (response.status == 200) {
 			alert("글 수정 완료!");
+			location.href=`${FRONT_BASE_URL}/articles/article_detail.html?article_id=${articleId}`;
 		} else {
 			alert("글 수정 실패!");
+			
 		}
-		history.back();
 	}
 
 const deleteOnUpdate=(id,recipeIngredientId,event)=>{

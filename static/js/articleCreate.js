@@ -1,5 +1,60 @@
 let ingredientNumber = 1;
 let recipeNumber = 1;
+async function arrangeRecipeAndUpload(post=true){
+	var recipe_elements = document.getElementsByName("recipe-element")
+	for(let i = 0 ; i < recipe_elements.length ; i ++){
+		const first_label= recipe_elements[i].firstElementChild
+		first_label.innerText = `레시피${i+1}`
+		first_label.setAttribute("for",`recipe-${i+1}-textarea`)
+		const recipeText=first_label.nextElementSibling
+		recipeText.setAttribute("id",`recipe-${i+1}-textarea`)
+		recipeText.setAttribute("name",`recipe-${i+1}-textarea`)
+		recipeText.innerText=recipeText.value
+		const imageLabel = recipeText.nextElementSibling
+		imageLabel.setAttribute("for",`recipe-image-${i+1}`)
+		const imageInput= imageLabel.nextElementSibling
+		imageInput.setAttribute("onchange",`setRecipeThumbnail(${i+1},event);`)
+		imageInput.setAttribute("id",`ecipe-image-${i+1}`)
+		imageInput.setAttribute("name",`ecipe-image-${i+1}`)
+		const recipeImageContainer = imageInput.nextElementSibling
+		recipeImageContainer.setAttribute("id",`recipe-image-${i+1}-container`)
+		recipeImageContainer.setAttribute("class",`recipe-image-${i+1}-container recipe-image-container`)
+		if(post){
+			if(recipeImageContainer) recipeImageContainer.innerHTML=``
+			let recipeImage = imageInput.files[0];
+			if(recipeImage){
+				let responseURL = await fetch(`${BACKEND_BASE_URL}/articles/get-url/`, {
+					method: "POST"
+				});
+				let dataURL = await responseURL.json();
+				//실제로 클라우드플레어에 업로드
+				let formData = new FormData();
+				formData.append("file", recipeImage);
+				let responseRealURL = await fetch(`${dataURL["uploadURL"]}`, {
+					body: formData,
+					method: "POST"
+				});
+				let results = await responseRealURL.json();
+				let realFileURL = results.result.variants[0];
+				let recipeImageUrl = document.createElement("img");
+				recipeImageUrl.setAttribute("src", realFileURL);
+				recipeImageUrl.setAttribute("id", `recipe-url-${i+1}`);
+				recipeImageUrl.setAttribute("class","img-thumbnail")
+				recipeImageUrl.setAttribute("style","max-height: 120px;")
+				recipeImageContainer.appendChild(recipeImageUrl);
+			}
+		}else{
+			const imageElement=recipeImageContainer.firstElementChild
+			if(imageElement){
+				
+				if(imageElement.getAttribute("id").includes("thumbnail")) imageElement.setAttribute("id", `recipe-${i+1}-thumbnail`);
+				if(imageElement.getAttribute("id").includes("url")) imageElement.setAttribute("id", `recipe-url-${i+1}`);
+
+			}
+		}
+		
+	}
+}
 const setCategory = async () => {
 	const categories = await getCategory();
 	const select = document.querySelector(".category");
@@ -36,6 +91,7 @@ const handleAddRecipe = () => {
 	const div = document.createElement("div");
 	div.classList.add("mb-3");
 	div.setAttribute("id", `recipe-${recipeNumber}`);
+	div.setAttribute("name", "recipe-element")
 	div.innerHTML = `
 	<label for="recipe-${recipeNumber}-textarea" class="form-label">레시피 ${recipeNumber}</label>
 	<textarea class="form-control recipe-textarea" id="recipe-${recipeNumber}-textarea" name="recipe-${recipeNumber}-textarea" rows="3"></textarea>
@@ -46,62 +102,8 @@ const handleAddRecipe = () => {
 	`;
 	recipeContainer.appendChild(div);
 	recipeNumber++;
-	console.log(recipeContainer);
 };
 async function postArticle() {
-	for (let i = 1; i < 10; i++) {
-		console.log(i);
-		let recipeTextarea = document.getElementById(`recipe-${i}-textarea`);
-		console.log(recipeTextarea);
-		if (!recipeTextarea) break;
-
-		try {
-			let recipeText = document.getElementById(`recipe-${i}-textarea`).value;
-			console.log(recipeText);
-			recipeTextarea.innerText = recipeText;
-			console.log(recipeTextarea);
-		} catch {
-			continue;
-		}
-		//썸네일 제거
-		let recipeImageContainer = document.getElementById(
-			`recipe-image-${i}-container`
-		);
-		console.log(recipeImageContainer);
-		try {
-			let childRecipeImageContainer = document.getElementById(
-				`recipe-${i}-thumbnail`
-			);
-			console.log(childRecipeImageContainer);
-			recipeImageContainer.removeChild(childRecipeImageContainer);
-		} catch {
-			continue;
-		}
-		try {
-			let recipeImage = document.getElementById(`recipe-image-${i}`).files[0];
-			console.log(recipeImage);
-			let responseURL = await fetch(`${BACKEND_BASE_URL}/articles/get-url/`, {
-				method: "POST"
-			});
-			let dataURL = await responseURL.json();
-			//실제로 클라우드플레어에 업로드
-			let formData = new FormData();
-			formData.append("file", recipeImage);
-			let responseRealURL = await fetch(`${dataURL["uploadURL"]}`, {
-				body: formData,
-				method: "POST"
-			});
-			let results = await responseRealURL.json();
-			let realFileURL = results.result.variants[0];
-			let recipeImageUrl = document.createElement("img");
-			recipeImageUrl.setAttribute("src", realFileURL);
-			recipeImageUrl.setAttribute("id", `recipe-url-${i}`);
-			recipeImageContainer.appendChild(recipeImageUrl);
-		} catch {
-			continue;
-		}
-	}
-
 	const uploadBtn = document.getElementById("submit-article");
 	uploadBtn.innerText = "";
 	const span = document.createElement("span");
@@ -109,6 +111,8 @@ async function postArticle() {
 	span.setAttribute("class", "spinner-border spinner-border-sm");
 	span.setAttribute("role", "status");
 	span.setAttribute("aria-hidden", "true");
+	uploadBtn.appendChild(span);
+
 	const token = localStorage.getItem("access");
 	const title = document.getElementById("article_title").value;
 	const content = document.getElementById("article_content").value;
@@ -116,11 +120,21 @@ async function postArticle() {
 	const file = document.getElementById("article_image").files[0];
 	const recipeContainer = document.getElementById("recipe_container");
 	
+	await arrangeRecipeAndUpload()
 	var recipe_html=recipeContainer.outerHTML
-	recipe_html.replace(/\"/,`\\\"`)
-	alert("213")
 	const category = document.getElementById("category");
 	const categoryValue = category.options[category.selectedIndex].value;
+	var data = {title: title,
+		content: content,
+		recipe:recipe_html,
+		category: categoryValue
+	}
+	if(tags.trim()!==""){
+		var tagsList=tags.replace(/,[\s]*,/g,",").split(",");
+		var last =tagsList.pop()
+		if(last!='') tagsList +=[last]
+		data["tags"]=tagsList
+	}
 	if (file) {
 		const responseURL = await fetch(`${BACKEND_BASE_URL}/articles/get-url/`, {
 			method: "POST"
@@ -138,29 +152,23 @@ async function postArticle() {
 		const results = await responseRealURL.json();
 		const realFileURL = results.result.variants[0];
 		console.log(realFileURL);
+		data["image"]=realFileURL;
+	}
 		const response = await fetch(`${BACKEND_BASE_URL}/articles/`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 				"content-type": "application/json"
 			},
-			body: JSON.stringify({
-				title: title,
-				content: content,
-				recipe:recipe_html,
-				tags: tags.split(","),
-				category: categoryValue,
-				image: realFileURL
-			}),
+			body: JSON.stringify(data),
 			method: "POST"
 		});
 		if (response.status === 200) {
 			const articleResponse = await response.json();
 			console.log(articleResponse, articleResponse.id);
-			for (let i = 1; i < 30; i++) {
-				console.log(i);
+			for (let i = 1; i < ingredientNumber+1; i++) {
 				let ingredientTitle = document.getElementById(`ingredient-title-${i}`);
 				console.log(ingredientTitle);
-				if (!ingredientTitle) break;
+				if (!ingredientTitle) continue;
 				let ingredientQuantity = document.getElementById(
 					`ingredient-amount-${i}`
 				).value;
@@ -190,60 +198,12 @@ async function postArticle() {
 			);
 		} else {
 			alert("작성 실패!");
+			console.log( await response.json())
+			uploadBtn.innerHTML = "";
+			uploadBtn.innerText = "게시글 작성하기"
 		}
-	} else {
-		const response = await fetch(`${BACKEND_BASE_URL}/articles/`, {
-			headers: {
-				Authorization: `Bearer ${token}`,
-				"content-type": "application/json"
-			},
-			body: JSON.stringify({
-				title: title,
-				content: content,
-				recipe: recipeContainer.outerHTML,
-				tags: tags.split(","),
-				category: categoryValue
-			}),
-			method: "POST"
-		});
-		if (response.status === 200) {
-			const articleResponse = await response.json();
-			console.log(articleResponse, articleResponse.id);
-			for (let i = 1; i < 30; i++) {
-				console.log(i);
-				let ingredientTitle = document.getElementById(`ingredient-title-${i}`);
-				console.log(ingredientTitle);
-				if (!ingredientTitle) break;
-				let ingredientQuantity = document.getElementById(
-					`ingredient-amount-${i}`
-				).value;
-				let ingredientUnit = document.getElementById(
-					`ingredient-unit-${i}`
-				).value;
-				const ingredientResponse = await fetch(
-					`${BACKEND_BASE_URL}/articles/${articleResponse.id}/recipeingredient/`,
-					{
-						headers: {
-							Authorization: `Bearer ${token}`,
-							"content-type": "application/json"
-						},
-						body: JSON.stringify({
-							ingredient: ingredientTitle.value,
-							ingredient_quantity: ingredientQuantity,
-							ingredient_unit: ingredientUnit
-						}),
-						method: "POST"
-					}
-				);
-				console.log(ingredientResponse);
-			}
-			window.location.replace(
-				`${FRONT_BASE_URL}/articles/article_detail.html?article_id=${articleResponse.id}`
-			);
-		} else {
-			alert("작성 실패!");
-		}
-	}
+	
+		
 }
 const addIngredientButton = document.getElementById("add-ingredient");
 addIngredientButton.addEventListener("click", () => {
@@ -253,14 +213,21 @@ const addRecipeButton = document.getElementById("add-recipe");
 addRecipeButton.addEventListener("click", () => {
 	handleAddRecipe();
 });
-
-const deleteRecipeDiv = (id, event) => {
+const submitArticleButton = document.getElementById("submit-article");
+if(submitArticleButton){submitArticleButton.addEventListener("click", (event) => {
+	postArticle();
+	event.preventDefault();
+});}
+const deleteRecipeDiv = async(id, event) => {
 	const recipeDiv = document.getElementById(`recipe-${id}`);
 	recipeDiv.remove();
+	await arrangeRecipeAndUpload(post=false);
+	console.log(recipeNumber)
+	recipeNumber--;
+	console.log(recipeNumber)
 	event.preventDefault();
 };
 const deleteIngredientDiv = (id, event) => {
-	alert("asdf")
 	const ingredientDiv = document.getElementById(`ingredient-${id}`);
 	ingredientDiv.remove();
 	event.preventDefault();
@@ -269,6 +236,4 @@ window.onload = async function () {
 	checkNotLogin();
 	forceLogout();
 	setCategory();
-	const submitArticleButton = document.getElementById("submit-article");
-	if(submitArticleButton)submitArticleButton.setAttribute("onclick","postArticle()");
 };
