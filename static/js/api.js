@@ -573,6 +573,7 @@ async function fetchMissingIngredients(articleId, token) {
 	} else {
 	console.error('API 요청 실패:', response.statusText);
 	}
+}
 
 async function getTagList(selector){
 	if(selector){
