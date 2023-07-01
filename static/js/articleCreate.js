@@ -39,8 +39,8 @@ async function arrangeRecipeAndUpload(post=true){
 				let recipeImageUrl = document.createElement("img");
 				recipeImageUrl.setAttribute("src", realFileURL);
 				recipeImageUrl.setAttribute("id", `recipe-url-${i+1}`);
-				recipeImageUrl.setAttribute("class","img-thumbnail")
-				recipeImageUrl.setAttribute("style","max-height: 120px;")
+				recipeImageUrl.setAttribute("class","img-thumbnail img-fluid")
+				recipeImageUrl.setAttribute("style","max-height: 150px;")
 				recipeImageContainer.appendChild(recipeImageUrl);
 			}
 		}else{

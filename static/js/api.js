@@ -543,10 +543,14 @@ async function fetchMissingIngredients(articleId, token) {
                 missingLinksList.appendChild(listItem);
             });
         }
-        const container = document.querySelector('.ingredientslink_list');
+        const container = document.getElementById('ingredientslink_list');
         container.appendChild(missingLinksList);
+		if(ingredientLinks.length==0){
+			document.getElementById("coupang_ingredient").remove()
+		}
     } else {
         console.error('API 요청 실패:', response.statusText);
+		document.getElementById("coupang_ingredient").remove()
     }
 }
 
