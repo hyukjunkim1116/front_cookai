@@ -22,34 +22,22 @@
 
 <body class="body">
     <div class="main">
-        <img src="/static/img/main.png" class="main-img">
-        <div class="main-title">
-            <h1>오늘 뭐 먹지?</h1>
-        </div>
         <div class="main-info">
-            <div>
-                <div class="mypage-wrapper">
-                    <div id="mypage" class="mypage">
-                        <img id="mypage-avatar" class="mypage-avatar" />
-                        <div id="username"></div>
-                    </div>
-                    <div id="user-detail" class="user-detail">
-                        <div class="user-detail-child" id="following"></div>
-                        <div class="user-detail-child" id="follower"></div>
-                        <div class="user-detail-child" id="bookmark-article"></div>
-                        <div class="user-detail-child" id="like-article"></div>
-                        <div class="user-detail-child" id="like-comment"></div>
-                    </div>
+            <div class="mypage-wrapper">
+                <div id="mypage" class="mypage">
+                    <img id="mypage-avatar" class="mypage-avatar" />
+                    <div id="username"></div>
+                </div>
+                <div id="user-detail" class="user-detail">
+                    <div class="user-detail-child" id="following"></div>
+                    <div class="user-detail-child" id="follower"></div>
+                    <div class="user-detail-child" id="bookmark-article"></div>
+                </div>
+                <div id="user-detail" class="user-detail">
+                    <div class="user-detail-child" id="like-article"></div>
+                    <div class="user-detail-child" id="like-comment"></div>
                 </div>
             </div>
-            <!-- 내닉네임, 프사, 정보수정버튼,비번수정버튼,탈퇴버튼,팔로잉,팔로워 수,북마크(누르면 목록페이지)-->
-            <!-- <div class="text-center">
-                    <button type="button" class="sign-btn btn btn-outline-primary" id="delete-user-btn" onClick="goDeleteUser()">회원탈퇴</button>
-                </div>
-                <div class="text-center">
-                    <button type="button" class="sign-btn btn btn-outline-primary" id="update-user-btn" onClick="goUpdateUser()">정보수정</button>
-                </div> -->
-
             <div class="fridge" id="fridge">
                 <div id="fridge-title" class="fridge-title">나의 냉장고</div>
                 <div id="fridge-content" class="fridge-content"></div>
@@ -60,15 +48,22 @@
                             placeholder="재료를 입력하세요">
                     </div>
                     <div class="col-auto">
-                        <button type="button" class="btn btn-primary mb-3" id="post-fridge"
+
+                        <button type="button" class="btn btn-primary mb-3 post-fridge" id="post-fridge"
                             onclick="postUserFridge()">추가하기</button>
                     </div>
                 </div>
             </div>
             <!-- 재료 목록, 재료 추가버튼, 재료 삭제버튼-->
-            <div class="article" id="article">내가 쓴 글</div>
+
+            <div class="article" id="article">내가 쓴 글
+                <div class="user-detail-child" id="total_articles"></div>
+            </div>
             <!-- 내 글 목록(제목,댓글 수, 좋아요 수, 삭제,수정버튼)-->
-            <div class="comment" id="comment"></div><!-- 내 댓글 목록(내가 쓴 댓글 쭉 보여주기. 댓글 누르면 해당 게시글로 보내주기-->
+            <div class="comment" id="comment">내가 쓴 댓글
+                <div class="user-detail-child" id="total_comments"></div>
+            </div>
+            <!-- 내 댓글 목록(내가 쓴 댓글 쭉 보여주기. 댓글 누르면 해당 게시글로 보내주기-->
         </div>
     </div>
     <footer></footer>
@@ -76,19 +71,7 @@
 <script src="/static/js/api.js"></script>
 <script src="/static/js/common.js"></script>
 <script src="/static/js/mypage.js"></script>
+
 <script defer="defer" src="/static/js/windowOnLoad.js"></script>
 
 </html>
-<!--    
-                <div class="text-center">
-                    <button type="button" class="sign-btn btn btn-outline-primary" id="user-detail-btn">마이페이지</button>
-                </div>
-                <div class="text-center">
-                    <button type="button" class="sign-btn btn btn-outline-primary" id="create-article-btn">글쓰기</button>
-                </div>
-                <div class="text-center">
-                    <button type="button" class="sign-btn btn btn-outline-primary" id="ai-obj-btn">ai로 재료인식(이미지 업로드)</button>
-                </div>
-                <div class="text-center">
-                    <button type="button" class="sign-btn btn btn-outline-primary" id="ai-recomm-btn">피드(추천목록)</button>
-                </div> -->

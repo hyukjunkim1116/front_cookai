@@ -27,7 +27,11 @@ async function injectNavbar() {
 	const payload = localStorage.getItem("payload");
 	if (payload) {
 		const loginUser = await getLoginUser();
-		if (loginUser.avatar && loginUser.avatar !== "" && loginUser.avatar !== "null") {
+		if (
+			loginUser.avatar &&
+			loginUser.avatar !== "" &&
+			loginUser.avatar !== "null"
+		) {
 			const avatar = document.getElementById("avatar");
 			avatar.setAttribute("src", `${loginUser.avatar}`);
 			avatar.style.visibility = "visible";
@@ -38,7 +42,7 @@ async function injectNavbar() {
 		}
 		const intro = document.getElementById("intro");
 		intro.innerText = `${loginUser.username}님`;
-		
+
 		// 로그인 사용자 정보가 설정된 후 handleNavbarMode() 호출
 		await handleNavbarMode(loginUser);
 	} else {
@@ -68,8 +72,8 @@ function checkNotLogin() {
 		window.location.replace(`${FRONT_BASE_URL}/`);
 	}
 }
-// 강제 로그아웃
-function forceLogout() {
+// token 만료되면 로그인페이지로 이동
+function checkTokenExp() {
 	const payload = localStorage.getItem("payload");
 	let current_time = String(new Date().getTime()).substring(0, 10);
 	if (payload) {
@@ -81,15 +85,15 @@ function forceLogout() {
 		}
 	}
 }
+
 // 로그아웃
 function handleLogout() {
 	localStorage.removeItem("access");
 	localStorage.removeItem("refresh");
 	localStorage.removeItem("payload");
-	window.location.replace(`${FRONT_BASE_URL}/`);
+	window.location.replace(`${FRONT_BASE_URL}/login.html`);
 }
 function setThumbnail(event) {
-	alert("setThumbnail");
 	let reader = new FileReader();
 
 	reader.onload = function (event) {
@@ -101,8 +105,8 @@ function setThumbnail(event) {
 		img.style.width = "80px"; // 너비 200px로 설정
 		img.style.height = "auto"; // 높이 자동 설정
 		// 썸네일 리셋 후 미리보기 보여주기
-		document.querySelector("div#image_container").innerHTML = "";
-		document.querySelector("div#image_container").appendChild(img);
+		document.getElementById("image_container").innerHTML = "";
+		document.getElementById("image_container").appendChild(img);
 	};
 	reader.readAsDataURL(event.target.files[0]);
 }
@@ -116,8 +120,8 @@ function setRecipeThumbnail(id, event) {
 		img.setAttribute("id", `recipe-${id}-thumbnail`);
 
 		// 썸네일 크기 조절
-		img.setAttribute("class","img-thumbnail")
-		img.setAttribute("style","max-height: 120px;") // 높이 제한 120px
+		img.setAttribute("class", "img-thumbnail");
+		img.setAttribute("style", "max-height: 120px;"); // 높이 제한 120px
 		img.style.width = "80px"; // 너비 200px로 설정
 		img.style.height = "auto"; // 높이 자동 설정
 		// 썸네일 리셋 후 미리보기 보여주기
@@ -137,3 +141,29 @@ async function goMypage() {
 	user_id = payload_parse.user_id;
 	window.location.href = `${FRONT_BASE_URL}/mypage.html?user_id=${user_id}`;
 }
+
+async function goUserUpdatePage() {
+	// 인자값이 존재한다면 해당 인자값의 유저 프로필로 이동
+	const payload = localStorage.getItem("payload");
+	if (payload == null) {
+		window.location.replace(`${FRONT_BASE_URL}/login.html`);
+	}
+	const payload_parse = JSON.parse(payload);
+	console.log(payload_parse);
+	user_id = payload_parse.user_id;
+	window.location.href = `${FRONT_BASE_URL}/users/user_update.html?user_id=${user_id}`;
+}
+async function goUserDeletePage() {
+	// 인자값이 존재한다면 해당 인자값의 유저 프로필로 이동
+	const payload = localStorage.getItem("payload");
+	if (payload == null) {
+		window.location.replace(`${FRONT_BASE_URL}/login.html`);
+	}
+	const payload_parse = JSON.parse(payload);
+	console.log(payload_parse);
+	user_id = payload_parse.user_id;
+	window.location.href = `${FRONT_BASE_URL}/users/user_delete.html?user_id=${user_id}`;
+}
+// injectNavbar();
+// injectfooter();
+checkTokenExp();

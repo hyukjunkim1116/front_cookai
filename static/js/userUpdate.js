@@ -1,13 +1,15 @@
 // 회원정보 미리 로드하는 함수
 async function loadUserData() {
-	const response = await getUserDetail();
+	const response = await getLoginUser();
 	console.log(response);
 	const usernameText = document.getElementById("username");
-	const genderText = document.getElementById("gender") || null;
-	const ageText = document.getElementById("age") || null;
-	usernameText.innerText = `${response.username}`;
-	genderText.innerText = `${response.gender}`;
-	ageText.innerText = `${response.age}`;
+	const changePasswordForm = document.getElementById("change-password-form");
+	usernameText.value = `${response.username}`;
+	if (response.login_type != "normal") {
+		changePasswordForm.style.display = "none";
+	} else {
+		changePasswordForm.style.display = "block";
+	}
 }
 // 회원정보 수정하는 함수
 async function putUserDetail() {
@@ -71,11 +73,13 @@ async function putUserDetail() {
 		}
 	}
 }
-const preview = document.getElementById("file");
-preview.addEventListener("change", (event) => {
-	setThumbnail(event);
-});
+
+
 async function loaderFunction() {
 	checkLogin();
+  const preview = document.getElementById("file");
+  preview.addEventListener("change", (event) => {
+	setThumbnail(event);
+  });
 	await loadUserData();
 };
