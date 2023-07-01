@@ -33,11 +33,12 @@ async function loadArticle() {
 			articleThumbnail.remove();
 		}
 
-		articleCategory.innerHTML = `카테고리: <a href="${FRONT_BASE_URL}/articles/article_list.html?category=${response_json.category}">${response_json.categoryname}</a>`;
-		articleAuthor.innerHTML = `<a href="${FRONT_BASE_URL}/users/user_detail.html?user_id=${response_json.author}">${response_json.user}</a>`;
+		articleCategory.innerHTML = `카테고리: <a href="${FRONT_BASE_URL}/articles/article_list.html?category=${response_json.category}"><span class="badge bg-dark">${response_json.categoryname}</span></a>`;
+		articleAuthor.innerHTML = `${response_json.user}`;
+		articleAuthor.setAttribute("href",`${FRONT_BASE_URL}/mypage.html?user_id=${response_json.author}`)
 		var temp_html = ``;
 		response_json.tags.forEach((tag) => {
-			temp_html += `<span class="badge bg-secondary" onclick=location.href="${FRONT_BASE_URL}/articles/article_list.html?search=4&selector=${tag}">${tag}</span>`;
+			temp_html += `<a href="${FRONT_BASE_URL}/articles/article_list.html?search=4&selector=${tag}"><span class="badge bg-secondary">${tag}</span></a>&nbsp;`;
 		});
 		articleTags.innerHTML = temp_html;
 		temp_html = ``;
@@ -54,7 +55,8 @@ async function loadArticle() {
 			articleIngredients.remove();
 		}
 		var p = response_json.recipe;
-		if (p != null) {
+		console.log(p)
+		if (p != null&& p!=""&& p!=`<div id="recipe_container"></div>`) {
 			const articleRecipe = document.getElementById("recipe");
 			var p = p.replace(/<textarea[^>]*rows="3">/g, '<p class="col-sm-9">');
 			p = p.replace(
@@ -119,32 +121,31 @@ async function loadArticle() {
 			}
 			buttonArea1.append(followToggleBtn);
 		}
-		const buttonArea2 = document.getElementById("buttons2");
 		let likeBtn = document.createElement("button");
 		likeBtn.setAttribute("type", "button");
 		if (response_json.like.includes(user_json.id)) {
 			likeBtn.setAttribute("class", "btn btn-outline-danger");
 			likeBtn.setAttribute("onclick", `likeArticle(${articleId})`);
-			likeBtn.innerHTML = `👍 취소<br>${response_json.likes_count}`;
+			likeBtn.innerHTML = `좋아요 취소 👍${response_json.likes_count}`;
 		} else {
 			likeBtn.setAttribute("class", "btn btn-outline-warning");
 			likeBtn.setAttribute("onclick", `likeArticle(${articleId})`);
-			likeBtn.innerHTML = `좋아요👍<br>${response_json.likes_count}`;
+			likeBtn.innerHTML = `좋아요 표시 👍${response_json.likes_count}`;
 		}
 		let bookmarkBtn = document.createElement("button");
 		bookmarkBtn.setAttribute("type", "button");
 		if (response_json.bookmark.includes(user_json.id)) {
 			bookmarkBtn.setAttribute("class", "btn btn-outline-dark");
 			bookmarkBtn.setAttribute("onclick", `bookmarkArticle(${articleId})`);
-			bookmarkBtn.innerHTML = `북마크<br>취소`;
+			bookmarkBtn.innerHTML = `북마크 취소`;
 		} else {
 			bookmarkBtn.setAttribute("class", "btn btn-outline-success");
 			bookmarkBtn.setAttribute("onclick", `bookmarkArticle(${articleId})`);
-			bookmarkBtn.innerHTML = `북마크<br>하기`;
+			bookmarkBtn.innerHTML = `북마크 하기`;
 		}
 
-		buttonArea2.append(likeBtn);
-		buttonArea2.append(bookmarkBtn);
+		buttonArea1.append(likeBtn);
+		buttonArea1.append(bookmarkBtn);
 	} else {
 		alert(response.status);
 	}
