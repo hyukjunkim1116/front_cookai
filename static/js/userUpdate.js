@@ -74,12 +74,11 @@ async function putUserDetail() {
 	}
 }
 
-
 async function loaderFunction() {
 	checkLogin();
-  const preview = document.getElementById("file");
-  preview.addEventListener("change", (event) => {
-	setThumbnail(event);
-  });
+	const preview = document.getElementById("file");
+	preview.addEventListener("change", (event) => {
+		setThumbnail(event);
+	});
 	await loadUserData();
-};
+}

@@ -262,8 +262,8 @@ async function deleteUserFridge(fridgeId) {
 	return response;
 }
 
-// 내가 팔로우한 유저 보기
-async function getUserFollowing() {
+// 다른 유저의 팔로우리스트 보기
+async function getOtherUserFollowing() {
 	let token = localStorage.getItem("access");
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const response = await fetch(
@@ -276,6 +276,26 @@ async function getUserFollowing() {
 		}
 	);
 	return response.json();
+}
+// 내가 팔로우한 유저 보기
+async function getUserFollowing() {
+	let token = localStorage.getItem("access");
+	const payload = localStorage.getItem("payload");
+	if (payload) {
+		const payload_parse = JSON.parse(payload);
+		const response = await fetch(
+			`${BACKEND_BASE_URL}/users/${payload_parse.user_id}/following/`,
+			{
+				headers: {
+					Authorization: `Bearer ${token}`
+				},
+				method: "GET"
+			}
+		);
+		return response.json();
+	} else {
+		alert(response.statusText);
+	}
 }
 // 나를 팔로우한 유저 보기
 async function getUserFollower() {
@@ -294,8 +314,8 @@ async function getUserFollower() {
 }
 
 // 특정 유저 팔로잉하기
-async function userFollowing(userId) {
-	console.log(userId);
+async function userFollowing() {
+	const userId = new URLSearchParams(window.location.search).get("user_id");
 	let token = localStorage.getItem("access");
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/users/${userId}/following/`,
@@ -307,17 +327,7 @@ async function userFollowing(userId) {
 		}
 	);
 	window.location.reload();
-	response_json = await response.json();
-	// 팔로우 버튼 변경
-	if (response_json == "follow") {
-		const followBtn = document.getElementById("following-btn");
-		followBtn.innerText.replace("팔로우", "언팔로우");
-		window.location.reload();
-	} else if (response_json == "unfollow") {
-		const followBtn = document.getElementById("following-btn");
-		followBtn.innerText.replace("언팔로우", "팔로우");
-		window.location.reload();
-	}
+	return response;
 }
 
 async function getCategory() {
@@ -586,7 +596,6 @@ async function getTagList(selector) {
 	return response;
 }
 
-
 // token 만료되면 access토큰 이용하여 재로그인
 async function checkTokenExp() {
 	const payload = localStorage.getItem("payload");
@@ -626,7 +635,7 @@ async function checkTokenExp() {
 	}
 }
 
-async function getRecommend(recommendType){
+async function getRecommend(recommendType) {
 	const token = localStorage.getItem("access");
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/ai_process/?recommend=${recommendType}`,
@@ -639,7 +648,7 @@ async function getRecommend(recommendType){
 	);
 	return response;
 }
-async function getFollowArticles(userId,page=1){
+async function getFollowArticles(userId, page = 1) {
 	const token = localStorage.getItem("access");
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/users/${userId}/articles/?filter=3`,
@@ -651,9 +660,8 @@ async function getFollowArticles(userId,page=1){
 		}
 	);
 	return response;
-
 }
-async function getUserFeedArticles(userId,filter,page=1){
+async function getUserFeedArticles(userId, filter, page = 1) {
 	const token = localStorage.getItem("access");
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/users/${userId}/articles/?filter=${filter}&page=${page}`,
@@ -665,6 +673,4 @@ async function getUserFeedArticles(userId,filter,page=1){
 		}
 	);
 	return response;
-
 }
-
