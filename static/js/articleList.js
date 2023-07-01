@@ -102,7 +102,7 @@ async function loadTagList(selector){
 		console.log(tag)
 		if (!name_list.includes(tag.name)){
 			tags.innerHTML += `<input type="radio" class="btn-check" name="tag" id="tag_${tag.id}" autocomplete="off">
-		<label class="btn btn-outline-primary text-nowrap" for="tag_${tag.id}" onclick="searchByTag(${tag.name})">${tag.name}</label>`
+		<label class="btn btn-outline-primary text-nowrap" for="tag_${tag.id}" onclick="searchByTag('${tag.name}')">${tag.name}</label>`
 			name_list +=[tag.name]
 		}
 		
@@ -128,13 +128,13 @@ function redirectToArticlePage(articleId) {
 const url = `http://127.0.0.1:8000/articles/?article_id=${articleId}`;
 window.location.href = url;
 }
-async function search(){
+async function search_(){
 	const preQueryString=document.getElementById("search_type").value
 	const selector = document.getElementById("selector").value
 	query=`${preQueryString}&selector=${selector}`
 	await resetTag()
 	if (preQueryString.includes("4")){
-		loadTagList(selector)
+		await loadTagList(selector)
 		return 0
 	}
 	await loadFrame()
@@ -187,14 +187,61 @@ async function loadCategory(){
 async function searchByTag(tagname){
 	query=`?search=4&selector=${tagname}`
 	await loadFrame()
+	await loadCategory()
 	await loadArticleList()
+}
+async function onEnter(e){
+	const code = e.code;
+
+           if(code == 'Enter'){
+               await search_()
+           }
 }
 // 페이지 로드 시 게시글을 가져오도록 호출합니다
 async function loaderFunction() {
-	await resetTag()
-	await loadFrame()
-	await loadCategory();
-	await loadArticleList();
+	if(window.location.search){
+	query=window.location.search.replace(/&selector=.*$/g,"")
+	console.log(query)
+	const parameters = new URLSearchParams(window.location.href)
+	console.log(window.location.href)
+	document.getElementById("selector").value=parameters.get("selector")
+	const searchType=document.getElementById("search_type")
+
+	for (var i = 0; i < searchType.options.length; i++) {
+		var optionValue = searchType.options[i].value;
+		if (window.location.search.includes(optionValue)) {
+			searchType.options[i].selected = true;
+		}else{
+			searchType.options[i].selected = false;
+		}
+	}
+
+	await search_()
+	console.log(parameters.get("selector"))
+	if(window.location.search.includes("search=4")){
+		await searchByTag(`${parameters.get("selector")}`)
+		const tags = document.getElementById("tags").querySelectorAll("label")
+		tags.forEach(element => {
+			console.log(element)
+			if(element.innerText == parameters.get("selector")){
+				element.previousElementSibling.setAttribute("checked","true")
+				console.log("t")
+			}else{
+				element.previousElementSibling.checked=false
+				console.log("f")
+			}
+		});
+
+		
+
+	}
+	}else{
+		await resetTag()
+		await loadFrame()
+		await loadCategory();
+		await loadArticleList();
+	}
+	
 	const SelectOrderBtn = document.createElement("div")
 		SelectOrderBtn.setAttribute("id","selectorder")
 		SelectOrderBtn.setAttribute("class","btn-group mb-3")

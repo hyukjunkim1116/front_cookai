@@ -32,17 +32,22 @@
                             My
                         </a>
                         <ul class="dropdown-menu">
-                            <li class="logged-in-item" style="cursor: pointer;"><a class="dropdown-item" onclick="handleLogout()" >로그아웃</a></li>
+                            <li class="logged-in-item" style="cursor: pointer;"><a class="dropdown-item"
+                                    onclick="handleLogout()">로그아웃</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li class="logged-in-item" style="cursor: pointer;"><a class="dropdown-item" onclick="goUserUpdatePage()">회원 정보 수정</a></li>
-                            <li class="logged-in-item" style="cursor: pointer;"><a class="dropdown-item" onclick="goUserDeletePage()">회원 탈퇴</a></li>
+                            <li class="logged-in-item" style="cursor: pointer;"><a class="dropdown-item"
+                                    onclick="goUserUpdatePage()">회원 정보 수정</a></li>
+                            <li class="logged-in-item" style="cursor: pointer;"><a class="dropdown-item"
+                                    onclick="goUserDeletePage()">회원 탈퇴</a></li>
                         </ul>
                     </li>
                 </ul>
-                <form class="d-flex mt-3" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <form class="d-flex mt-3" role="search" action="/articles/article_list.html">
+                    <input type="text" hidden name="search" value="1">
+                    <input class="form-control me-2" type="search" placeholder="제목과 내용으로 검색" aria-label="Search"
+                        id="searchNav" name="selector">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
             </div>

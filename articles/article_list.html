@@ -46,7 +46,7 @@
                 <p>-레시피의 바다를 누비세요</p>
                 <div class="mt-10 input-group" id="search_input">
 
-                    <select class="form-select" id="search_type">
+                    <select class="form-select" id="search_type" name="search">
                         <option selected value="?search=1">제목+내용 검색</option>
                         <option value="?search=1&recipe=true">레시피만 검색</option>
                         <option value="?search=0">작성자로 검색</option>
@@ -56,9 +56,10 @@
                     </select>
 
 
-                    <input type="text" class="form-control" id="selector" placeholder="검색어를 입력해주세요">
+                    <input name="selector" type="text" class="form-control" onkeypress="onEnter(event)" id="selector"
+                        placeholder="검색어를 입력해주세요">
 
-                    <button class="col-md-1 btn btn-outline-primary" onclick="search()">검색</button>
+                    <button type="button" class="col-md-1 btn btn-outline-primary" onclick="search_()">검색</button>
                 </div>
 
             </div>
