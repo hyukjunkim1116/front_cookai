@@ -74,19 +74,6 @@ function checkNotLogin() {
 		window.location.replace(`${FRONT_BASE_URL}/`);
 	}
 }
-// token 만료되면 로그인페이지로 이동
-function checkTokenExp() {
-	const payload = localStorage.getItem("payload");
-	let current_time = String(new Date().getTime()).substring(0, 10);
-	if (payload) {
-		const payload_parse = JSON.parse(payload).exp;
-		if (payload_parse < current_time) {
-			handleLogout();
-		} else {
-			return;
-		}
-	}
-}
 
 // 로그아웃
 function handleLogout() {

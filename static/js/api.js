@@ -585,3 +585,42 @@ async function getTagList(selector) {
 	const response = await fetch(`${BACKEND_BASE_URL}/articles/tags/${query}`);
 	return response;
 }
+
+// token 만료되면 access토큰 이용하여 재로그인
+async function checkTokenExp() {
+	const payload = localStorage.getItem("payload");
+	const refresh = localStorage.getItem("refresh");
+	let current_time = String(new Date().getTime()).substring(0, 10);
+	if (payload) {
+		const payload_parse = JSON.parse(payload).exp;
+		if (payload_parse < current_time) {
+			localStorage.removeItem("payload");
+			localStorage.removeItem("access");
+			localStorage.removeItem("refresh");
+			const response = await fetch(`${BACKEND_BASE_URL}/users/token/refresh/`, {
+				method: "POST",
+				headers: { "content-type": "application/json" },
+				body: JSON.stringify({
+					refresh: refresh
+				})
+			});
+			const response_json = await response.json();
+			localStorage.setItem("access", response_json.access);
+			localStorage.setItem("refresh", response_json.refresh);
+
+			const base64Url = response_json.access.split(".")[1];
+			const base64 = base64Url.replace(/-/g, "+");
+			const jsonPayload = decodeURIComponent(
+				atob(base64)
+					.split("")
+					.map(function (c) {
+						return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+					})
+					.join("")
+			);
+			localStorage.setItem("payload", jsonPayload);
+		} else {
+			return;
+		}
+	}
+}
