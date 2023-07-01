@@ -1,4 +1,5 @@
 window.onload = async function (){
+	checkTokenExp();
 	await injectNavbar()
 	await injectfooter()
 	await loaderFunction()
