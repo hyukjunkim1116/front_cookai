@@ -256,7 +256,7 @@ async function deleteArticleBtn(articleId){
         alert(response.status)
     }
 }
-window.onload = async function() {
+async function loaderFunction() {
     const urlParams = new URLSearchParams(window.location.search);
     articleId = urlParams.get('article_id');
     

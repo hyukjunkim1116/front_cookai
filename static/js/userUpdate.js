@@ -75,7 +75,7 @@ const preview = document.getElementById("file");
 preview.addEventListener("change", (event) => {
 	setThumbnail(event);
 });
-window.onload = async function () {
+async function loaderFunction() {
 	checkLogin();
 	await loadUserData();
 };

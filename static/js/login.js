@@ -25,6 +25,6 @@ async function handleLoginBtn() {
 		alert("회원정보가 일치하지 않습니다!");
 	}
 }
-window.onload = async function () {
+async function loaderFunction() {
 	checkLogin();
 };

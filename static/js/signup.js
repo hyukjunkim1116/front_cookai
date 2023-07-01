@@ -72,6 +72,6 @@ async function handleSignUp() {
 		alert("비밀번호가 일치하지 않습니다.");
 	}
 }
-window.onload = function () {
+async function loaderFunction() {
 	checkLogin();
 };

@@ -108,7 +108,7 @@ function goUpdateUser() {
 	user_id = payload_parse.user_id;
 	window.location.href = `${FRONT_BASE_URL}/users/user_update.html?user_id=${user_id}`;
 }
-window.onload = async function () {
+async function loaderFunction() {
 	await loadUserDetail();
 	await loadUserFridge();
 	await loadUserArticle();

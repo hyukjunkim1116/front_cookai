@@ -35,22 +35,7 @@ async function getNaverToken(naver_code, state) {
 	response_json = await response.json();
 	setLocalStorage(response);
 }
-if (localStorage.getItem("payload")) {
-} else if (location.href.split("=")[1]) {
-	let code = new URLSearchParams(window.location.search).get("code");
-	let state = new URLSearchParams(window.location.search).get("state");
-	let hashParams = new URLSearchParams(window.location.hash.substr(1));
-	let google_token = hashParams.get("access_token");
-	if (code) {
-		if (state) {
-			getNaverToken(code, state);
-		} else {
-			getKakaoToken(code);
-		}
-	} else if (google_token) {
-		getGoogleToken(google_token);
-	}
-}
+
 // 받아온 토큰을 로컬 스토리지에 저장
 // 에러 발생 시, 에러 문구를 띄워주고 이전 페이지(로그인페이지)로
 function setLocalStorage(response) {
@@ -87,3 +72,22 @@ function setLocalStorage(response) {
 // aiRecommBtn.addEventListener("click", () => {
 // 	window.location.href=`${FRONT_BASE_URL}/users/feed.html`;
 // });
+
+async function loaderFunction(){
+	if (localStorage.getItem("payload")) {
+	} else if (location.href.split("=")[1]) {
+		let code = new URLSearchParams(window.location.search).get("code");
+		let state = new URLSearchParams(window.location.search).get("state");
+		let hashParams = new URLSearchParams(window.location.hash.substr(1));
+		let google_token = hashParams.get("access_token");
+		if (code) {
+			if (state) {
+				getNaverToken(code, state);
+			} else {
+				getKakaoToken(code);
+			}
+		} else if (google_token) {
+			getGoogleToken(google_token);
+		}
+	}
+}
