@@ -28,17 +28,19 @@
 
         <div class="card">
             <div class="card-body">
-                <h4 id="title" class="card-title">게시글 제목</h4>
-                <h5 id="author" class="text-muted text-end mb-3"><a href="#">사용자 이름</a></h5>
-                <img id="thumbnail" src="#" class="card-img-top" alt="게시글 관련 이미지" />
                 <p class="card-text">
 
                     <small id="category">카테고리: <a href="article_list.html?category=1"></a></small>
                 </p>
+                <h3 id="title" class="fs-2">게시글 제목</h3>
+                <h5 class="text-end mb-3">작성자:<a id="author" class="badge bg-primary" href="#">사용자이름</a></h5>
                 <p class="card-text">
                     <small id="created_at" class="text-muted"></small><br>
                     <small id="updated_at" class="text-muted"></small>
                 </p>
+                <img id="thumbnail" src="#" class="card-img-top" alt="게시글 관련 이미지" />
+
+
 
 
                 <p id="content" class="card-text">
@@ -57,7 +59,7 @@
             <div class="card">
                 <div class="card-body">
                     <p class="card-text">
-                    <h5 class="card-title">재료</h5>
+                    <h5 class="fs-4">재료</h5>
                     <table class="table">
                         <thead>
                             <tr>
@@ -76,7 +78,7 @@
         <div id="recipe_box" class="card">
             <div class="card-body">
                 <p class="card-text">
-                <h5 class="card-title">조리과정</h5>
+                <h5 class="card-title fs-4">조리과정</h5>
                 <hr>
                 <div id="recipe"></div>
                 </p>
@@ -86,9 +88,8 @@
             <div class="card-body">
                 <p class="card-text">
                 <h5 class="card-title">이 재료가 필요하신가요?</h5>
-                <div class="ingredientslink_list"></div>
+                <div class="ingredientslink_list" id="ingredientslink_list"></div>
                 <hr>
-                <div id="recipe"></div>
                 </p>
             </div>
         </div>
