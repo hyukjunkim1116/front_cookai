@@ -37,7 +37,7 @@ async function injectNavbar() {
 			avatar.style.visibility = "visible";
 		} else {
 			const avatar = document.getElementById("avatar");
-			avatar.setAttribute("src", "static/img/no_avatar.png");
+			avatar.setAttribute("src", "/static/img/no_avatar.png");
 			avatar.style.visibility = "visible";
 		}
 		const intro = document.getElementById("intro");

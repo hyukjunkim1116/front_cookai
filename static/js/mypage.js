@@ -6,10 +6,16 @@ async function loadUserDetail() {
 	const avatar = document.getElementById("mypage-avatar");
 	const username = document.getElementById("username");
 	username.innerText = `${response.username}`;
+	console.log(response.avatar)
 	avatar.setAttribute(
 		"src",
-		`${response.avatar}` ? `${response.avatar}` : "static/img/no_avatar.png"
+		`${response.avatar}` ? response.avatar : "/static/img/no_avatar.png"
 	);
+	if(response.avatar ==null){
+		avatar.setAttribute(
+			"src","/static/img/no_avatar.png"
+		);
+	}
 	mypageList.appendChild(username);
 	const following = document.getElementById("following");
 	following.innerText = `팔로잉 : ${response.total_followings}`;
