@@ -559,3 +559,44 @@ async function getTagList(selector) {
 	const response = await fetch(`${BACKEND_BASE_URL}/articles/tags/${query}`);
 	return response;
 }
+async function getRecommend(recommendType){
+	const token = localStorage.getItem("access");
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/ai_process/?recommend=${recommendType}`,
+		{
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		}
+	);
+	return response;
+}
+async function getFollowArticles(userId,page=1){
+	const token = localStorage.getItem("access");
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/users/${userId}/articles/?filter=3`,
+		{
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		}
+	);
+	return response;
+
+}
+async function getUserFeedArticles(userId,filter,page=1){
+	const token = localStorage.getItem("access");
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/users/${userId}/articles/?filter=${filter}&page=${page}`,
+		{
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		}
+	);
+	return response;
+
+}

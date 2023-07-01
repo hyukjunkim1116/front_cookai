@@ -269,12 +269,12 @@ async function deleteArticleBtn(articleId) {
 		alert(response.status);
 	}
 }
-window.onload = async function () {
-	const urlParams = new URLSearchParams(window.location.search);
-	articleId = urlParams.get("article_id");
-
-	const token = localStorage.getItem("access");
-	fetchMissingIngredients(articleId, token);
+async function loaderFunction() {
+    const urlParams = new URLSearchParams(window.location.search);
+    articleId = urlParams.get('article_id');
+    
+    const token= localStorage.getItem("access")
+    fetchMissingIngredients(articleId, token);
 
 	await loadArticle();
 	await loadComments(1);

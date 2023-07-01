@@ -1,3 +1,23 @@
+
+//드롭다운 불러오기
+async function handleNavbarMode(loginUser) {
+    const loggedInItems = document.querySelectorAll('.logged-in-item');
+    const loggedOutItems = document.querySelectorAll('.logged-out-item');
+    const navbarToggler = document.querySelector(".navbar-toggler");
+
+    if (loginUser) {
+        // 로그인시 드롭다운 및 버튼 표시
+        loggedInItems.forEach(item => item.style.display = 'block');
+        loggedOutItems.forEach(item => item.style.display = 'none');
+        navbarToggler.style.display = "inline-block";
+    } else {
+        // 미로그인시 드롭다운 및 버튼 숨김
+        loggedInItems.forEach(item => item.style.display = 'none');
+        loggedOutItems.forEach(item => item.style.display = 'block');
+        navbarToggler.style.display = "none";
+    }
+}
+
 // 네비게이션 바 불러오기,
 async function injectNavbar() {
 	let navbarHtml = await fetch("/navbar.html");
@@ -30,28 +50,6 @@ async function injectNavbar() {
 		await handleNavbarMode(null);
 	}
 }
-//드롭다운 불러오기
-async function handleNavbarMode(loginUser) {
-	const loggedInItems = document.querySelectorAll(".logged-in-item");
-	const loggedOutItems = document.querySelectorAll(".logged-out-item");
-	const navbarToggler = document.querySelector(".navbar-toggler");
-	const navbarLoginBtn = document.getElementById("nav-login");
-
-	if (loginUser) {
-		// 로그인시 드롭다운 및 버튼 표시
-		loggedInItems.forEach((item) => (item.style.display = "block"));
-		loggedOutItems.forEach((item) => (item.style.display = "none"));
-		navbarToggler.style.display = "inline-block";
-		navbarLoginBtn.style.display = "none";
-	} else {
-		// 미로그인시 드롭다운 및 버튼 숨김
-		loggedInItems.forEach((item) => (item.style.display = "none"));
-		loggedOutItems.forEach((item) => (item.style.display = "block"));
-		navbarToggler.style.display = "none";
-		navbarLoginBtn.style.display = "inline-block";
-	}
-}
-
 //푸터 불러오기
 async function injectfooter() {
 	let footer = await fetch("/footer.html");
@@ -143,6 +141,7 @@ async function goMypage() {
 	user_id = payload_parse.user_id;
 	window.location.href = `${FRONT_BASE_URL}/mypage.html?user_id=${user_id}`;
 }
+
 async function goUserUpdatePage() {
 	// 인자값이 존재한다면 해당 인자값의 유저 프로필로 이동
 	const payload = localStorage.getItem("payload");
@@ -165,6 +164,6 @@ async function goUserDeletePage() {
 	user_id = payload_parse.user_id;
 	window.location.href = `${FRONT_BASE_URL}/users/user_delete.html?user_id=${user_id}`;
 }
-injectNavbar();
-injectfooter();
-checkTokenExp();
+// injectNavbar();
+// injectfooter();
+

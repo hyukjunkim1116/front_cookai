@@ -34,6 +34,7 @@
             <div class="mb-2">
                 <label for="file" class="form-label">프로필 사진</label>
                 <input name="file" type="file" class="form-control" id="file" aria-describedby="inputGroupFileAddon03"
+
                     aria-label="Upload" onchange="setThumbnail(event);">
             </div>
             <div id="image_container" style="margin: 0 auto 0 auto ; display:flex; justify-content:center;"></div>
@@ -43,6 +44,7 @@
             </div>
             </form>
             <form id="change-password-form" style="display:none">
+
                 <h3 class="text-center">비밀번호 변경하기</h3>
                 <div class="mb-2">
                     <label for="first_password" class="form-label">현재 비밀번호</label>
@@ -73,5 +75,7 @@
 <script src="/static/js/api.js"></script>
 <script src="/static/js/common.js"></script>
 <script src="/static/js/userUpdate.js"></script>
+<script defer="defer" src="/static/js/windowOnLoad.js"></script>
+
 
 </html>
