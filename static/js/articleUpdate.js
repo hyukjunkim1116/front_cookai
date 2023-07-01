@@ -28,10 +28,11 @@ async function generateUpdateFormFields(articleData) {
 
     // 태그 처리
     const tagInput = document.getElementById("article_tag");
-    tagInput.value = articleData.tags.join(', ');
+    tagInput.value = articleData.tags.join(',');
 }
 
-window.onload = async function loadUpdatePost() {
+async function loaderFunction_() {
+	console.log(window.location.pathname)
 	// 수정창에 기존 내용 보이게
     checkNotLogin();
     
@@ -80,13 +81,14 @@ window.onload = async function loadUpdatePost() {
     //     };
     //     await putApiUpdateArticle(articleId, newArticleData);
     // });
+	const updateButton = document.getElementById("update_article");
+	updateButton.addEventListener("click", (event)=>{
+		articleUpdate();
+		event.preventDefault();
+	}) 
 };
 // 업데이트 버튼 이벤트 리스너
-const updateButton = document.getElementById("update_article");
-updateButton.addEventListener("click", (event)=>{
-	articleUpdate();
-	event.preventDefault();
-}) 
+
 
 
 // // 아티클 사진 삭제
@@ -125,15 +127,15 @@ async function articleUpdate() {
 	const content = document.getElementById("article_content").value;
 	const file = document.getElementById("article_image").files[0];
 
-	const formdata = new FormData();
-	formdata.append("title", title);
-	formdata.append("content", content);
-	formdata.append("category", category);
+	var formdata ={};
+	formdata["title"]= title
+	formdata["content"]= content
+	formdata["category"]= category
 
 	
 	if (file) {
 		const responseURL = await fetch(
-			`${backend_base_url}/api/medias/photos/get-url/`,
+			`${BACKEND_BASE_URL}/articles/get-url/`,
 			{
 				method: "POST"
 			}
@@ -149,7 +151,7 @@ async function articleUpdate() {
 			});
 			const results = await responseRealURL.json();
 			const realFileURL = results.result.variants[0];
-			formdata.append("image",realFileURL)
+			formdata["image"]=realFileURL
 		}
 	//재료 수정 및 삭제 및 새로 작성 여부
 	const updateOrDelete_=Object.entries(updateOrDelete)
@@ -183,6 +185,11 @@ async function articleUpdate() {
 					method: "PUT"
 				}
 			);
+			if (ingredientPutResponse.status==200){
+				console.log("OK")
+			}else{
+				console.log(await ingredientPutResponse.json())
+			}
 			
 		}
 		
@@ -194,10 +201,10 @@ async function articleUpdate() {
 			if(!title) continue;
 			let ingredientTitle=title.value
 			let ingredientQuantity = document.getElementById(
-				`ingredient-amount-${i}`
+				`ingredient-amount-${j}`
 			).value;
 			let ingredientUnit = document.getElementById(
-				`ingredient-unit-${i}`
+				`ingredient-unit-${j}`
 			).value;
 			const ingredientResponse = await fetch(
 				`${BACKEND_BASE_URL}/articles/${articleId}/recipeingredient/`,
@@ -207,13 +214,18 @@ async function articleUpdate() {
 						"content-type": "application/json"
 					},
 					body: JSON.stringify({
-						ingredient: ingredientTitle.value,
+						ingredient: ingredientTitle,
 						ingredient_quantity: ingredientQuantity,
 						ingredient_unit: ingredientUnit
 					}),
 					method: "POST"
 				}
 			);
+			if(ingredientResponse.status ==200){
+				console.log("add OK")
+			}else{
+				console.log(await ingredientResponse.json())
+			}
 		}
 	}
 	
@@ -242,13 +254,15 @@ async function articleUpdate() {
 			image.setAttribute("id", `recipe-url-${id}`);
 		}
 	});
-	formdata.append("recipe",document.getElementById("recipe_container").outerHTML)
+	formdata["recipe"]=document.getElementById("recipe_container").outerHTML
 	var tags = document.getElementById("article_tag").value
 	if(tags.trim()!==""){
-		var tagsList=tags.replace(/,[\s]*,/g,",").split(",");
-		var last =tagsList.pop()
-		if(last!='') tagsList +=[last]
-		formdata.append("tags",tagsList)
+		var tagsCleaned=tags.trim().replace(/,[\s]*,/g,",").replace(/^,/g,"").replace(/,$/g,"")
+		console.log(tagsCleaned)
+		let tagsList= tagsCleaned.split(",");
+		console.log(tagsList)
+		alert("123")
+		formdata["tags"]=tagsList
 	}
 
 
@@ -256,8 +270,8 @@ async function articleUpdate() {
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/articles/${articleId}/`,
 		{
-		headers: {Authorization: `Bearer ${token}`},
-		body: formdata,
+		headers: {Authorization: `Bearer ${token}`,"content-type": "application/json"},
+		body: JSON.stringify(formdata),
 		method: "PUT"
 		}
 	);
@@ -266,7 +280,7 @@ async function articleUpdate() {
 			location.href=`${FRONT_BASE_URL}/articles/article_detail.html?article_id=${articleId}`;
 		} else {
 			alert("글 수정 실패!");
-			
+			console.log(await response.json())
 		}
 	}
 

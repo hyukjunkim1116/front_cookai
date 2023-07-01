@@ -73,7 +73,13 @@ async function putUserDetail() {
 		}
 	}
 }
-window.onload = async function () {
-	checkNotLogin();
+
+
+async function loaderFunction() {
+	checkLogin();
+  const preview = document.getElementById("file");
+  preview.addEventListener("change", (event) => {
+	setThumbnail(event);
+  });
 	await loadUserData();
 };

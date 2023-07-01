@@ -586,6 +586,7 @@ async function getTagList(selector) {
 	return response;
 }
 
+
 // token 만료되면 access토큰 이용하여 재로그인
 async function checkTokenExp() {
 	const payload = localStorage.getItem("payload");
@@ -624,3 +625,46 @@ async function checkTokenExp() {
 		}
 	}
 }
+
+async function getRecommend(recommendType){
+	const token = localStorage.getItem("access");
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/ai_process/?recommend=${recommendType}`,
+		{
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		}
+	);
+	return response;
+}
+async function getFollowArticles(userId,page=1){
+	const token = localStorage.getItem("access");
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/users/${userId}/articles/?filter=3`,
+		{
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		}
+	);
+	return response;
+
+}
+async function getUserFeedArticles(userId,filter,page=1){
+	const token = localStorage.getItem("access");
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/users/${userId}/articles/?filter=${filter}&page=${page}`,
+		{
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		}
+	);
+	return response;
+
+}
+

@@ -3,14 +3,11 @@
 var query =``
 var category = ``
 var order = ``
-var category_state=1
-var order_state=1
-var tag_state=1
 async function loadArticleList(page=1) {
 	document.getElementById("categoryArticleBox").hidden=false
 	const newCardBox = document.getElementById("card-box")
-	console.log(newCardBox)
 	const response= await getArticleList(query+category+order,page)
+	// console.log(await response.json())
 	const response_json=await response.json()
 	for (const article of response_json.results) {
         // 새로운 div 요소를 생성하고, class 속성을 "card"로 설정합니다.
@@ -20,7 +17,7 @@ async function loadArticleList(page=1) {
 		newCard.setAttribute("class", "card");
 		newCard.setAttribute("onclick", `location.href="${FRONT_BASE_URL}/articles/article_detail.html?article_id=${article.id}"`);
 		newCard.setAttribute("id", article.id);
-		newCardBox.appendChild(newCard);
+		
 		const image = response_json.image
 
         // 게시물의 대표 이미지를 생성하고, 생성한 이미지를 카드에 추가합니다.
@@ -36,14 +33,13 @@ async function loadArticleList(page=1) {
 				"https://cdn11.bigcommerce.com/s-1812kprzl2/images/stencil/original/products/426/5082/no-image__12882.1665668288.jpg?c=2"
 			);
 		}
-		articleimage.setAttribute("onclick", `uploadPhoto(${article.pk})`);
 		newCard.appendChild(articleimage);
 
         // 카드의 본문 생성.
 		const newCardBody = document.createElement("div");
 		newCardBody.setAttribute("class", "card-body");
 
-		newCard.appendChild(newCardBody);
+		
 
         // 카드의 제목 생성. 
 		const newCardTitle = document.createElement("h6");
@@ -67,6 +63,8 @@ async function loadArticleList(page=1) {
 		newCardtime.setAttribute("class", "card-text");
 		newCardtime.innerText = article.created_at.split(".")[0].slice(2,-3).replace("T"," ");
 		newCardBody.appendChild(newCardtime);
+		newCard.appendChild(newCardBody);
+		newCardBox.appendChild(newCard);
 		
 	};
 	
@@ -96,8 +94,7 @@ async function loadTagList(selector){
 	const response_json= await response.json()
 	document.getElementById("categoryArticleBox").hidden = true
 	const tagList=document.getElementById("tagList")
-	tagList.setAttribute("class","scrolling-wrapper row flex-row flex-nowrap mt-4 pb-4 pt-2")
-	tagList.innerHTML +=`<div id="tags" class="btn-group" role="group" aria-label="Basic radio toggle button group"></div>`
+	tagList.innerHTML +=`<div class="scrolling-wrapper row flex-row flex-nowrap mt-4 pb-4 pt-2"><div id="tags" class="btn-group" role="group" aria-label="Basic radio toggle button group"></div></div>`
 	const tags=document.getElementById("tags")
 	tags.innerHTML =``
 	var name_list=[]
@@ -105,7 +102,7 @@ async function loadTagList(selector){
 		console.log(tag)
 		if (!name_list.includes(tag.name)){
 			tags.innerHTML += `<input type="radio" class="btn-check" name="tag" id="tag_${tag.id}" autocomplete="off">
-		<label class="btn btn-outline-primary" for="tag_${tag.id}" onclick="searchByTag(${tag.name})">${tag.name}</label>`
+		<label class="btn btn-outline-primary text-nowrap" for="tag_${tag.id}" onclick="searchByTag(${tag.name})">${tag.name}</label>`
 			name_list +=[tag.name]
 		}
 		
@@ -141,7 +138,7 @@ async function search(){
 		return 0
 	}
 	await loadFrame()
-	loadArticleList()
+	await loadArticleList()
 	
 
 }
@@ -157,7 +154,7 @@ async function categoryQueryString(categoryId,name){
 		}
 	}
 	await loadFrame()
-	loadArticleList()
+	await loadArticleList()
 	const categotyTitle=document.getElementById("category_title")
 	categotyTitle.innerText=`카테고리:${name}`
 
@@ -172,7 +169,7 @@ async function orderQueryString(orderOption){
 		order = `&order=${orderOption}`
 	}
 	await loadFrame()
-	loadArticleList()
+	await loadArticleList()
 }
 
 async function loadCategory(){
@@ -184,19 +181,20 @@ async function loadCategory(){
 	<label class="btn btn-outline-primary" for="btnradio0" onclick="categoryQueryString(0,'전체')">ALL</label>`
 	response_json.forEach((category_) => {
 		categoryBox.innerHTML +=`<input type="radio" class="btn-check" name="btnradio" id="btnradio${category_.id}" autocomplete="off">
-	<label class="btn btn-outline-primary" for="btnradio${category_.id}" onclick="categoryQueryString(${category_.id},'${category_.name}')">${category_.name}</label>`
+	<label class="btn btn-outline-primary text-nowrap" for="btnradio${category_.id}" onclick="categoryQueryString(${category_.id},'${category_.name}')">${category_.name}</label>`
 	});
 }
 async function searchByTag(tagname){
 	query=`?search=4&selector=${tagname}`
 	await loadFrame()
-	loadArticleList()
+	await loadArticleList()
 }
 // 페이지 로드 시 게시글을 가져오도록 호출합니다
-window.onload = async function () {
+async function loaderFunction() {
+	await resetTag()
 	await loadFrame()
-	loadCategory();
-	loadArticleList();
+	await loadCategory();
+	await loadArticleList();
 	const SelectOrderBtn = document.createElement("div")
 		SelectOrderBtn.setAttribute("id","selectorder")
 		SelectOrderBtn.setAttribute("class","btn-group mb-3")

@@ -11,7 +11,7 @@ body {
     font-family: 'Pretendard-Regular', sans-serif;
     width: 375px;
     height: 100%;
-    margin: 0 auto;
+    margin: 0 auto 0 auto;
     background-color: white;
     padding-top: 86px;
     padding-bottom: 60px;
@@ -30,9 +30,6 @@ body {
     display:contents;
     justify-content: center;
     min-height: auto;
-
-
-
 }
 
 .main-img {

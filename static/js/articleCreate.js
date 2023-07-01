@@ -104,6 +104,7 @@ const handleAddRecipe = () => {
 	recipeNumber++;
 };
 async function postArticle() {
+	console.log("sasdf")
 	const uploadBtn = document.getElementById("submit-article");
 	uploadBtn.innerText = "";
 	const span = document.createElement("span");
@@ -130,10 +131,10 @@ async function postArticle() {
 		category: categoryValue
 	}
 	if(tags.trim()!==""){
-		var tagsList=tags.replace(/,[\s]*,/g,",").split(",");
-		var last =tagsList.pop()
-		if(last!='') tagsList +=[last]
+		var tagsList=tags.trim().replace(/,[\s]*,/g,",").replace(/^,/g,"").replace(/,$/g,"").split(",");
+		console.log(tagsList)
 		data["tags"]=tagsList
+		alert("123")
 	}
 	if (file) {
 		const responseURL = await fetch(`${BACKEND_BASE_URL}/articles/get-url/`, {
@@ -205,19 +206,7 @@ async function postArticle() {
 	
 		
 }
-const addIngredientButton = document.getElementById("add-ingredient");
-addIngredientButton.addEventListener("click", () => {
-	handleAddIngredient();
-});
-const addRecipeButton = document.getElementById("add-recipe");
-addRecipeButton.addEventListener("click", () => {
-	handleAddRecipe();
-});
-const submitArticleButton = document.getElementById("submit-article");
-if(submitArticleButton){submitArticleButton.addEventListener("click", (event) => {
-	postArticle();
-	event.preventDefault();
-});}
+
 const deleteRecipeDiv = async(id, event) => {
 	const recipeDiv = document.getElementById(`recipe-${id}`);
 	recipeDiv.remove();
@@ -232,8 +221,21 @@ const deleteIngredientDiv = (id, event) => {
 	ingredientDiv.remove();
 	event.preventDefault();
 };
-window.onload = async function () {
+async function loaderFunction() {
 	checkNotLogin();
-	forceLogout();
-	setCategory();
+	// forceLogout();
+	await setCategory();
+	const addIngredientButton = document.getElementById("add-ingredient");
+	addIngredientButton.addEventListener("click", () => {
+		handleAddIngredient();
+	});
+	const addRecipeButton = document.getElementById("add-recipe");
+	addRecipeButton.addEventListener("click", () => {
+		handleAddRecipe();
+	});
+	const submitArticleButton = document.getElementById("submit-article");
+	if(submitArticleButton){submitArticleButton.addEventListener("click", (event) => {
+		postArticle();
+		event.preventDefault();
+	});}
 };
