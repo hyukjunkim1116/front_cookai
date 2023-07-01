@@ -176,11 +176,11 @@ async function deleteUser() {
 	}
 }
 
-async function getUserArticle() {
+async function getUserArticle(currentPage = 1) {
 	let token = localStorage.getItem("access");
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const response = await fetch(
-		`${BACKEND_BASE_URL}/users/${userId}/articles/`,
+		`${BACKEND_BASE_URL}/users/${userId}/articles/?page=${currentPage}`,
 		{
 			headers: {
 				Authorization: `Bearer ${token}`
@@ -191,11 +191,26 @@ async function getUserArticle() {
 
 	return response.json();
 }
-async function getUserComment() {
+async function getUserComment(currentCommentPage = 1) {
 	let token = localStorage.getItem("access");
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const response = await fetch(
-		`${BACKEND_BASE_URL}/users/${userId}/comments/`,
+		`${BACKEND_BASE_URL}/users/${userId}/comments/?page=${currentCommentPage}`,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`
+			},
+			method: "GET"
+		}
+	);
+
+	return response.json();
+}
+async function getUserCommentsList() {
+	let token = localStorage.getItem("access");
+	const userId = new URLSearchParams(window.location.search).get("user_id");
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/users/${userId}/comments?filter=0`,
 		{
 			headers: {
 				Authorization: `Bearer ${token}`
@@ -499,55 +514,66 @@ async function getArticle(articleId) {
 }
 
 async function fetchMissingIngredients(articleId, token) {
-    const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/order/`, {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    });
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/articles/${articleId}/order/`,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		}
+	);
 
-    if (response.ok) {
-        const ingredientLinks = await response.json();
-        console.log('서버에서 반환한 JSON:', ingredientLinks);
+	if (response.ok) {
+		const ingredientLinks = await response.json();
+		console.log("서버에서 반환한 JSON:", ingredientLinks);
 
-        const ingredients = {};
+		const ingredients = {};
 
-        // 재료별로 링크 분류
-        ingredientLinks.forEach(link => {
-            if (!ingredients[link.ingredientName]) {
-                ingredients[link.ingredientName] = [];
-            }
-            ingredients[link.ingredientName].push(link);
-        });
-        
-        const missingLinksList = document.createElement('div');
-        missingLinksList.style.display = "flex";
-        missingLinksList.style.flexWrap = "wrap";
+		// 재료별로 링크 분류
+		ingredientLinks.forEach((link) => {
+			if (!ingredients[link.ingredientName]) {
+				ingredients[link.ingredientName] = [];
+			}
+			ingredients[link.ingredientName].push(link);
+		});
 
-        for (const ingredientName in ingredients) {
-            const ingredientLink = ingredients[ingredientName];
-            const randomLinks = [];
-            const length = Math.min(ingredientLink.length, 5);
+		const missingLinksList = document.createElement("div");
+		missingLinksList.style.display = "flex";
+		missingLinksList.style.flexWrap = "wrap";
 
-            for (let i = 0; i < length; i++) {
-                const randomIndex = Math.floor(Math.random() * ingredientLink.length);
-                randomLinks.push(ingredientLink[randomIndex]);
-                ingredientLink.splice(randomIndex, 1);
-            }
-            
-            randomLinks.forEach(link => {
-                const listItem = document.createElement('div');
-                listItem.style.padding = "10px";
-                listItem.innerHTML = `
-                    ${link.link ? `<a href="${link.link}" target="_blank">${link.link_img ? `<img src="${link.link_img}" style="width: 5em; height: auto;"/>` : '링크'}</a>` : ''}
+		for (const ingredientName in ingredients) {
+			const ingredientLink = ingredients[ingredientName];
+			const randomLinks = [];
+			const length = Math.min(ingredientLink.length, 5);
+
+			for (let i = 0; i < length; i++) {
+				const randomIndex = Math.floor(Math.random() * ingredientLink.length);
+				randomLinks.push(ingredientLink[randomIndex]);
+				ingredientLink.splice(randomIndex, 1);
+			}
+
+			randomLinks.forEach((link) => {
+				const listItem = document.createElement("div");
+				listItem.style.padding = "10px";
+				listItem.innerHTML = `
+                    ${
+											link.link
+												? `<a href="${link.link}" target="_blank">${
+														link.link_img
+															? `<img src="${link.link_img}" style="width: 5em; height: auto;"/>`
+															: "링크"
+												  }</a>`
+												: ""
+										}
                 `;
-                missingLinksList.appendChild(listItem);
-            });
-        }
-        const container = document.querySelector('.ingredientslink_list');
-        container.appendChild(missingLinksList);
-    } else {
-        console.error('API 요청 실패:', response.statusText);
-    }
+				missingLinksList.appendChild(listItem);
+			});
+		}
+		const container = document.querySelector(".ingredientslink_list");
+		container.appendChild(missingLinksList);
+	} else {
+		console.error("API 요청 실패:", response.statusText);
+	}
 }
 
 async function getTagList(selector) {

@@ -51,6 +51,7 @@
     font-weight: 600;
     line-height: normal;
     text-transform: capitalize;
+    margin-top: 10px;
 }
 .fridge {
     width:95%;
@@ -236,5 +237,21 @@ line-height: 1.375rem;
     font-style: normal;
     font-weight: 500;
     line-height: 0.9375rem;
+}
+.pagination {
+    display: flex;
+    padding: 0.5rem 0.75rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+.page-link {
+    cursor: pointer;
+    background: #FE6B38;
+    color: #FFF;
+    font-size: 0.8125rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.375rem;
 }
 

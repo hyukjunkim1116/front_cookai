@@ -36,42 +36,78 @@ async function loadUserFridge() {
 		});
 	}
 }
-async function loadUserArticle() {
-	const response = await getUserArticle();
-	console.log("article", response);
-	const totalArticles = document.getElementById("total_articles");
-	totalArticles.innerText = `게시글 : ${response.count}`;
+async function loadUserArticle(currentPage) {
+	const response = await getUserArticle(currentPage);
 	const articleContainer = document.getElementById("article");
+	console.log("article", response);
+	articleContainer.innerHTML = "";
+	articleContainer.innerText = "내가 쓴 글";
+	const totalArticles = document.createElement("div");
+	totalArticles.setAttribute("class", "user-detail-child");
+	totalArticles.setAttribute("id", "total_articles");
+	totalArticles.innerText = `게시글 : ${response.count}`;
+	articleContainer.appendChild(totalArticles);
 	response.results.forEach((result) => {
-		const articleContent = document.createElement(null);
+		const articleContent = document.createElement("div");
 		const articleImage = result.avatar
-			? `${result.avatar}`
+			? result.avatar
 			: "https://cdn11.bigcommerce.com/s-1812kprzl2/images/stencil/original/products/426/5082/no-image__12882.1665668288.jpg?c=2";
 		articleContent.innerHTML = `
-		<div id="article-container" class="article-container" onclick="location.href='${FRONT_BASE_URL}/articles/article_detail.html?article_id=${result.id}'" style="cursor:pointer">
+		<div id="article-container" class="article-container" onclick="location.href='${FRONT_BASE_URL}/articles/article_detail.html?article_id=${
+			result.id
+		}'" style="cursor:pointer">
 					<img id="article-image" class="article-image" src=${articleImage}/>
                     <div id="article-content" class="article-content">
-                        <div id="article-content__title" class="article-content__title">${result.title}</div>
-                        <div id="article-content__user" class="article-content__user">${result.user}</div>
+                        <div id="article-content__title" class="article-content__title">${result.title.slice(
+													0,
+													15
+												)}...</div>
+                        <div id="article-content__user" class="article-content__user">${
+													result.user
+												}</div>
                         <div id="article-content-count" class="article-content-count">
-                            <div id="article-content__likes_count" class="article-content__likes_count"><i class="bi bi-heart-fill"></i> ${result.likes_count}</div>
-                            <div id="article-content__comments_count" class="article-content__comments_count">댓글 수: ${result.comments_count}</div>
-                            <div id="article-content__edit" class="article-content__edit" onclick="location.href='${FRONT_BASE_URL}/articles/article_update.html?article_id=${result.id}'" style="cursor:pointer">수정하기</div>
+                            <div id="article-content__likes_count" class="article-content__likes_count"><i class="bi bi-heart-fill"></i> ${
+															result.likes_count
+														}</div>
+                            <div id="article-content__comments_count" class="article-content__comments_count">댓글 수: ${
+															result.comments_count
+														}</div>
+                            <div id="article-content__edit" class="article-content__edit" onclick="location.href='${FRONT_BASE_URL}/articles/article_update.html?article_id=${
+			result.id
+		}'" style="cursor:pointer">수정하기</div>
                         </div>
                     </div>
 					</div>
 		`;
 		articleContainer.appendChild(articleContent);
 	});
+	const pagination = document.createElement("div");
+	pagination.setAttribute("class", "pagination");
+	pagination.innerHTML = "";
+
+	const pageCount = response.count / 4 + 1;
+	for (i = 1; i < pageCount; i++) {
+		const newPageLink = document.createElement("div");
+		newPageLink.setAttribute("class", "page-link");
+		newPageLink.setAttribute("onclick", `loadUserArticle(${i})`);
+		newPageLink.innerText = i;
+		pagination.append(newPageLink);
+		articleContainer.appendChild(pagination);
+	}
 }
-async function loadUserComment() {
-	const response = await getUserComment();
-	console.log("comment", response);
-	const totalComments = document.getElementById("total_comments");
-	totalComments.innerText = `댓글 : ${response.count}`;
+async function loadUserComment(currentCommentPage) {
+	const response = await getUserComment(currentCommentPage);
 	const commentContainer = document.getElementById("comment");
+	commentContainer.innerHTML = "";
+	commentContainer.innerText = "내가 쓴 댓글";
+	console.log("comment", response);
+	const totalComments = document.createElement("div");
+	totalComments.innerText = `댓글 : ${response.count}`;
+	totalComments.setAttribute("class", "user-detail-child");
+	totalComments.setAttribute("id", "total_comments");
+	commentContainer.appendChild(totalComments);
 	response.results.forEach((result) => {
-		const commentContent = document.createElement(null);
+		const commentContent = document.createElement("div");
 		commentContent.innerHTML = `
 				<div class="comment-container" id="comment-container">
                     <div class="comment-text" id="comment-text">내용 : ${result.comment.slice(
@@ -96,6 +132,19 @@ async function loadUserComment() {
 	`;
 		commentContainer.appendChild(commentContent);
 	});
+	const commentPagination = document.createElement("div");
+	commentPagination.setAttribute("class", "pagination");
+	commentPagination.innerHTML = "";
+
+	const pageCount = response.count / 4 + 1;
+	for (i = 1; i < pageCount; i++) {
+		const newPageLink = document.createElement("div");
+		newPageLink.setAttribute("class", "page-link");
+		newPageLink.setAttribute("onclick", `loadUserComment(${i})`);
+		newPageLink.innerText = i;
+		commentPagination.append(newPageLink);
+		commentContainer.appendChild(commentPagination);
+	}
 }
 // async function loadUserFollowing() {
 // 	const response = await getUserFollowing();
