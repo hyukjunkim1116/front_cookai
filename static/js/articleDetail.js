@@ -34,7 +34,7 @@ async function loadArticle() {
 		}
 
 		articleCategory.innerHTML = `카테고리: <a href="${FRONT_BASE_URL}/articles/article_list.html?category=${response_json.category}">${response_json.categoryname}</a>`;
-		articleAuthor.innerHTML = `<a href="${FRONT_BASE_URL}/users/user_detail.html?user_id=${response_json.author}">${response_json.user}</a>`;
+		articleAuthor.innerHTML = `<a href="${FRONT_BASE_URL}/profile.html?user_id=${response_json.author}">${response_json.user}</a>`;
 		var temp_html = ``;
 		response_json.tags.forEach((tag) => {
 			temp_html += `<span class="badge bg-secondary" onclick=location.href="${FRONT_BASE_URL}/articles/article_list.html?search=4&selector=${tag}">${tag}</span>`;
@@ -161,7 +161,7 @@ async function loadComments(comment_page = 1) {
 	response.results.forEach((comment) => {
 		commentList.innerHTML += `
         <div class="card-text">
-        <small><a href="${FRONT_BASE_URL}/users/user_detail.html?user_id=${
+        <small><a href="${FRONT_BASE_URL}/profile.html?user_id=${
 			comment.author
 		}">${comment.user}</a>, ${comment.updated_at
 			.split(".")[0]
@@ -270,12 +270,12 @@ async function deleteArticleBtn(articleId) {
 	}
 }
 async function loaderFunction() {
-    const urlParams = new URLSearchParams(window.location.search);
-    articleId = urlParams.get('article_id');
-    
-    const token= localStorage.getItem("access")
-    fetchMissingIngredients(articleId, token);
+	const urlParams = new URLSearchParams(window.location.search);
+	articleId = urlParams.get("article_id");
+
+	const token = localStorage.getItem("access");
+	fetchMissingIngredients(articleId, token);
 
 	await loadArticle();
 	await loadComments(1);
-};
+}

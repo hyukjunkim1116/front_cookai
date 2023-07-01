@@ -1,47 +1,39 @@
-checkNotLogin();
 async function loadUserDetail() {
-	const response = await getLoginUser();
-	console.log(response);
-	const mypageList = document.getElementById("mypage");
+	const userResponse = await getUserDetail();
+	const followingList = await getUserFollowing();
+	console.log(followingList);
+	console.log(userResponse);
 	const avatar = document.getElementById("mypage-avatar");
 	const username = document.getElementById("username");
-	username.innerText = `${response.username}`;
+	username.innerText = `${userResponse.username}`;
 	avatar.setAttribute(
 		"src",
-		response.avatar ? response.avatar : "static/img/no_avatar.png"
+		userResponse.avatar ? userResponse.avatar : "/static/img/no_avatar.png"
 	);
-	mypageList.appendChild(username);
-	const following = document.getElementById("following");
-	following.innerText = `팔로잉 : ${response.total_followings}`;
-	const follower = document.getElementById("follower");
-	follower.innerText = `팔로워 : ${response.total_followers}`;
-	const bookmark = document.getElementById("bookmark-article");
-	bookmark.innerText = `북마크한 게시글 : ${response.total_bookmark_articles}`;
-	const likeArticle = document.getElementById("like-article");
-	likeArticle.innerText = `좋아요 누른 게시글 : ${response.total_like_articles}`;
-	const likeComment = document.getElementById("like-comment");
-	likeComment.innerText = `좋아요 누른 댓글 : ${response.total_like_comments}`;
-}
-async function loadUserFridge() {
-	const response = await getUserFridge();
-	console.log(response);
-	const userFridgeContent = document.getElementById("fridge-content");
-	if (response !== []) {
-		response.forEach((fridge) => {
-			const newUserFridge = document.createElement("div");
-			newUserFridge.setAttribute("class", "fridge-ingredient");
-			newUserFridge.setAttribute("id", `fridge-${fridge.id}`);
-			newUserFridge.innerHTML = `${fridge.ingredient} <div onclick="deleteUserFridge(${fridge.id})"><i style="cursor:pointer;" class="bi bi-x"></i></div>`;
-			userFridgeContent.appendChild(newUserFridge);
-		});
+	const followBtn = document.getElementById("following-btn");
+	if (userResponse.id in followingList) {
+		followBtn.innerText = "Unfollow";
+	} else {
+		followBtn.innerText = "Follow";
 	}
+	const following = document.getElementById("following");
+	following.innerText = `팔로잉 : ${userResponse.total_followings}`;
+	const follower = document.getElementById("follower");
+	follower.innerText = `팔로워 : ${userResponse.total_followers}`;
+	const bookmark = document.getElementById("bookmark-article");
+	bookmark.innerText = `북마크한 게시글 : ${userResponse.total_bookmark_articles}`;
+	const likeArticle = document.getElementById("like-article");
+	likeArticle.innerText = `좋아요 누른 게시글 : ${userResponse.total_like_articles}`;
+	const likeComment = document.getElementById("like-comment");
+	likeComment.innerText = `좋아요 누른 댓글 : ${userResponse.total_like_comments}`;
 }
 async function loadUserArticle(currentPage) {
+	const userResponse = await getUserDetail();
 	const response = await getUserArticle(currentPage);
 	const articleContainer = document.getElementById("article");
 	console.log("article", response);
 	articleContainer.innerHTML = "";
-	articleContainer.innerText = "내가 쓴 글";
+	articleContainer.innerText = `${userResponse.username}의 글`;
 	const totalArticles = document.createElement("div");
 	totalArticles.setAttribute("class", "user-detail-child");
 	totalArticles.setAttribute("id", "total_articles");
@@ -96,10 +88,11 @@ async function loadUserArticle(currentPage) {
 	}
 }
 async function loadUserComment(currentCommentPage) {
+	const userResponse = await getUserDetail();
 	const response = await getUserComment(currentCommentPage);
 	const commentContainer = document.getElementById("comment");
 	commentContainer.innerHTML = "";
-	commentContainer.innerText = "내가 쓴 댓글";
+	commentContainer.innerText = `${userResponse.username}의 댓글`;
 	console.log("comment", response);
 	const totalComments = document.createElement("div");
 	totalComments.innerText = `댓글 : ${response.count}`;
@@ -186,7 +179,6 @@ async function loadUserComment(currentCommentPage) {
 // await loadUserFollower();
 async function loaderFunction() {
 	await loadUserDetail();
-	await loadUserFridge();
 	await loadUserArticle();
 	await loadUserComment();
 }
