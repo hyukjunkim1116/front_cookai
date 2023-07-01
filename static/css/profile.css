@@ -69,6 +69,7 @@
     line-height: normal;
     text-transform: capitalize;
     margin-top: 10px;
+    cursor: pointer;
 }
 .article {
     display: flex;
