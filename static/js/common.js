@@ -164,6 +164,3 @@ async function goUserDeletePage() {
 	user_id = payload_parse.user_id;
 	window.location.href = `${FRONT_BASE_URL}/users/user_delete.html?user_id=${user_id}`;
 }
-// injectNavbar();
-// injectfooter();
-
