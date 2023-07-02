@@ -4,6 +4,9 @@ let authorId
 
 async function loadArticle(){
     const response = await getArticleDetail(articleId);
+	if (response.status==404){
+		location.href=`${FRONT_BASE_URL}/page_not_found.html`
+	}
     const user_json = await getLoginUser()
     if(response.status == 200) {
         const response_json = await response.json()

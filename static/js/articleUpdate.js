@@ -118,6 +118,21 @@ async function loaderFunction_() {
 //아티클 업데이트 페이지 들어가면 실행되는 함수. file input은 설정 불가
 
 async function articleUpdate() {
+	const uploadBtn = document.getElementById("update_article");
+	uploadBtn.innerText = "";
+	const span = document.createElement("span");
+	span.setAttribute("id", "spinner-span");
+	span.setAttribute("class", "spinner-border spinner-border-sm");
+	span.setAttribute("role", "status");
+	span.setAttribute("aria-hidden", "true");
+	uploadBtn.appendChild(span);
+	const alertMsg=await validateInputs();
+	if(alertMsg !=""){
+		alert(alertMsg)
+		uploadBtn.innerHTML = "";
+		uploadBtn.innerText = "게시글 수정하기"
+		return 0
+	}
 	await arrangeRecipeAndUpload()
 	const token = localStorage.getItem("access")
 
@@ -280,7 +295,8 @@ async function articleUpdate() {
 			location.href=`${FRONT_BASE_URL}/articles/article_detail.html?article_id=${articleId}`;
 		} else {
 			alert("글 수정 실패!");
-			console.log(await response.json())
+			uploadBtn.innerHTML = "";
+			uploadBtn.innerText = "게시글 수정하기"
 		}
 	}
 

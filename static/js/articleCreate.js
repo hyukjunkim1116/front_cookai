@@ -1,5 +1,44 @@
 let ingredientNumber = 1;
 let recipeNumber = 1;
+async function validateInputs(){
+	var flag= true
+	var alertMsg=""
+	const all_inputs = document.querySelectorAll('input[type="text"]')
+	for(var i = 0; i< all_inputs.length;i++){
+		all_inputs[i].classList.remove('border-danger')
+		if(all_inputs[i].value == null || all_inputs[i].value.trim()==""){
+			if (all_inputs[i] ==document.getElementById("article_tag")) continue;
+			flag=false
+			all_inputs[i].classList.add('border-danger')
+		}
+	}
+	const all_textareas = document.querySelectorAll('textarea')
+	for(var i = 0; i< all_textareas.length;i++){
+		all_textareas[i].classList.remove('border-danger')
+		if(all_textareas[i].value == null || all_textareas[i].value.trim()==""){
+			flag=false
+			all_textareas[i].classList.add('border-danger')
+		}
+	}
+	const all_amounts = document.getElementsByName('ingredient-amount')
+	for(var i = 0; i< all_amounts.length;i++){
+		all_amounts[i].classList.remove('border-danger')
+		if(all_amounts[i].value == null || all_amounts[i].value<=0){
+			flag=false
+			all_amounts[i].classList.add('border-danger')
+		}
+	}
+	if(!flag) alertMsg += "1.태그를 제외한 입력칸 중 빈칸이 있거나 수량에 0보다 작거나 같은 수가 입력되었습니다.\n"
+	const select = document.getElementById("category")
+	select.classList.remove('border-danger')
+	if(!select.value) {
+		flag=false
+		alertMsg += `${alertMsg==""?1:2}.카테고리를 선택해주세요.`
+	
+	}
+	return alertMsg
+
+}
 async function arrangeRecipeAndUpload(post=true){
 	var recipe_elements = document.getElementsByName("recipe-element")
 	for(let i = 0 ; i < recipe_elements.length ; i ++){
@@ -73,17 +112,17 @@ const handleAddIngredient = () => {
 	div.classList.add("mb-3");
 	div.innerHTML = `
 	<label for="ingredient-title-${ingredientNumber}" class="form-label">재료 제목</label>
-	<input type="text" class="form-control" id="ingredient-title-${ingredientNumber}" name="ingredient-title-${ingredientNumber}" placeholder="재료 제목을 입력하세요">
+	<input type="text" class="form-control" id="ingredient-title-${ingredientNumber}" name="ingredient-title" placeholder="재료 제목을 입력하세요">
 	<label for="ingredient-amount-${ingredientNumber}" class="form-label">수량</label>
-	<input type="text" class="form-control" id="ingredient-amount-${ingredientNumber}" name="ingredient-amount-${ingredientNumber}" placeholder="수량을 입력하세요">
+	<input type="number" class="form-control" id="ingredient-amount-${ingredientNumber}" name="ingredient-amount" placeholder="수량을 입력하세요">
 	<label for="ingredient-unit-${ingredientNumber}" class="form-label">단위</label>
-	<input type="text" class="form-control" id="ingredient-unit-${ingredientNumber}" name="ingredient-unit-${ingredientNumber}" placeholder="단위를 입력하세요">
+	<input type="text" class="form-control" id="ingredient-unit-${ingredientNumber}" name="ingredient-unit" placeholder="단위를 입력하세요">
 	<button class="btn btn-primary" id="delete-ingredient-div" onclick="deleteIngredientDiv(${ingredientNumber},event)">재료 삭제하기</button>
 	`;
 
 	ingredientContainer.appendChild(div);
 	ingredientNumber++;
-	console.log(div);
+
 };
 const handleAddRecipe = () => {
 	const recipeContainer = document.getElementById("recipe_container");
@@ -104,7 +143,6 @@ const handleAddRecipe = () => {
 	recipeNumber++;
 };
 async function postArticle() {
-	console.log("sasdf")
 	const uploadBtn = document.getElementById("submit-article");
 	uploadBtn.innerText = "";
 	const span = document.createElement("span");
@@ -121,6 +159,13 @@ async function postArticle() {
 	const file = document.getElementById("article_image").files[0];
 	const recipeContainer = document.getElementById("recipe_container");
 	
+	const alertMsg= await validateInputs();
+	if (alertMsg !=""){
+		alert(alertMsg)
+		uploadBtn.innerHTML = "";
+		uploadBtn.innerText = "게시글 작성하기"
+		return 0
+	}
 	await arrangeRecipeAndUpload()
 	var recipe_html=recipeContainer.outerHTML
 	const category = document.getElementById("category");
@@ -132,7 +177,6 @@ async function postArticle() {
 	}
 	if(tags.trim()!==""){
 		var tagsList=tags.trim().replace(/,[\s]*,/g,",").replace(/^,/g,"").replace(/,$/g,"").split(",");
-		console.log(tagsList)
 		data["tags"]=tagsList
 		alert("123")
 	}
@@ -140,9 +184,9 @@ async function postArticle() {
 		const responseURL = await fetch(`${BACKEND_BASE_URL}/articles/get-url/`, {
 			method: "POST"
 		});
-		console.log(responseURL);
+
 		const dataURL = await responseURL.json();
-		console.log(dataURL);
+
 		//실제로 클라우드플레어에 업로드
 		const formData = new FormData();
 		formData.append("file", file);
@@ -152,7 +196,7 @@ async function postArticle() {
 		});
 		const results = await responseRealURL.json();
 		const realFileURL = results.result.variants[0];
-		console.log(realFileURL);
+
 		data["image"]=realFileURL;
 	}
 		const response = await fetch(`${BACKEND_BASE_URL}/articles/`, {
@@ -165,10 +209,10 @@ async function postArticle() {
 		});
 		if (response.status === 200) {
 			const articleResponse = await response.json();
-			console.log(articleResponse, articleResponse.id);
+
 			for (let i = 1; i < ingredientNumber+1; i++) {
 				let ingredientTitle = document.getElementById(`ingredient-title-${i}`);
-				console.log(ingredientTitle);
+
 				if (!ingredientTitle) continue;
 				let ingredientQuantity = document.getElementById(
 					`ingredient-amount-${i}`
@@ -192,14 +236,14 @@ async function postArticle() {
 					}
 				);
 
-				console.log(ingredientResponse);
+
 			}
 			window.location.replace(
 				`${FRONT_BASE_URL}/articles/article_detail.html?article_id=${articleResponse.id}`
 			);
 		} else {
 			alert("작성 실패!");
-			console.log( await response.json())
+
 			uploadBtn.innerHTML = "";
 			uploadBtn.innerText = "게시글 작성하기"
 		}
@@ -211,9 +255,9 @@ const deleteRecipeDiv = async(id, event) => {
 	const recipeDiv = document.getElementById(`recipe-${id}`);
 	recipeDiv.remove();
 	await arrangeRecipeAndUpload(post=false);
-	console.log(recipeNumber)
+
 	recipeNumber--;
-	console.log(recipeNumber)
+
 	event.preventDefault();
 };
 const deleteIngredientDiv = (id, event) => {

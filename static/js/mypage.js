@@ -1,6 +1,6 @@
 checkNotLogin();
 
-async function loadUserFollowing(currentFollowPage) {
+async function loadUserFollowing(currentFollowPage=1) {
 	const response = await getUserFollowList(currentFollowPage);
 	const followListResponse = await response.json();
 	const followPageList = document.getElementById("follow-page");
@@ -41,7 +41,7 @@ async function loadUserFollowing(currentFollowPage) {
 		followPageList.appendChild(pagination);
 	}
 }
-async function loadUserFollower(currentFollowPage) {
+async function loadUserFollower(currentFollowPage=1) {
 	const response = await getUserFollowList(currentFollowPage, 1);
 	const followListResponse = await response.json();
 	const followingsList = await getUserFollowing();
@@ -266,7 +266,7 @@ async function loadUserLikeComment(currentCommentPage) {
 }
 
 async function loadUserDetail() {
-	const response = await getLoginUser();
+	const response = await getUserDetail();
 	console.log(response);
 	const mypageList = document.getElementById("mypage");
 	const avatar = document.getElementById("mypage-avatar");
@@ -372,17 +372,24 @@ async function loadUserDetail() {
 }
 
 async function loadUserFridge() {
+	const userId = new URLSearchParams(window.location.search).get("user_id");
+	console.log(userId)
 	const response = await getUserFridge();
 	console.log(response);
 	const userFridgeContent = document.getElementById("fridge-content");
-	if (response !== []) {
-		response.forEach((fridge) => {
-			const newUserFridge = document.createElement("div");
-			newUserFridge.setAttribute("class", "fridge-ingredient");
-			newUserFridge.setAttribute("id", `fridge-${fridge.id}`);
-			newUserFridge.innerHTML = `${fridge.ingredient} <div onclick="deleteUserFridge(${fridge.id})"><i style="cursor:pointer;" class="bi bi-x"></i></div>`;
-			userFridgeContent.appendChild(newUserFridge);
-		});
+	if(await isYOU(userId)){
+		if (response !== []) {
+			response.forEach((fridge) => {
+				const newUserFridge = document.createElement("div");
+				newUserFridge.setAttribute("class", "fridge-ingredient");
+				newUserFridge.setAttribute("id", `fridge-${fridge.id}`);
+				newUserFridge.innerHTML = `${fridge.ingredient} <div onclick="deleteUserFridge(${fridge.id})"><i style="cursor:pointer;" class="bi bi-x"></i></div>`;
+				userFridgeContent.appendChild(newUserFridge);
+			});
+		}
+	}else{
+		const fridge_container = document.getElementById("fridge")
+		fridge_container.remove()
 	}
 }
 async function loadUserArticle(currentPage) {
@@ -390,7 +397,7 @@ async function loadUserArticle(currentPage) {
 	const articleContainer = document.getElementById("article");
 	console.log("article", response);
 	articleContainer.innerHTML = "";
-	articleContainer.innerText = "내가 쓴 글";
+	articleContainer.innerText = "작성 글";
 	const totalArticles = document.createElement("div");
 	totalArticles.setAttribute("class", "user-detail-child");
 	totalArticles.setAttribute("id", "total_articles");
@@ -448,7 +455,7 @@ async function loadUserComment(currentCommentPage) {
 	const response = await getUserComment(currentCommentPage);
 	const commentContainer = document.getElementById("comment");
 	commentContainer.innerHTML = "";
-	commentContainer.innerText = "내가 쓴 댓글";
+	commentContainer.innerText = "작성 댓글";
 	console.log("comment", response);
 	const totalComments = document.createElement("div");
 	totalComments.innerText = `댓글 : ${response.count}`;

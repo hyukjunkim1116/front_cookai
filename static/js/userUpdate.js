@@ -75,7 +75,7 @@ async function putUserDetail() {
 }
 
 async function loaderFunction() {
-	checkLogin();
+	checkNotLogin();
 	const preview = document.getElementById("file");
 	preview.addEventListener("change", (event) => {
 		setThumbnail(event);

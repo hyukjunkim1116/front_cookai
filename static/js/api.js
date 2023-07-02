@@ -149,7 +149,8 @@ async function getUserDetail() {
 		},
 		method: "GET"
 	});
-	return response.json();
+	if(response.status==404) location.href=`${FRONT_BASE_URL}/page_not_found.html`
+	return await response.json();
 }
 async function deleteUser() {
 	let token = localStorage.getItem("access");

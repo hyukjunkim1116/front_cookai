@@ -155,6 +155,29 @@ async function goUserDeletePage() {
 	}
 	const payload_parse = JSON.parse(payload);
 	console.log(payload_parse);
-	user_id = payload_parse.user_id;
+	var user_id = payload_parse.user_id;
 	window.location.href = `${FRONT_BASE_URL}/users/user_delete.html?user_id=${user_id}`;
+}
+async function getLoginedUserId(){
+	const payload = localStorage.getItem("payload");
+	if (payload == null) {
+		return 0
+	}else{
+		return payload_parse.user_id
+
+	}
+}
+async function isYOU(userId){
+	const payload = localStorage.getItem("payload");
+	if (payload == null) {
+		return false
+	}
+	const payload_parse = JSON.parse(payload);
+	console.log(payload_parse);
+	var user_id = payload_parse.user_id.toString();
+	if(userId == user_id){
+		return true
+	}else{
+		return false
+	}
 }
