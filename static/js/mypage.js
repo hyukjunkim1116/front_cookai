@@ -35,7 +35,7 @@ async function loadUserFollowing(currentFollowPage) {
 	for (i = 1; i < pageCount; i++) {
 		const newPageLink = document.createElement("div");
 		newPageLink.setAttribute("class", "page-link");
-		newPageLink.setAttribute("onclick", `loadUserBookmarkArticle(${i})`);
+		newPageLink.setAttribute("onclick", `loadUserFollowing(${i})`);
 		newPageLink.innerText = i;
 		pagination.append(newPageLink);
 		followPageList.appendChild(pagination);
@@ -87,7 +87,7 @@ async function loadUserFollower(currentFollowPage) {
 	for (i = 1; i < pageCount; i++) {
 		const newPageLink = document.createElement("div");
 		newPageLink.setAttribute("class", "page-link");
-		newPageLink.setAttribute("onclick", `loadUserBookmarkArticle(${i})`);
+		newPageLink.setAttribute("onclick", `loadUserFollower(${i})`);
 		newPageLink.innerText = i;
 		pagination.append(newPageLink);
 		followPageList.appendChild(pagination);

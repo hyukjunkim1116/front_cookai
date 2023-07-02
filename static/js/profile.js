@@ -1,3 +1,86 @@
+async function loadUserFollowing(currentFollowPage) {
+	const response = await getUserFollowList(currentFollowPage);
+	const followListResponse = await response.json();
+	const followPageList = document.getElementById("follow-page");
+	followPageList.style.display = "flex";
+	followPageList.innerHTML = "";
+	followPageList.innerText = "팔로잉 목록";
+	console.log(followListResponse);
+	if (followListResponse !== []) {
+		followListResponse.results.forEach((result) => {
+			const followList = document.createElement("div");
+			followList.setAttribute("id", "follow-list");
+			followList.setAttribute("class", "follow-list");
+			if (result.avatar) {
+				userAvatar = result.avatar;
+			} else {
+				userAvatar = "/static/img/no_avatar.png";
+			}
+			followList.innerHTML = `
+				<img id="follow-avatar" class="follow-avatar" src=${userAvatar} onclick="location.href='${FRONT_BASE_URL}/profile.html?user_id=${result.id}'" style="cursor:pointer;">
+                <div id="follow-name" class="follow-name" onclick="location.href='${FRONT_BASE_URL}/profile.html?user_id=${result.id}'" style="cursor:pointer;">${result.username}</div>
+			`;
+			followPageList.appendChild(followList);
+		});
+	}
+
+	const pagination = document.createElement("div");
+	pagination.setAttribute("class", "pagination");
+	pagination.innerHTML = "";
+
+	const pageCount = followListResponse.count / 10 + 1;
+	for (i = 1; i < pageCount; i++) {
+		const newPageLink = document.createElement("div");
+		newPageLink.setAttribute("class", "page-link");
+		newPageLink.setAttribute("onclick", `loadUserFollowing(${i})`);
+		newPageLink.innerText = i;
+		pagination.append(newPageLink);
+		followPageList.appendChild(pagination);
+	}
+}
+async function loadUserFollower(currentFollowPage) {
+	const response = await getUserFollowList(currentFollowPage, 1);
+	const followListResponse = await response.json();
+	const followingList = await getUserFollowing();
+	const followingIdList = followingList.map((item) => item.id);
+	const followPageList = document.getElementById("follow-page");
+	followPageList.style.display = "flex";
+	followPageList.innerHTML = "";
+	followPageList.innerText = "팔로워 목록";
+	console.log(followListResponse);
+	if (followListResponse !== []) {
+		followListResponse.results.forEach((result) => {
+			console.log(result.id in followingIdList ? "팔로우" : "언팔로우");
+			const followList = document.createElement("div");
+			followList.setAttribute("id", "follow-list");
+			followList.setAttribute("class", "follow-list");
+			if (result.avatar) {
+				userAvatar = result.avatar;
+			} else {
+				userAvatar = "/static/img/no_avatar.png";
+			}
+			followList.innerHTML = `
+				<img id="follow-avatar" class="follow-avatar" src=${userAvatar} onclick="location.href='${FRONT_BASE_URL}/profile.html?user_id=${result.id}'" style="cursor:pointer;">
+                <div id="follow-name" class="follow-name" onclick="location.href='${FRONT_BASE_URL}/profile.html?user_id=${result.id}'" style="cursor:pointer;">${result.username}</div>
+			`;
+
+			followPageList.appendChild(followList);
+		});
+	}
+	const pagination = document.createElement("div");
+	pagination.setAttribute("class", "pagination");
+	pagination.innerHTML = "";
+
+	const pageCount = followListResponse.count / 10 + 1;
+	for (i = 1; i < pageCount; i++) {
+		const newPageLink = document.createElement("div");
+		newPageLink.setAttribute("class", "page-link");
+		newPageLink.setAttribute("onclick", `loadUserFollower(${i})`);
+		newPageLink.innerText = i;
+		pagination.append(newPageLink);
+		followPageList.appendChild(pagination);
+	}
+}
 async function loadUserBookmarkArticle(currentPage) {
 	const userResponse = await getUserDetail();
 	const userId = new URLSearchParams(window.location.search).get("user_id");
@@ -190,8 +273,14 @@ async function loadUserDetail() {
 	}
 	const following = document.getElementById("following");
 	following.innerText = `팔로잉 : ${userResponse.total_followings}`;
+	following.addEventListener("click", () => {
+		loadUserFollowing();
+	});
 	const follower = document.getElementById("follower");
 	follower.innerText = `팔로워 : ${userResponse.total_followers}`;
+	follower.addEventListener("click", () => {
+		loadUserFollower();
+	});
 	const bookmark = document.getElementById("bookmark-article");
 	bookmark.innerText = `북마크한 게시글 : ${userResponse.total_bookmark_articles}`;
 	bookmark.addEventListener("click", () => {
@@ -318,44 +407,6 @@ async function loadUserComment(currentCommentPage) {
 		commentContainer.appendChild(commentPagination);
 	}
 }
-// async function loadUserFollowing() {
-// 	const response = await getUserFollowing();
-// 	console.log(response);
-// 	if (response !== []) {
-// 		const userFollowingTitle = document.getElementById("following-title");
-// 		const userFollowingList = document.createElement("ui");
-// 		response.forEach((following) => {
-// 			console.log(following.id);
-// 			const userFollowing = document.createElement("li");
-// 			const deleteUserFollowingBtn = document.createElement(null);
-// 			deleteUserFollowingBtn.innerHTML = `
-// 		<button type="button" class="sign-btn btn btn-outline-primary" onclick="userFollowing(${following.id})"
-//                             id="following-btn">언팔로우</button>`;
-// 			userFollowing.innerText = `${following.username}`;
-// 			userFollowing.setAttribute("class", "following");
-// 			userFollowing.setAttribute("id", `following-${following.id}`);
-// 			userFollowing.appendChild(deleteUserFollowingBtn);
-// 			userFollowingList.appendChild(userFollowing);
-// 		});
-// 		userFollowingTitle.appendChild(userFollowingList);
-// 	}
-// }
-// async function loadUserFollower() {
-// 	const response = await getUserFollower();
-// 	console.log(response);
-// 	if (response !== []) {
-// 		const userFollowingTitle = document.getElementById("follower-title");
-// 		const userFollowingList = document.createElement("ul");
-// 		response.forEach((follower) => {
-// 			const userFollowing = document.createElement("li");
-// 			userFollowing.innerText = `${follower.username}`;
-// 			userFollowingList.appendChild(userFollowing);
-// 		});
-// 		userFollowingTitle.appendChild(userFollowingList);
-// 	}
-// }
-// await loadUserFollowing();
-// await loadUserFollower();
 async function loaderFunction() {
 	await loadUserDetail();
 	await loadUserArticle();
