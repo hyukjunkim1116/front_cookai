@@ -173,7 +173,7 @@ async function loadUserLikeComment(currentCommentPage) {
 async function loadUserDetail() {
 	const userResponse = await getUserDetail();
 	const followingList = await getUserFollowing();
-	console.log(followingList);
+	const followingIdList = followingList.map((item) => item.id);
 	console.log(userResponse);
 	const avatar = document.getElementById("mypage-avatar");
 	const username = document.getElementById("username");
@@ -183,7 +183,7 @@ async function loadUserDetail() {
 		userResponse.avatar ? userResponse.avatar : "/static/img/no_avatar.png"
 	);
 	const followBtn = document.getElementById("following-btn");
-	if (userResponse.id in followingList) {
+	if (userResponse.id in followingIdList) {
 		followBtn.innerText = "Unfollow";
 	} else {
 		followBtn.innerText = "Follow";
