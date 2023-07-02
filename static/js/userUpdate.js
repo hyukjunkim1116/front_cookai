@@ -3,8 +3,20 @@ async function loadUserData() {
 	const response = await getLoginUser();
 
 	const usernameText = document.getElementById("username");
+	const genderSelect = document.getElementById("gender");
+	const BirthDate = document.getElementById("age");
+	console.log(response)
+	console.log(response.gender)
+	BirthDate.value=response.age
+	for(var i = 0;i<genderSelect.options.length;i++){
+		if(genderSelect.options[i].value==response.gender){
+			genderSelect.options[i].setAttribute("selected",true)
+		}
+	}
+
 	const changePasswordForm = document.getElementById("change-password-form");
 	usernameText.value = `${response.username}`;
+
 	if (response.login_type != "normal") {
 		changePasswordForm.style.display = "none";
 	} else {
@@ -13,6 +25,8 @@ async function loadUserData() {
 }
 // 회원정보 수정하는 함수
 async function putUserDetail() {
+	await checkTokenExp();
+
 	let token = localStorage.getItem("access");
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const username = document.getElementById("username").value;
