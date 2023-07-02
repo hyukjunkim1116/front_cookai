@@ -60,7 +60,7 @@ async function loadArticle(){
 			articleIngredients.remove();
 		}
 		var p = response_json.recipe;
-		console.log(p)
+
 		if (p != null&& p!=""&& p!=`<div id="recipe_container"></div>`) {
 			const articleRecipe = document.getElementById("recipe");
 			var p = p.replace(/<textarea[^>]*rows="3">/g, '<p class="col-sm-9">');

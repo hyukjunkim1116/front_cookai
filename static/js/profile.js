@@ -5,7 +5,7 @@ async function loadUserFollowing(currentFollowPage) {
 	followPageList.style.display = "flex";
 	followPageList.innerHTML = "";
 	followPageList.innerText = "팔로잉 목록";
-	console.log(followListResponse);
+
 	if (followListResponse !== []) {
 		followListResponse.results.forEach((result) => {
 			const followList = document.createElement("div");
@@ -45,7 +45,7 @@ async function loadUserFollower(currentFollowPage) {
 	followPageList.style.display = "flex";
 	followPageList.innerHTML = "";
 	followPageList.innerText = "팔로워 목록";
-	console.log(followListResponse);
+
 	if (followListResponse !== []) {
 		followListResponse.results.forEach((result) => {
 			const followList = document.createElement("div");
@@ -84,7 +84,7 @@ async function loadUserBookmarkArticle(currentPage) {
 	const response = await getUserFeedArticles(userId, 2, currentPage);
 	const bookmarkResponse = await response.json();
 	const articleContainer = document.getElementById("article");
-	console.log("article", bookmarkResponse);
+
 	articleContainer.innerHTML = "";
 	articleContainer.innerText = `${userResponse.username}의 북마크`;
 	const totalArticles = document.createElement("div");
@@ -144,7 +144,7 @@ async function loadUserLikeArticle(currentPage) {
 	const response = await getUserFeedArticles(userId, 1, currentPage);
 	const likeArticleResponse = await response.json();
 	const articleContainer = document.getElementById("article");
-	console.log("article", likeArticleResponse);
+
 	articleContainer.innerHTML = "";
 	articleContainer.innerText = `${userResponse.username}의 좋아요 게시글`;
 	const totalArticles = document.createElement("div");
@@ -204,7 +204,7 @@ async function loadUserLikeComment(currentCommentPage) {
 	const commentContainer = document.getElementById("comment");
 	commentContainer.innerHTML = "";
 	commentContainer.innerText = `${userResponse.username}이 좋아하는 댓글`;
-	console.log("comment", response);
+
 	const totalComments = document.createElement("div");
 	totalComments.innerText = `댓글 : ${response.count}`;
 	totalComments.setAttribute("class", "user-detail-child");
@@ -377,7 +377,7 @@ async function loadUserArticle(currentPage) {
 	const userResponse = await getUserDetail();
 	const response = await getUserArticle(currentPage);
 	const articleContainer = document.getElementById("article");
-	console.log("article", response);
+
 	articleContainer.innerHTML = "";
 	articleContainer.innerText = `${userResponse.username}의 글`;
 	const totalArticles = document.createElement("div");
@@ -437,7 +437,7 @@ async function loadUserComment(currentCommentPage) {
 	const commentContainer = document.getElementById("comment");
 	commentContainer.innerHTML = "";
 	commentContainer.innerText = `${userResponse.username}의 댓글`;
-	console.log("comment", response);
+
 	const totalComments = document.createElement("div");
 	totalComments.innerText = `댓글 : ${response.count}`;
 	totalComments.setAttribute("class", "user-detail-child");

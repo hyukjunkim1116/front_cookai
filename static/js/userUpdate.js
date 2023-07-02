@@ -1,7 +1,7 @@
 // 회원정보 미리 로드하는 함수
 async function loadUserData() {
 	const response = await getLoginUser();
-	console.log(response);
+
 	const usernameText = document.getElementById("username");
 	const changePasswordForm = document.getElementById("change-password-form");
 	usernameText.value = `${response.username}`;

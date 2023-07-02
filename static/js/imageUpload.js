@@ -16,7 +16,7 @@ async function postUserFridge(ingredient) {
 async function postUserFridgeObjDetection(){
     var result = document.getElementById("ingredient").value
     var list_result= result.split(',')
-    console.log(list_result)
+
     list_result.forEach(async(e) => {
       if(e != ""){
         postUserFridge(e)

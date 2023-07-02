@@ -72,7 +72,7 @@ async function loadCollavorativeRecommend(){
     const response = await getRecommend(0)
     const response_json = await response.json()
     if (response.status == 200){
-        console.log(response_json)
+
         await renderList(0,response_json)
     }else if(response.status == 401){
 		
@@ -87,7 +87,7 @@ async function loadContentRecommend(){
     const response = await getRecommend(1)
     const response_json = await response.json()
     if (response.status == 200){
-        console.log(response_json)
+
         await renderList(1,response_json)
     }else{}
 }
@@ -98,7 +98,7 @@ async function loadFeedArticles(queryType,page=1){
 		window.location.replace(`${FRONT_BASE_URL}/login.html`);
 	}
 	const payload_parse = JSON.parse(payload);
-	console.log(payload_parse);
+
 	user_id = payload_parse.user_id;
 	const response = await getUserFeedArticles(user_id,queryType,page)
 	const newCardBox = document.getElementById(`list_${queryType}`)

@@ -43,7 +43,7 @@ async function handleSignUp() {
 				const response_json = await response.json()
 				var list=Object.values(response_json)
 				list.forEach(element => {
-					console.log(element)
+
 					if(element[0]=='password'){
 						alertMsg +="비밀번호는 8자리이상이어야 하며 하나이상의 숫자,알파벳,특수문자(!@#$%^&*())들로 구성됩니다.\n"
 					}else{
@@ -77,7 +77,7 @@ async function handleSignUp() {
 				const response_json = await response.json()
 				var list=Object.values(response_json)
 				list.forEach(element => {
-					console.log(element)
+
 					if(element[0]=='password'){
 						alertMsg +="비밀번호는 8자리이상이어야 하며 하나이상의 숫자,알파벳,특수문자(!@#$%^&*())들로 구성됩니다.\n"
 					}else{

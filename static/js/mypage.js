@@ -7,7 +7,7 @@ async function loadUserFollowing(currentFollowPage=1) {
 	// followPageList.style.display = "flex";
 	followPageList.innerHTML = "";
 	followPageList.innerText = "팔로잉 목록";
-	console.log(followListResponse);
+
 	if (followListResponse !== []) {
 		followListResponse.results.forEach((result) => {
 			const followList = document.createElement("div");
@@ -50,7 +50,7 @@ async function loadUserFollower(currentFollowPage=1) {
 	followPageList.style.display = "flex";
 	followPageList.innerHTML = "";
 	followPageList.innerText = "팔로워 목록";
-	console.log(followListResponse);
+
 	if (followListResponse !== []) {
 		followListResponse.results.forEach((result) => {
 			const followList = document.createElement("div");
@@ -97,7 +97,7 @@ async function loadUserBookmarkArticle(currentPage) {
 	const response = await getUserFeedArticles(userId, 2, currentPage);
 	const bookmarkResponse = await response.json();
 	const articleContainer = document.getElementById("article");
-	console.log("article", bookmarkResponse);
+
 	articleContainer.innerHTML = "";
 	articleContainer.innerText = "북마크한 게시글";
 	const totalArticles = document.createElement("div");
@@ -157,7 +157,7 @@ async function loadUserLikeArticle(currentPage) {
 	const response = await getUserFeedArticles(userId, 1, currentPage);
 	const likeArticleResponse = await response.json();
 	const articleContainer = document.getElementById("article");
-	console.log("article", likeArticleResponse);
+
 	articleContainer.innerHTML = "";
 	articleContainer.innerText = "좋아요 누른 게시글";
 	const totalArticles = document.createElement("div");
@@ -217,7 +217,7 @@ async function loadUserLikeComment(currentCommentPage) {
 	const commentContainer = document.getElementById("comment");
 	commentContainer.innerHTML = "";
 	commentContainer.innerText = "좋아요 누른 댓글";
-	console.log("comment", likeCommentResponse);
+
 	const totalComments = document.createElement("div");
 	totalComments.innerText = `댓글 : ${likeCommentResponse.count}`;
 	totalComments.setAttribute("class", "user-detail-child");
@@ -267,7 +267,7 @@ async function loadUserLikeComment(currentCommentPage) {
 
 async function loadUserDetail() {
 	const response = await getUserDetail();
-	console.log(response);
+
 	const mypageList = document.getElementById("mypage");
 	const avatar = document.getElementById("mypage-avatar");
 	avatar.setAttribute(
@@ -373,9 +373,9 @@ async function loadUserDetail() {
 
 async function loadUserFridge() {
 	const userId = new URLSearchParams(window.location.search).get("user_id");
-	console.log(userId)
+
 	const response = await getUserFridge();
-	console.log(response);
+
 	const userFridgeContent = document.getElementById("fridge-content");
 	if(await isYOU(userId)){
 		if (response !== []) {
@@ -395,7 +395,7 @@ async function loadUserFridge() {
 async function loadUserArticle(currentPage) {
 	const response = await getUserArticle(currentPage);
 	const articleContainer = document.getElementById("article");
-	console.log("article", response);
+
 	articleContainer.innerHTML = "";
 	articleContainer.innerText = "작성 글";
 	const totalArticles = document.createElement("div");
@@ -456,7 +456,7 @@ async function loadUserComment(currentCommentPage) {
 	const commentContainer = document.getElementById("comment");
 	commentContainer.innerHTML = "";
 	commentContainer.innerText = "작성 댓글";
-	console.log("comment", response);
+
 	const totalComments = document.createElement("div");
 	totalComments.innerText = `댓글 : ${response.count}`;
 	totalComments.setAttribute("class", "user-detail-child");

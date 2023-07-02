@@ -131,7 +131,7 @@ async function goMypage() {
 		window.location.replace(`${FRONT_BASE_URL}/login.html`);
 	}
 	const payload_parse = JSON.parse(payload);
-	console.log(payload_parse);
+
 	user_id = payload_parse.user_id;
 	window.location.href = `${FRONT_BASE_URL}/mypage.html?user_id=${user_id}`;
 }
@@ -143,7 +143,7 @@ async function goUserUpdatePage() {
 		window.location.replace(`${FRONT_BASE_URL}/login.html`);
 	}
 	const payload_parse = JSON.parse(payload);
-	console.log(payload_parse);
+
 	user_id = payload_parse.user_id;
 	window.location.href = `${FRONT_BASE_URL}/users/user_update.html?user_id=${user_id}`;
 }
@@ -154,7 +154,7 @@ async function goUserDeletePage() {
 		window.location.replace(`${FRONT_BASE_URL}/login.html`);
 	}
 	const payload_parse = JSON.parse(payload);
-	console.log(payload_parse);
+
 	var user_id = payload_parse.user_id;
 	window.location.href = `${FRONT_BASE_URL}/users/user_delete.html?user_id=${user_id}`;
 }
@@ -173,7 +173,7 @@ async function isYOU(userId){
 		return false
 	}
 	const payload_parse = JSON.parse(payload);
-	console.log(payload_parse);
+
 	var user_id = payload_parse.user_id.toString();
 	if(userId == user_id){
 		return true

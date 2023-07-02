@@ -1,5 +1,5 @@
 //아티클 업데이트 하기
-console.log("articleUpdate.js 로드됨");
+
 let originTargets=[]
 let updateOrDelete={}
 let idToIndex={}
@@ -32,7 +32,7 @@ async function generateUpdateFormFields(articleData) {
 }
 
 async function loaderFunction_() {
-	console.log(window.location.pathname)
+
 	// 수정창에 기존 내용 보이게
     checkNotLogin();
     
@@ -201,9 +201,9 @@ async function articleUpdate() {
 				}
 			);
 			if (ingredientPutResponse.status==200){
-				console.log("OK")
+
 			}else{
-				console.log(await ingredientPutResponse.json())
+
 			}
 			
 		}
@@ -237,9 +237,9 @@ async function articleUpdate() {
 				}
 			);
 			if(ingredientResponse.status ==200){
-				console.log("add OK")
+
 			}else{
-				console.log(await ingredientResponse.json())
+
 			}
 		}
 	}
@@ -273,9 +273,9 @@ async function articleUpdate() {
 	var tags = document.getElementById("article_tag").value
 	if(tags.trim()!==""){
 		var tagsCleaned=tags.trim().replace(/,[\s]*,/g,",").replace(/^,/g,"").replace(/,$/g,"")
-		console.log(tagsCleaned)
+
 		let tagsList= tagsCleaned.split(",");
-		console.log(tagsList)
+
 		alert("123")
 		formdata["tags"]=tagsList
 	}

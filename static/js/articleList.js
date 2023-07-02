@@ -7,7 +7,7 @@ async function loadArticleList(page=1) {
 	document.getElementById("categoryArticleBox").hidden=false
 	const newCardBox = document.getElementById("card-box")
 	const response= await getArticleList(query+category+order,page)
-	// console.log(await response.json())
+
 	const response_json=await response.json()
 	for (const article of response_json.results) {
         // 새로운 div 요소를 생성하고, class 속성을 "card"로 설정합니다.
@@ -111,7 +111,7 @@ async function loadTagList(selector){
 	tags.innerHTML =``
 	var name_list=[]
 	response_json.forEach((tag) => {
-		console.log(tag)
+
 		if (!name_list.includes(tag.name)){
 			tags.innerHTML += `<input type="radio" class="btn-check" name="tag" id="tag_${tag.id}" autocomplete="off">
 		<label class="btn btn-outline-primary text-nowrap" for="tag_${tag.id}" onclick="searchByTag('${tag.name}')">${tag.name}</label>`
@@ -213,9 +213,9 @@ async function onEnter(e){
 async function loaderFunction() {
 	if(window.location.search){
 	query=window.location.search.replace(/&selector=.*$/g,"")
-	console.log(query)
+
 	const parameters = new URLSearchParams(window.location.href)
-	console.log(window.location.href)
+
 	document.getElementById("selector").value=parameters.get("selector")
 	const searchType=document.getElementById("search_type")
 
@@ -229,18 +229,18 @@ async function loaderFunction() {
 	}
 
 	await search_()
-	console.log(parameters.get("selector"))
+
 	if(window.location.search.includes("search=4")){
 		await searchByTag(`${parameters.get("selector")}`)
 		const tags = document.getElementById("tags").querySelectorAll("label")
 		tags.forEach(element => {
-			console.log(element)
+
 			if(element.innerText == parameters.get("selector")){
 				element.previousElementSibling.setAttribute("checked","true")
-				console.log("t")
+
 			}else{
 				element.previousElementSibling.checked=false
-				console.log("f")
+
 			}
 		});
 

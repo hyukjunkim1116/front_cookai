@@ -362,7 +362,7 @@ async function deleteArticle(articleId) {
 	return response;
 }
 async function getArticleList(querystring, page = 1) {
-	console.log(querystring);
+
 	if (querystring == ``) {
 		var pageQuery = `?page=${page}`;
 	} else {
@@ -548,7 +548,7 @@ async function fetchMissingIngredients(articleId, token) {
 
 	if (response.ok) {
 		const ingredientLinks = await response.json();
-		console.log("서버에서 반환한 JSON:", ingredientLinks);
+
 
 		const ingredients = {};
 
