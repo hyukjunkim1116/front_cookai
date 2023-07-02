@@ -326,7 +326,19 @@ async function userFollowing() {
 			method: "POST"
 		}
 	);
-	window.location.reload();
+	return response;
+}
+async function otherUserFollowing(userId) {
+	let token = localStorage.getItem("access");
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/users/${userId}/following/`,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`
+			},
+			method: "POST"
+		}
+	);
 	return response;
 }
 
@@ -629,6 +641,7 @@ async function checkTokenExp() {
 					.join("")
 			);
 			localStorage.setItem("payload", jsonPayload);
+			window.location.replace(`${FRONT_BASE_URL}/`);
 		} else {
 			return;
 		}
@@ -670,6 +683,21 @@ async function getUserFeedArticles(userId, filter, page = 1) {
 			headers: {
 				Authorization: `Bearer ${token}`
 			}
+		}
+	);
+	return response;
+}
+
+async function getUserFollowList(currentFollowPage = 1, filter = 0) {
+	let token = localStorage.getItem("access");
+	const userId = new URLSearchParams(window.location.search).get("user_id");
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/users/${userId}/follow/?follow_page=${currentFollowPage}&filter=${filter}`,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`
+			},
+			method: "GET"
 		}
 	);
 	return response;
