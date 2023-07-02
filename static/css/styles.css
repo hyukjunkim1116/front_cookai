@@ -9,7 +9,9 @@
 
 body {
     font-family: 'Pretendard-Regular', sans-serif;
-    width: 375px;
+    min-width: 375px;
+    width: 50%;
+    max-width: 550px;
     height: 100%;
     margin: 0 auto 0 auto;
     background-color: white;
@@ -176,7 +178,7 @@ body {
 
 a {
     text-decoration-line: none;
-    color: black;
+    color: rgb(43, 43, 43);
   /*   text-decoration-line: underline; */
   /*   text-decoration-line: overline; */
   /*   text-decoration-line: line-through; */

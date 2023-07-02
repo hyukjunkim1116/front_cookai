@@ -108,11 +108,12 @@ text-transform: capitalize;
 }
 .article-image {
     width: 8rem;
-    height: auto;
+    height: 6rem;
     flex-shrink: 0;
     border-radius: 0.3125rem;
     border: 1px solid var(--grey-200, #EAEBED);
     background: lightgray 50% / cover no-repeat;
+    background-size: cover;
 }
 .article-container {
     display: flex;

@@ -49,6 +49,10 @@ async function injectNavbar() {
 		// 사용자가 로그인하지 않은 경우
 		await handleNavbarMode(null);
 	}
+	const my=document.getElementById("my")
+	if (payload == null){
+		my.innerHTML = "Login"
+	}
 }
 //푸터 불러오기
 async function injectfooter() {

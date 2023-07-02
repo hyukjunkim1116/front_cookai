@@ -31,10 +31,11 @@
             <form action="/articles/article_list.html" method="get">
                 <input type="text" name="search" value="1" hidden>
                 <input type="text" name="selector" id="search" placeholder="제목과 내용으로 검색">
-                <button type="submit" class="search-btn">
+                <button type="submit" class="search-btn" title="검색">
                     <img src="/static/img/search_black.png" alt="search" class="search-icon1 zindex-popover">
                 </button>
-                <img src="/static/img/camera.png" alt="이미지로 재료검색" class="search-icon2">
+                <img src="/static/img/camera.png" alt="이미지로 재료검색" title="이미지로 검색하기"
+                    onclick="location.href='/image_upload.html'" class="search-icon2 btn">
             </form>
         </div>
 

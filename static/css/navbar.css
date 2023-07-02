@@ -7,7 +7,9 @@
     display: flex; /* 네비게이션 바 안쪽 요소들 가로 배치 */
     justify-content: space-between; /* 네비게이션 바 안쪽 요소들 가로 정렬 */
     align-items: center; /* 네비게이션 바 안쪽 요소들 세로 정렬 */
-    width: 375px; /* 네비게이션 바 가로 길이 설정 */
+    min-width: 375px;
+    max-width: 550px;
+    width: 50%; /* 네비게이션 바 가로 길이 설정 */
     height: 86px; /* 네비게이션 바 세로 길이 설정 */
     padding: 56px 20px 26px 20px; /* 네비게이션 바 안쪽 여백 설정 */
     background-color: #fff; /* 배경색 설정 */
@@ -50,7 +52,9 @@ line-height: 0.9375rem;
     display: flex; /* 가로 항목 배치 */
     justify-content: space-between; /* 가로로 가운데정렬 */
     align-items: center; /* 세로로 가운데정렬 */
-    width: 375px; /* 네비게이션 바 너비 설정 */
+    width: 50%; /* 네비게이션 바 너비 설정 */
+    min-width: 375px;
+    max-width: 550px;
     height: 60px; /* 네비게이션 바 높이 설정 */
     padding: 0 20px; /* 네비게이션 바 안쪽 여백 설정 */
     margin: 0 auto; /* 네비게이션 바 바깥 여백 설정 */
