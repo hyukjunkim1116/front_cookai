@@ -94,6 +94,7 @@ async function handleChangePasswordConfirm() {
 }
 
 async function handleUpdatePassword() {
+	await checkTokenExp()
 	const token = localStorage.getItem("access");
 	const oldPassword = document.getElementById("old_password").value;
 	const newPassword = document.getElementById("new_password").value;
@@ -122,12 +123,15 @@ async function handleUpdatePassword() {
 
 //로그인 한 유저 정보 조회
 async function getLoginUser() {
+	await checkTokenExp()
 	const payload = localStorage.getItem("payload");
+	const token = localStorage.getItem("access")
 	if (payload) {
 		const payload_parse = JSON.parse(payload);
 		const response = await fetch(
 			`${BACKEND_BASE_URL}/users/${payload_parse.user_id}/`,
 			{
+				headers:{"Authorization":`Bearer ${token}`},
 				method: "GET"
 			}
 		);
@@ -141,6 +145,7 @@ async function getLoginUser() {
 }
 //해당 유저 정보 조회
 async function getUserDetail() {
+	await checkTokenExp()
 	let token = localStorage.getItem("access");
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const response = await fetch(`${BACKEND_BASE_URL}/users/${userId}/`, {
@@ -153,6 +158,7 @@ async function getUserDetail() {
 	return await response.json();
 }
 async function deleteUser() {
+	await checkTokenExp()
 	let token = localStorage.getItem("access");
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const password = document.getElementById("password").value;
@@ -178,6 +184,7 @@ async function deleteUser() {
 }
 
 async function getUserArticle(currentPage = 1) {
+	await checkTokenExp()
 	let token = localStorage.getItem("access");
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const response = await fetch(
@@ -193,6 +200,7 @@ async function getUserArticle(currentPage = 1) {
 	return response.json();
 }
 async function getUserComment(currentCommentPage = 1, filter = 0) {
+	await checkTokenExp()
 	let token = localStorage.getItem("access");
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const response = await fetch(
@@ -208,6 +216,7 @@ async function getUserComment(currentCommentPage = 1, filter = 0) {
 	return response.json();
 }
 async function getUserCommentsList() {
+	await checkTokenExp()
 	let token = localStorage.getItem("access");
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const response = await fetch(
@@ -223,6 +232,7 @@ async function getUserCommentsList() {
 	return response.json();
 }
 async function getUserFridge() {
+	await checkTokenExp()
 	let token = localStorage.getItem("access");
 	const response = await fetch(`${BACKEND_BASE_URL}/users/fridge/`, {
 		headers: {
@@ -233,6 +243,7 @@ async function getUserFridge() {
 	return response.json();
 }
 async function postUserFridge() {
+	await checkTokenExp()
 	let token = localStorage.getItem("access");
 	const ingredient = document.getElementById("ingredient").value;
 	const response = await fetch(`${BACKEND_BASE_URL}/users/fridge/`, {
@@ -249,6 +260,7 @@ async function postUserFridge() {
 	return response;
 }
 async function deleteUserFridge(fridgeId) {
+	await checkTokenExp()
 	let token = localStorage.getItem("access");
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/users/fridge/${fridgeId}/`,
@@ -265,6 +277,7 @@ async function deleteUserFridge(fridgeId) {
 
 // 다른 유저의 팔로우리스트 보기
 async function getOtherUserFollowing() {
+	await checkTokenExp()
 	let token = localStorage.getItem("access");
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const response = await fetch(
@@ -280,6 +293,7 @@ async function getOtherUserFollowing() {
 }
 // 내가 팔로우한 유저 보기
 async function getUserFollowing() {
+	await checkTokenExp()
 	let token = localStorage.getItem("access");
 	const payload = localStorage.getItem("payload");
 	if (payload) {
@@ -300,6 +314,7 @@ async function getUserFollowing() {
 }
 // 나를 팔로우한 유저 보기
 async function getUserFollower() {
+	await checkTokenExp()
 	let token = localStorage.getItem("access");
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const response = await fetch(
@@ -316,6 +331,7 @@ async function getUserFollower() {
 
 // 특정 유저 팔로잉하기
 async function userFollowing() {
+	await checkTokenExp()
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	let token = localStorage.getItem("access");
 	const response = await fetch(
@@ -330,6 +346,7 @@ async function userFollowing() {
 	return response;
 }
 async function otherUserFollowing(userId) {
+	await checkTokenExp()
 	let token = localStorage.getItem("access");
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/users/${userId}/following/`,
@@ -351,6 +368,7 @@ async function getCategory() {
 }
 
 async function deleteArticle(articleId) {
+	await checkTokenExp()
 	const token = localStorage.getItem("access");
 
 	const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/`, {
@@ -375,6 +393,7 @@ async function getArticleList(querystring, page = 1) {
 }
 
 async function getArticleDetail(articleId) {
+	await checkTokenExp()
 	const token = localStorage.getItem("access");
 	if (token) {
 		const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/`, {
@@ -405,6 +424,7 @@ async function getComments(articleId, comment_page = 1) {
 	}
 }
 async function postComment(articleId, newComment) {
+	await checkTokenExp()
 	const token = localStorage.getItem("access");
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/articles/${articleId}/comment/`,
@@ -424,6 +444,7 @@ async function postComment(articleId, newComment) {
 }
 
 async function bookmarkArticle(articleId) {
+	await checkTokenExp()
 	const token = localStorage.getItem("access");
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/articles/${articleId}/bookmark/`,
@@ -445,6 +466,7 @@ async function bookmarkArticle(articleId) {
 }
 
 async function likeArticle(articleId) {
+	await checkTokenExp()
 	const token = localStorage.getItem("access");
 
 	const response = await fetch(
@@ -467,6 +489,7 @@ async function likeArticle(articleId) {
 }
 
 async function deleteComment(commentId) {
+	await checkTokenExp()
 	const token = localStorage.getItem("access");
 
 	const response = await fetch(
@@ -481,6 +504,7 @@ async function deleteComment(commentId) {
 	return response;
 }
 async function updateComment(commentId, newComment) {
+	await checkTokenExp()
 	const token = localStorage.getItem("access");
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/articles/1/comment/${commentId}/`,
@@ -500,6 +524,7 @@ async function updateComment(commentId, newComment) {
 }
 
 async function likeComment(commentId) {
+	await checkTokenExp()
 	const token = localStorage.getItem("access");
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/articles/comment/${commentId}/like/`,
@@ -514,6 +539,7 @@ async function likeComment(commentId) {
 	return response;
 }
 async function deleteArticle(articleId) {
+	await checkTokenExp()
 	const token = localStorage.getItem("access");
 
 	const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/`, {
@@ -625,7 +651,6 @@ async function checkTokenExp() {
 		if (payload_parse < current_time) {
 			localStorage.removeItem("payload");
 			localStorage.removeItem("access");
-			localStorage.removeItem("refresh");
 			const response = await fetch(`${BACKEND_BASE_URL}/users/token/refresh/`, {
 				method: "POST",
 				headers: { "content-type": "application/json" },
@@ -634,21 +659,25 @@ async function checkTokenExp() {
 				})
 			});
 			const response_json = await response.json();
-			localStorage.setItem("access", response_json.access);
-			localStorage.setItem("refresh", response_json.refresh);
-
-			const base64Url = response_json.access.split(".")[1];
-			const base64 = base64Url.replace(/-/g, "+");
-			const jsonPayload = decodeURIComponent(
-				atob(base64)
-					.split("")
-					.map(function (c) {
-						return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-					})
-					.join("")
-			);
-			localStorage.setItem("payload", jsonPayload);
-			window.location.replace(`${FRONT_BASE_URL}/`);
+			if(Boolean(response_json.access)){
+				localStorage.setItem("access", response_json.access);
+				const base64Url = response_json.access.split(".")[1];
+				const base64 = base64Url.replace(/-/g, "+");
+				const jsonPayload = decodeURIComponent(
+					atob(base64)
+						.split("")
+						.map(function (c) {
+							return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+						})
+						.join("")
+				);
+				localStorage.setItem("payload", jsonPayload);
+				window.location.replace(`${FRONT_BASE_URL}/`);
+			}else{
+				localStorage.removeItem("refresh");
+				alert("로그아웃되었습니다! 다시로그인해주세요.")
+				location.href=`${FRONT_BASE_URL}/login.html`
+			}
 		} else {
 			return;
 		}
@@ -656,6 +685,7 @@ async function checkTokenExp() {
 }
 
 async function getRecommend(recommendType) {
+	await checkTokenExp()
 	const token = localStorage.getItem("access");
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/ai_process/?recommend=${recommendType}`,
@@ -669,6 +699,7 @@ async function getRecommend(recommendType) {
 	return response;
 }
 async function getFollowArticles(userId, page = 1) {
+	await checkTokenExp()
 	const token = localStorage.getItem("access");
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/users/${userId}/articles/?filter=3`,
@@ -682,6 +713,7 @@ async function getFollowArticles(userId, page = 1) {
 	return response;
 }
 async function getUserFeedArticles(userId, filter, page = 1) {
+	await checkTokenExp()
 	const token = localStorage.getItem("access");
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/users/${userId}/articles/?filter=${filter}&page=${page}`,
@@ -696,6 +728,7 @@ async function getUserFeedArticles(userId, filter, page = 1) {
 }
 
 async function getUserFollowList(currentFollowPage = 1, filter = 0) {
+	await checkTokenExp()
 	let token = localStorage.getItem("access");
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const response = await fetch(

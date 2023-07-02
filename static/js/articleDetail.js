@@ -284,7 +284,7 @@ async function deleteArticleBtn(articleId){
 async function loaderFunction() {
 	const urlParams = new URLSearchParams(window.location.search);
 	articleId = urlParams.get("article_id");
-
+	await checkTokenExp()
 	const token = localStorage.getItem("access");
 	fetchMissingIngredients(articleId, token);
 

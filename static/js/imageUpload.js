@@ -1,6 +1,8 @@
 
 
 async function postUserFridge(ingredient) {
+  await checkTokenExp();
+
 	let token = localStorage.getItem("access");
 	const response = await fetch(`${BACKEND_BASE_URL}/users/fridge/`, {
 		headers: {
@@ -27,6 +29,8 @@ async function postUserFridgeObjDetection(){
 
 
 async function loaderFunction(){
+  await checkTokenExp();
+
   const image_form = document.getElementById('image_form')
   const token= localStorage.getItem("access")
   image_form.addEventListener('submit', async (e) => {

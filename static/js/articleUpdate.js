@@ -134,6 +134,7 @@ async function articleUpdate() {
 		return 0
 	}
 	await arrangeRecipeAndUpload()
+	await checkTokenExp();
 	const token = localStorage.getItem("access")
 
 	// const exist_post = await getArticle(articleId);
