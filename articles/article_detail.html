@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/static/css/reset.css">
     <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="/static/css/navbar.css">
-    <link rel="stylesheet" href="/static/css/detail.css" />
+    <link rel="stylesheet" href="/static/css/article_detail.css" />
     <!-- Font Awesome Import -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
 
@@ -24,36 +24,29 @@
 
 <body>
     <header></header>
-    <div class="container mt-4">
-
-        <div class="card">
-            <div class="card-body">
-                <h4 id="title" class="card-title">게시글 제목</h4>
-                <h5 id="author" class="text-muted text-end mb-3"><a href="#">사용자 이름</a></h5>
-                <img id="thumbnail" src="#" class="card-img-top" alt="게시글 관련 이미지" />
-                <p class="card-text">
-
-                    <small id="category">카테고리: <a href="article_list.html?category=1"></a></small>
-                </p>
-                <p class="card-text">
-                    <small id="created_at" class="text-muted"></small>
-                    <small id="updated_at" class="text-muted"></small>
-                </p>
-
-
-                <p id="content" class="card-text">
-                    게시글 내용을 기재하는 부분입니다. 글자 수에 제한이 없습니다.
-                </p>
-                <p id="tags" class="card-text">
-                    태그:
-                    <span class="badge bg-secondary" onclick="">태그1</span>
-                    <span class="badge bg-secondary">태그2</span>
-                    <span class="badge bg-secondary">태그3</span>
-                </p>
-
-            </div>
+    <div class="main-info">
+        <div class="article-content">
+            <h4 id="title" class="card-title">게시글 제목</h4>
+            <h5 id="author" class="text-muted text-end mb-3"><a href="#">사용자 이름</a></h5>
+            <img id="thumbnail" src="#" class="card-img-top" alt="게시글 관련 이미지" />
+            <p class="card-text">
+                <small id="category">카테고리: <a href="article_list.html?category=1"></a></small>
+            </p>
+            <p class="card-text">
+                <small id="created_at" class="text-muted"></small>
+                <small id="updated_at" class="text-muted"></small>
+            </p>
+            <p id="content" class="card-text">
+                게시글 내용을 기재하는 부분입니다. 글자 수에 제한이 없습니다.
+            </p>
+            <p id="tags" class="card-text">
+                태그:
+                <span class="badge bg-secondary" onclick="">태그1</span>
+                <span class="badge bg-secondary">태그2</span>
+                <span class="badge bg-secondary">태그3</span>
+            </p>
         </div>
-        <div id="ingredients" class="card">
+        <div id="ingredients" class="ingredient-content">
             <div class="card">
                 <div class="card-body">
                     <p class="card-text">
@@ -73,7 +66,7 @@
                 </div>
             </div>
         </div>
-        <div id="recipe_box" class="card">
+        <div id="recipe_box" class="recipe-content">
             <div class="card-body">
                 <p class="card-text">
                 <h5 class="card-title">조리과정</h5>
@@ -82,23 +75,21 @@
                 </p>
             </div>
         </div>
-        <div id="coupang_ingredient" class="card">
+        <div id="coupang_ingredient" class="coupang-content">
             <div class="card-body">
                 <p class="card-text">
                 <h5 class="card-title">이 재료가 필요하신가요?</h5>
                 <div class="ingredientslink_list"></div>
-                <hr>
-                <div id="recipe"></div>
                 </p>
             </div>
         </div>
-        <div class="container">
+        <div class="btn-container">
             <div class="btn-group">
                 <div id="buttons1"></div>
                 <div id="buttons2"></div>
             </div>
         </div>
-        <div id="commnets_list" class="card">
+        <div id="commnets_list" class="comment-content">
             <div class="card-body" <p class="card-text">
                 <h5 class="card-title">댓글</h5>
                 <div class="card-text" id="commentbox">
