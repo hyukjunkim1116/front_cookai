@@ -204,6 +204,7 @@ line-height: 1.375rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 10px;
 }
 .comment-text {
     text-align: center;
@@ -303,4 +304,15 @@ font-style: normal;
 font-weight: 500;
 line-height: 1.375rem;
 cursor: pointer;
+}
+.comment-author {
+    text-align: center;
+    justify-self: center;
+    margin-top: 5px;
+    color: var(--grey-600, #808080);
+    /* B-03-Medium */
+    font-size: 0.825rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 0.9375rem;
 }

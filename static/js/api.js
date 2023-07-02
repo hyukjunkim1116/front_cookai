@@ -641,6 +641,7 @@ async function checkTokenExp() {
 					.join("")
 			);
 			localStorage.setItem("payload", jsonPayload);
+			window.location.replace(`${FRONT_BASE_URL}/`);
 		} else {
 			return;
 		}
