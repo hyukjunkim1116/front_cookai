@@ -151,7 +151,7 @@ async function postArticle() {
 	span.setAttribute("role", "status");
 	span.setAttribute("aria-hidden", "true");
 	uploadBtn.appendChild(span);
-
+	await checkTokenExp();
 	const token = localStorage.getItem("access");
 	const title = document.getElementById("article_title").value;
 	const content = document.getElementById("article_content").value;
