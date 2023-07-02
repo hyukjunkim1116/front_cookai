@@ -4,17 +4,20 @@ async function handleNavbarMode(loginUser) {
     const loggedInItems = document.querySelectorAll('.logged-in-item');
     const loggedOutItems = document.querySelectorAll('.logged-out-item');
     const navbarToggler = document.querySelector(".navbar-toggler");
+	const loginButton = document.getElementById("nav-login"); // 로그인 버튼 추가
 
     if (loginUser) {
         // 로그인시 드롭다운 및 버튼 표시
         loggedInItems.forEach(item => item.style.display = 'block');
         loggedOutItems.forEach(item => item.style.display = 'none');
         navbarToggler.style.display = "inline-block";
+		loginButton.style.display = "none"; // 로그인 버튼 숨기기
     } else {
         // 미로그인시 드롭다운 및 버튼 숨김
         loggedInItems.forEach(item => item.style.display = 'none');
         loggedOutItems.forEach(item => item.style.display = 'block');
         navbarToggler.style.display = "none";
+		loginButton.style.display = "block"; // 로그인 버튼 보이기
     }
 }
 
@@ -37,7 +40,7 @@ async function injectNavbar() {
 			avatar.style.visibility = "visible";
 		} else {
 			const avatar = document.getElementById("avatar");
-			avatar.setAttribute("src", "static/img/no_avatar.png");
+			avatar.setAttribute("src", "/static/img/no_avatar.png");
 			avatar.style.visibility = "visible";
 		}
 		const intro = document.getElementById("intro");
