@@ -74,7 +74,10 @@ async function loadCollavorativeRecommend(){
     if (response.status == 200){
         console.log(response_json)
         await renderList(0,response_json)
-    }else if(response.status == 401){alert("로그인해주세요!")}
+    }else if(response.status == 401){
+		
+		alert("로그인해주세요!")
+	}
 	else{
 		{alert(response.status)}
 	}

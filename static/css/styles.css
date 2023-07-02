@@ -9,7 +9,9 @@
 
 body {
     font-family: 'Pretendard-Regular', sans-serif;
-    width: 375px;
+    min-width: 375px;
+    width: 50%;
+    max-width: 550px;
     height: 100%;
     margin: 0 auto 0 auto;
     background-color: white;
@@ -88,7 +90,7 @@ body {
     top: 50%; /* 아이콘 세로 위치를 검색창 가운데로 설정 */
     right: 80px; /* 아이콘 좌측 여백 설정 */
     transform: translateY(-50%); /* 아이콘 세로 위치를 완벽하게 가운데로 조정 */
-    pointer-events: none; /* 아이콘 클릭 방지 (터치, 클릭 등 이벤트 동작 제한) */
+    /*pointer-events: none; 아이콘 클릭 방지 (터치, 클릭 등 이벤트 동작 제한) */
 }
 
 .search-icon2 {
@@ -176,7 +178,7 @@ body {
 
 a {
     text-decoration-line: none;
-    color: black;
+    color: rgb(43, 43, 43);
   /*   text-decoration-line: underline; */
   /*   text-decoration-line: overline; */
   /*   text-decoration-line: line-through; */

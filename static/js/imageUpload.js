@@ -18,7 +18,10 @@ async function postUserFridgeObjDetection(){
     var list_result= result.split(',')
     console.log(list_result)
     list_result.forEach(async(e) => {
+      if(e != ""){
         postUserFridge(e)
+
+      }
     });
 }
 
@@ -38,16 +41,15 @@ async function loaderFunction(){
     })
     const response_json= await response.json()
     if ( response.status==201){
-      const resultBox= document.getElementById("result")
+      const resultBox= document.getElementById("resultBox")
       resultBox.innerHTML=``
       var temp_html = ``
       response_json.results.forEach((e) => {
           temp_html +=`${e},`
       });
-      resultBox.innerHTML += `<textarea id="ingredient">${temp_html}</textarea>`
-      resultBox.innerHTML += ` <button>검색</button> <button onclick="postUserFridgeObjDetection()">재료 저장</button>`
+      resultBox.innerHTML += `<input id="ingredient" class="form-control" value="${temp_html}">`
+      resultBox.innerHTML += ` <button class="btn btn-outline-dark" onclick="location.href='${FRONT_BASE_URL}/articles/article_list.html?search=2&selector=${temp_html}'">검색</button> <button class="btn btn-outline-dark" onclick="postUserFridgeObjDetection()">재료 저장</button>`
+      document.getElementById("explain").innerHTML += `<h4>위의 내용이 인식 결과입니다.</h4><p>부정확 할 경우 직접 입력을 통해 정정할 수 있습니다.</p>`
     }
   })
-  const goback= document.getElementById("goback")
-  goback.setAttribute("onclick",`location.href="${FRONT_BASE_URL}"`)
 }

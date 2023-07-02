@@ -13,58 +13,70 @@ async function loadArticleList(page=1) {
         // 새로운 div 요소를 생성하고, class 속성을 "card"로 설정합니다.
         // 또한, 클릭 이벤트 핸들러와 id 속성을 게시물의 고유 식별자(pk)로 설정합니다.
         // 이렇게 생성한 카드를 newCardBox에 추가합니다.
-		const newCard = document.createElement("div");
-		newCard.setAttribute("class", "card");
-		newCard.setAttribute("onclick", `location.href="${FRONT_BASE_URL}/articles/article_detail.html?article_id=${article.id}"`);
-		newCard.setAttribute("id", article.id);
+		const tempHtml=`<div id="article-container" class="article-container" onclick="location.href='http://127.0.0.1:5500/articles/article_detail.html?article_id=${article.id}'" style="cursor:pointer">
+		<div id="article-image" class="article-image" style="background-image: url('${[null,undefined].includes(article.image)?"https://cdn11.bigcommerce.com/s-1812kprzl2/images/stencil/original/products/426/5082/no-image__12882.1665668288.jpg?c=2/":article.image}');"></div>
+		<div id="article-content" class="article-content">
+			<div id="article-content__title" class="article-content__title">${article.title}</div>
+			<div id="article-content__user" class="article-content__user">${article.user}</div>
+			<div id="article-content-count" class="article-content-count">
+				<div id="article-content__likes_count" class="article-content__likes_count"><i class="bi bi-heart-fill"></i> ${article.likes_count}</div>
+				<div id="article-content__comments_count" class="article-content__comments_count">댓글 수: ${article.comments_count}</div>
+			</div>
+		</div>
+		</div>`
+		newCardBox.innerHTML +=tempHtml
+		// const newCard = document.createElement("div");
+		// newCard.setAttribute("class", "card");
+		// newCard.setAttribute("onclick", `location.href="${FRONT_BASE_URL}/articles/article_detail.html?article_id=${article.id}"`);
+		// newCard.setAttribute("id", article.id);
 		
-		const image = response_json.image
+		// const image = response_json.image
 
-        // 게시물의 대표 이미지를 생성하고, 생성한 이미지를 카드에 추가합니다.
-        // 게시물의 photos 배열에서 첫 번째 요소의 file 속성을 가져와서 이미지의 src 속성으로 설정합니다.
-        // articlePhoto가 존재하지 않는다면, 기본 이미지 주소를 src 속성으로 설정합니다.
-		const articleimage = document.createElement("img");
-		articleimage.setAttribute("class", "card-img-top");
-		if (image) {
-			articleimage.setAttribute("src", `${image}`);
-		} else {
-			articleimage.setAttribute(
-				"src",
-				"https://cdn11.bigcommerce.com/s-1812kprzl2/images/stencil/original/products/426/5082/no-image__12882.1665668288.jpg?c=2"
-			);
-		}
-		newCard.appendChild(articleimage);
+        // // 게시물의 대표 이미지를 생성하고, 생성한 이미지를 카드에 추가합니다.
+        // // 게시물의 photos 배열에서 첫 번째 요소의 file 속성을 가져와서 이미지의 src 속성으로 설정합니다.
+        // // articlePhoto가 존재하지 않는다면, 기본 이미지 주소를 src 속성으로 설정합니다.
+		// const articleimage = document.createElement("img");
+		// articleimage.setAttribute("class", "card-img-top");
+		// if (image) {
+		// 	articleimage.setAttribute("src", `${image}`);
+		// } else {
+		// 	articleimage.setAttribute(
+		// 		"src",
+		// 		"https://cdn11.bigcommerce.com/s-1812kprzl2/images/stencil/original/products/426/5082/no-image__12882.1665668288.jpg?c=2"
+		// 	);
+		// }
+		// newCard.appendChild(articleimage);
 
-        // 카드의 본문 생성.
-		const newCardBody = document.createElement("div");
-		newCardBody.setAttribute("class", "card-body");
+        // // 카드의 본문 생성.
+		// const newCardBody = document.createElement("div");
+		// newCardBody.setAttribute("class", "card-body");
 
 		
 
-        // 카드의 제목 생성. 
-		const newCardTitle = document.createElement("h6");
-		newCardTitle.setAttribute("class", "card-title");
-		const newStrong = document.createElement("strong");
-		if (article.title.length > 10) {
-			newStrong.innerText = `${article.title.substr(0, 10)} ···`;
-		} else {
-			newStrong.innerText = article.title;
-		}
-		newCardTitle.appendChild(newStrong);
-		newCardBody.appendChild(newCardTitle);
+        // // 카드의 제목 생성. 
+		// const newCardTitle = document.createElement("h6");
+		// newCardTitle.setAttribute("class", "card-title");
+		// const newStrong = document.createElement("strong");
+		// if (article.title.length > 10) {
+		// 	newStrong.innerText = `${article.title.substr(0, 10)} ···`;
+		// } else {
+		// 	newStrong.innerText = article.title;
+		// }
+		// newCardTitle.appendChild(newStrong);
+		// newCardBody.appendChild(newCardTitle);
         
-        // 카드에 생성일을 표시하는 요소를 생성.
+        // // 카드에 생성일을 표시하는 요소를 생성.
 		
-		const newCardAuthor = document.createElement("p");
-		newCardAuthor.setAttribute("class", "card-text");
-		newCardAuthor.innerText = `작성자: ${article.user}`;
-		newCardBody.appendChild(newCardAuthor);
-		const newCardtime = document.createElement("small");
-		newCardtime.setAttribute("class", "card-text");
-		newCardtime.innerText = article.created_at.split(".")[0].slice(2,-3).replace("T"," ");
-		newCardBody.appendChild(newCardtime);
-		newCard.appendChild(newCardBody);
-		newCardBox.appendChild(newCard);
+		// const newCardAuthor = document.createElement("p");
+		// newCardAuthor.setAttribute("class", "card-text");
+		// newCardAuthor.innerText = `작성자: ${article.user}`;
+		// newCardBody.appendChild(newCardAuthor);
+		// const newCardtime = document.createElement("small");
+		// newCardtime.setAttribute("class", "card-text");
+		// newCardtime.innerText = article.created_at.split(".")[0].slice(2,-3).replace("T"," ");
+		// newCardBody.appendChild(newCardtime);
+		// newCard.appendChild(newCardBody);
+		// newCardBox.appendChild(newCard);
 		
 	};
 	
@@ -102,7 +114,7 @@ async function loadTagList(selector){
 		console.log(tag)
 		if (!name_list.includes(tag.name)){
 			tags.innerHTML += `<input type="radio" class="btn-check" name="tag" id="tag_${tag.id}" autocomplete="off">
-		<label class="btn btn-outline-primary text-nowrap" for="tag_${tag.id}" onclick="searchByTag(${tag.name})">${tag.name}</label>`
+		<label class="btn btn-outline-primary text-nowrap" for="tag_${tag.id}" onclick="searchByTag('${tag.name}')">${tag.name}</label>`
 			name_list +=[tag.name]
 		}
 		
@@ -128,13 +140,13 @@ function redirectToArticlePage(articleId) {
 const url = `http://127.0.0.1:8000/articles/?article_id=${articleId}`;
 window.location.href = url;
 }
-async function search(){
+async function search_(){
 	const preQueryString=document.getElementById("search_type").value
 	const selector = document.getElementById("selector").value
 	query=`${preQueryString}&selector=${selector}`
 	await resetTag()
 	if (preQueryString.includes("4")){
-		loadTagList(selector)
+		await loadTagList(selector)
 		return 0
 	}
 	await loadFrame()
@@ -187,14 +199,63 @@ async function loadCategory(){
 async function searchByTag(tagname){
 	query=`?search=4&selector=${tagname}`
 	await loadFrame()
+	await loadCategory()
 	await loadArticleList()
+}
+async function onEnter(e){
+	const code = e.code;
+
+           if(code == 'Enter'){
+               await search_()
+           }
 }
 // 페이지 로드 시 게시글을 가져오도록 호출합니다
 async function loaderFunction() {
-	await resetTag()
-	await loadFrame()
-	await loadCategory();
-	await loadArticleList();
+	if(window.location.search){
+	query=window.location.search.replace(/&selector=.*$/g,"")
+	console.log(query)
+	const parameters = new URLSearchParams(window.location.href)
+	console.log(window.location.href)
+	document.getElementById("selector").value=parameters.get("selector")
+	const searchType=document.getElementById("search_type")
+
+	for (var i = 0; i < searchType.options.length; i++) {
+		var optionValue = searchType.options[i].value;
+		if (window.location.search.includes(optionValue)) {
+			searchType.options[i].selected = true;
+		}else{
+			searchType.options[i].selected = false;
+		}
+	}
+
+	await search_()
+	console.log(parameters.get("selector"))
+	if(window.location.search.includes("search=4")){
+		await searchByTag(`${parameters.get("selector")}`)
+		const tags = document.getElementById("tags").querySelectorAll("label")
+		tags.forEach(element => {
+			console.log(element)
+			if(element.innerText == parameters.get("selector")){
+				element.previousElementSibling.setAttribute("checked","true")
+				console.log("t")
+			}else{
+				element.previousElementSibling.checked=false
+				console.log("f")
+			}
+		});
+
+		
+
+	}else{
+		await loadCategory()
+	}
+	}else{
+		await resetTag()
+		await loadFrame()
+		await loadCategory();
+		await loadArticleList();
+	}
+	
 	const SelectOrderBtn = document.createElement("div")
 		SelectOrderBtn.setAttribute("id","selectorder")
 		SelectOrderBtn.setAttribute("class","btn-group mb-3")

@@ -588,14 +588,20 @@ async function fetchMissingIngredients(articleId, token) {
 												: ""
 										}
                 `;
-				missingLinksList.appendChild(listItem);
-			});
+
+                missingLinksList.appendChild(listItem);
+            });
+        }
+        const container = document.getElementById('ingredientslink_list');
+        container.appendChild(missingLinksList);
+		if(ingredientLinks.length==0){
+			document.getElementById("coupang_ingredient").remove()
 		}
-		const container = document.querySelector(".ingredientslink_list");
-		container.appendChild(missingLinksList);
-	} else {
-		console.error("API 요청 실패:", response.statusText);
-	}
+    } else {
+        console.error('API 요청 실패:', response.statusText);
+		document.getElementById("coupang_ingredient").remove()
+    }
+
 }
 
 async function getTagList(selector) {

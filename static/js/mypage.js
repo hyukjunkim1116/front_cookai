@@ -272,7 +272,7 @@ async function loadUserDetail() {
 	const avatar = document.getElementById("mypage-avatar");
 	avatar.setAttribute(
 		"src",
-		response.avatar ? response.avatar : "/static/img/no_avatar.png"
+		[null,undefined].includes(response.avatar) ? "/static/img/no_avatar.png":response.avatar
 	);
 	const username = document.getElementById("username");
 	username.innerText = `${response.username}`;
