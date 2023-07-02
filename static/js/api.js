@@ -191,11 +191,11 @@ async function getUserArticle(currentPage = 1) {
 
 	return response.json();
 }
-async function getUserComment(currentCommentPage = 1) {
+async function getUserComment(currentCommentPage = 1, filter = 0) {
 	let token = localStorage.getItem("access");
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const response = await fetch(
-		`${BACKEND_BASE_URL}/users/${userId}/comments/?page=${currentCommentPage}`,
+		`${BACKEND_BASE_URL}/users/${userId}/comments/?filter=${filter}&page=${currentCommentPage}`,
 		{
 			headers: {
 				Authorization: `Bearer ${token}`
