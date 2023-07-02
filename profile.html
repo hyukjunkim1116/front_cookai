@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/static/css/reset.css">
     <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="/static/css/navbar.css">
-    <link rel="stylesheet" href="/static/css/mypage.css">
+    <link rel="stylesheet" href="/static/css/profile.css">
 
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
@@ -22,12 +22,12 @@
 
 <body class="body">
     <div class="main">
-        <div class="main-info" id="main-info">
-            
+        <div class="main-info">
             <div class="mypage-wrapper">
                 <div id="mypage" class="mypage">
                     <img id="mypage-avatar" class="mypage-avatar" />
                     <div id="username"></div>
+                    <div type="button" id="following-btn" class="following-btn"></div>
                 </div>
                 <div id="user-detail" class="user-detail">
                     <div class="user-detail-child" id="following"></div>
@@ -41,23 +41,6 @@
             </div>
             <div class="follow-page" id="follow-page" style="display:none">
             </div>
-            <div class="fridge" id="fridge">
-                <div id="fridge-title" class="fridge-title">나의 냉장고</div>
-                <div id="fridge-content" class="fridge-content"></div>
-                <div class="row g-3" id="fridge-input">
-                    <div class="col-auto">
-                        <label for="ingredient" class="visually-hidden"></label>
-                        <input type="text" class="form-control" id="ingredient" name="ingredient"
-                            placeholder="재료를 입력하세요">
-                    </div>
-                    <div class="col-auto">
-
-                        <button type="button" class="btn btn-primary mb-3 post-fridge" id="post-fridge"
-                            onclick="postUserFridge()">추가하기</button>
-                    </div>
-                </div>
-            </div>
-            <!-- 재료 목록, 재료 추가버튼, 재료 삭제버튼-->
 
             <div class="article" id="article">
             </div>
@@ -71,7 +54,7 @@
 </body>
 <script src="/static/js/api.js"></script>
 <script src="/static/js/common.js"></script>
-<script src="/static/js/mypage.js"></script>
+<script src="/static/js/profile.js"></script>
 
 <script defer="defer" src="/static/js/windowOnLoad.js"></script>
 

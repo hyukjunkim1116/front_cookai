@@ -1,10 +1,8 @@
-checkNotLogin();
-
 async function loadUserFollowing(currentFollowPage) {
 	const response = await getUserFollowList(currentFollowPage);
 	const followListResponse = await response.json();
 	const followPageList = document.getElementById("follow-page");
-	// followPageList.style.display = "flex";
+	followPageList.style.display = "flex";
 	followPageList.innerHTML = "";
 	followPageList.innerText = "팔로잉 목록";
 	console.log(followListResponse);
@@ -21,7 +19,6 @@ async function loadUserFollowing(currentFollowPage) {
 			followList.innerHTML = `
 				<img id="follow-avatar" class="follow-avatar" src=${userAvatar} onclick="location.href='${FRONT_BASE_URL}/profile.html?user_id=${result.id}'" style="cursor:pointer;">
                 <div id="follow-name" class="follow-name" onclick="location.href='${FRONT_BASE_URL}/profile.html?user_id=${result.id}'" style="cursor:pointer;">${result.username}</div>
-                <div id="follow-btn" class="follow-btn" onclick="userFollowToggle(${result.id})">언팔로우</div>
 			`;
 			followPageList.appendChild(followList);
 		});
@@ -44,8 +41,6 @@ async function loadUserFollowing(currentFollowPage) {
 async function loadUserFollower(currentFollowPage) {
 	const response = await getUserFollowList(currentFollowPage, 1);
 	const followListResponse = await response.json();
-	const followingsList = await getUserFollowing();
-	const followingIdList = followingsList.map((following) => following.id);
 	const followPageList = document.getElementById("follow-page");
 	followPageList.style.display = "flex";
 	followPageList.innerHTML = "";
@@ -62,22 +57,13 @@ async function loadUserFollower(currentFollowPage) {
 				userAvatar = "/static/img/no_avatar.png";
 			}
 			followList.innerHTML = `
-				<img id="follow-avatar" class="follow-avatar" src=${userAvatar} onclick="location.href='${FRONT_BASE_URL}/profile.html?user_id=${
-				result.id
-			}'" style="cursor:pointer;">
-                <div id="follow-name" class="follow-name" onclick="location.href='${FRONT_BASE_URL}/profile.html?user_id=${
-				result.id
-			}'" style="cursor:pointer;">${result.username}</div>
-                <div id="follower-btn" class="follow-btn follow-btn-${
-									result.id
-								}" onclick = "otherUserFollowToggle(${result.id})">${
-				followingIdList.includes(result.id) ? "언팔로우" : "팔로우"
-			}</div>
+				<img id="follow-avatar" class="follow-avatar" src=${userAvatar} onclick="location.href='${FRONT_BASE_URL}/profile.html?user_id=${result.id}'" style="cursor:pointer;">
+                <div id="follow-name" class="follow-name" onclick="location.href='${FRONT_BASE_URL}/profile.html?user_id=${result.id}'" style="cursor:pointer;">${result.username}</div>
 			`;
+
 			followPageList.appendChild(followList);
 		});
 	}
-
 	const pagination = document.createElement("div");
 	pagination.setAttribute("class", "pagination");
 	pagination.innerHTML = "";
@@ -93,13 +79,14 @@ async function loadUserFollower(currentFollowPage) {
 	}
 }
 async function loadUserBookmarkArticle(currentPage) {
+	const userResponse = await getUserDetail();
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const response = await getUserFeedArticles(userId, 2, currentPage);
 	const bookmarkResponse = await response.json();
 	const articleContainer = document.getElementById("article");
 	console.log("article", bookmarkResponse);
 	articleContainer.innerHTML = "";
-	articleContainer.innerText = "북마크한 게시글";
+	articleContainer.innerText = `${userResponse.username}의 북마크`;
 	const totalArticles = document.createElement("div");
 	totalArticles.setAttribute("class", "user-detail-child");
 	totalArticles.setAttribute("id", "total_articles");
@@ -111,10 +98,10 @@ async function loadUserBookmarkArticle(currentPage) {
 			? result.avatar
 			: "https://cdn11.bigcommerce.com/s-1812kprzl2/images/stencil/original/products/426/5082/no-image__12882.1665668288.jpg?c=2";
 		articleContent.innerHTML = `
-		<div id="article-container" class="article-container"  >
-					<img id="article-image" class="article-image" src=${articleImage} onclick="location.href='${FRONT_BASE_URL}/articles/article_detail.html?article_id=${
+		<div id="article-container" class="article-container" onclick="location.href='${FRONT_BASE_URL}/articles/article_detail.html?article_id=${
 			result.id
-		}'" style="cursor:pointer"/>
+		}'" style="cursor:pointer">
+					<img id="article-image" class="article-image" src=${articleImage}/>
                     <div id="article-content" class="article-content">
                         <div id="article-content__title" class="article-content__title">${result.title.slice(
 													0,
@@ -130,7 +117,7 @@ async function loadUserBookmarkArticle(currentPage) {
                             <div id="article-content__comments_count" class="article-content__comments_count">댓글 수: ${
 															result.comments_count
 														}</div>
-                            <div id="article-content__edit" class="article-content__edit" style="visibility:hidden;" >수정하기</div>
+                            <div id="article-content__edit" class="article-content__edit" style="visibility:hidden;"></div>
                         </div>
                     </div>
 					</div>
@@ -151,15 +138,15 @@ async function loadUserBookmarkArticle(currentPage) {
 		articleContainer.appendChild(pagination);
 	}
 }
-
 async function loadUserLikeArticle(currentPage) {
+	const userResponse = await getUserDetail();
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const response = await getUserFeedArticles(userId, 1, currentPage);
 	const likeArticleResponse = await response.json();
 	const articleContainer = document.getElementById("article");
 	console.log("article", likeArticleResponse);
 	articleContainer.innerHTML = "";
-	articleContainer.innerText = "좋아요 누른 게시글";
+	articleContainer.innerText = `${userResponse.username}의 좋아요 게시글`;
 	const totalArticles = document.createElement("div");
 	totalArticles.setAttribute("class", "user-detail-child");
 	totalArticles.setAttribute("id", "total_articles");
@@ -171,10 +158,10 @@ async function loadUserLikeArticle(currentPage) {
 			? result.avatar
 			: "https://cdn11.bigcommerce.com/s-1812kprzl2/images/stencil/original/products/426/5082/no-image__12882.1665668288.jpg?c=2";
 		articleContent.innerHTML = `
-		<div id="article-container" class="article-container"  >
-					<img id="article-image" class="article-image" src=${articleImage} onclick="location.href='${FRONT_BASE_URL}/articles/article_detail.html?article_id=${
+		<div id="article-container" class="article-container" onclick="location.href='${FRONT_BASE_URL}/articles/article_detail.html?article_id=${
 			result.id
-		}'" style="cursor:pointer"/>
+		}'" style="cursor:pointer">
+					<img id="article-image" class="article-image" src=${articleImage}/>
                     <div id="article-content" class="article-content">
                         <div id="article-content__title" class="article-content__title">${result.title.slice(
 													0,
@@ -190,7 +177,7 @@ async function loadUserLikeArticle(currentPage) {
                             <div id="article-content__comments_count" class="article-content__comments_count">댓글 수: ${
 															result.comments_count
 														}</div>
-                            <div id="article-content__edit" class="article-content__edit" style="visibility:hidden;" >수정하기</div>
+                            <div id="article-content__edit" class="article-content__edit" style="visibility:hidden;"></div>
                         </div>
                     </div>
 					</div>
@@ -205,25 +192,25 @@ async function loadUserLikeArticle(currentPage) {
 	for (i = 1; i < pageCount; i++) {
 		const newPageLink = document.createElement("div");
 		newPageLink.setAttribute("class", "page-link");
-		newPageLink.setAttribute("onclick", `loadUserBookmarkArticle(${i})`);
+		newPageLink.setAttribute("onclick", `loadUserLikeArticle(${i})`);
 		newPageLink.innerText = i;
 		pagination.append(newPageLink);
 		articleContainer.appendChild(pagination);
 	}
 }
-
 async function loadUserLikeComment(currentCommentPage) {
-	const likeCommentResponse = await getUserComment(currentCommentPage, 1);
+	const userResponse = await getUserDetail();
+	const response = await getUserComment(currentCommentPage, 1);
 	const commentContainer = document.getElementById("comment");
 	commentContainer.innerHTML = "";
-	commentContainer.innerText = "좋아요 누른 댓글";
-	console.log("comment", likeCommentResponse);
+	commentContainer.innerText = `${userResponse.username}이 좋아하는 댓글`;
+	console.log("comment", response);
 	const totalComments = document.createElement("div");
-	totalComments.innerText = `댓글 : ${likeCommentResponse.count}`;
+	totalComments.innerText = `댓글 : ${response.count}`;
 	totalComments.setAttribute("class", "user-detail-child");
 	totalComments.setAttribute("id", "total_comments");
 	commentContainer.appendChild(totalComments);
-	likeCommentResponse.results.forEach((result) => {
+	response.results.forEach((result) => {
 		const commentContent = document.createElement("div");
 		commentContent.innerHTML = `
 				<div class="comment-container" id="comment-container">
@@ -254,32 +241,48 @@ async function loadUserLikeComment(currentCommentPage) {
 	commentPagination.setAttribute("class", "pagination");
 	commentPagination.innerHTML = "";
 
-	const pageCount = likeCommentResponse.count / 4 + 1;
+	const pageCount = response.count / 4 + 1;
 	for (i = 1; i < pageCount; i++) {
 		const newPageLink = document.createElement("div");
 		newPageLink.setAttribute("class", "page-link");
-		newPageLink.setAttribute("onclick", `loadUserComment(${i})`);
+		newPageLink.setAttribute("onclick", `loadUserLikeComment(${i})`);
 		newPageLink.innerText = i;
 		commentPagination.append(newPageLink);
 		commentContainer.appendChild(commentPagination);
 	}
 }
-
 async function loadUserDetail() {
-	const response = await getLoginUser();
-	console.log(response);
-	const mypageList = document.getElementById("mypage");
+	const followBtn = document.getElementById("following-btn");
+	const payload = localStorage.getItem("payload");
+	const payload_parse = JSON.parse(payload);
+	const loginUserId = payload_parse.user_id;
+	const userResponse = await getUserDetail();
+	const followersList = await getUserFollower();
+	const followerIdList = followersList.map((follower) => follower.id);
 	const avatar = document.getElementById("mypage-avatar");
+	const username = document.getElementById("username");
+	username.innerText = `${userResponse.username}`;
 	avatar.setAttribute(
 		"src",
-		[null,undefined].includes(response.avatar) ? "/static/img/no_avatar.png":response.avatar
+		userResponse.avatar ? userResponse.avatar : "/static/img/no_avatar.png"
 	);
-	const username = document.getElementById("username");
-	username.innerText = `${response.username}`;
-
-	mypageList.appendChild(username);
+	if (!payload) {
+		followBtn.style.display = "none";
+	} else {
+		followBtn.innerText = followerIdList.includes(loginUserId)
+			? "언팔로우"
+			: "팔로우";
+	}
+	followBtn.addEventListener("click", () => {
+		otherUserFollowing(userResponse.id);
+		if (followBtn.innerText === "언팔로우") {
+			followBtn.innerText = "팔로우";
+		} else if (followBtn.innerText === "팔로우") {
+			followBtn.innerText = "언팔로우";
+		}
+	});
 	const following = document.getElementById("following");
-	following.innerText = `팔로잉 : ${response.total_followings}`;
+	following.innerText = `팔로잉 : ${userResponse.total_followings}`;
 	following.addEventListener("click", () => {
 		const followPageList = document.getElementById("follow-page");
 		const clickedClass = "followPageListClicked";
@@ -297,7 +300,7 @@ async function loadUserDetail() {
 		}
 	});
 	const follower = document.getElementById("follower");
-	follower.innerText = `팔로워 : ${response.total_followers}`;
+	follower.innerText = `팔로워 : ${userResponse.total_followers}`;
 	follower.addEventListener("click", () => {
 		const followerPageList = document.getElementById("follow-page");
 		const clickedClass = "followerPageListClicked";
@@ -316,7 +319,7 @@ async function loadUserDetail() {
 		}
 	});
 	const bookmark = document.getElementById("bookmark-article");
-	bookmark.innerText = `북마크한 게시글 : ${response.total_bookmark_articles}`;
+	bookmark.innerText = `북마크한 게시글 : ${userResponse.total_bookmark_articles}`;
 	bookmark.addEventListener("click", async () => {
 		const articlePageList = document.getElementById("article");
 		const clickedClass = "bookmarkArticlePageListClicked";
@@ -335,7 +338,7 @@ async function loadUserDetail() {
 		}
 	});
 	const likeArticle = document.getElementById("like-article");
-	likeArticle.innerText = `좋아요 누른 게시글 : ${response.total_like_articles}`;
+	likeArticle.innerText = `좋아요 누른 게시글 : ${userResponse.total_like_articles}`;
 	likeArticle.addEventListener("click", async () => {
 		const articlePageList = document.getElementById("article");
 		const clickedClass = "likeArticlePageListClicked";
@@ -354,7 +357,7 @@ async function loadUserDetail() {
 		}
 	});
 	const likeComment = document.getElementById("like-comment");
-	likeComment.innerText = `좋아요 누른 댓글 : ${response.total_like_comments}`;
+	likeComment.innerText = `좋아요 누른 댓글 : ${userResponse.total_like_comments}`;
 	likeComment.addEventListener("click", async () => {
 		const commentPageList = document.getElementById("comment");
 		const clickedClass = "likeCommentPageListClicked";
@@ -370,27 +373,13 @@ async function loadUserDetail() {
 		}
 	});
 }
-
-async function loadUserFridge() {
-	const response = await getUserFridge();
-	console.log(response);
-	const userFridgeContent = document.getElementById("fridge-content");
-	if (response !== []) {
-		response.forEach((fridge) => {
-			const newUserFridge = document.createElement("div");
-			newUserFridge.setAttribute("class", "fridge-ingredient");
-			newUserFridge.setAttribute("id", `fridge-${fridge.id}`);
-			newUserFridge.innerHTML = `${fridge.ingredient} <div onclick="deleteUserFridge(${fridge.id})"><i style="cursor:pointer;" class="bi bi-x"></i></div>`;
-			userFridgeContent.appendChild(newUserFridge);
-		});
-	}
-}
 async function loadUserArticle(currentPage) {
+	const userResponse = await getUserDetail();
 	const response = await getUserArticle(currentPage);
 	const articleContainer = document.getElementById("article");
 	console.log("article", response);
 	articleContainer.innerHTML = "";
-	articleContainer.innerText = "내가 쓴 글";
+	articleContainer.innerText = `${userResponse.username}의 글`;
 	const totalArticles = document.createElement("div");
 	totalArticles.setAttribute("class", "user-detail-child");
 	totalArticles.setAttribute("id", "total_articles");
@@ -402,10 +391,10 @@ async function loadUserArticle(currentPage) {
 			? result.avatar
 			: "https://cdn11.bigcommerce.com/s-1812kprzl2/images/stencil/original/products/426/5082/no-image__12882.1665668288.jpg?c=2";
 		articleContent.innerHTML = `
-		<div id="article-container" class="article-container" >
-					<img id="article-image" class="article-image" src=${articleImage} onclick="location.href='${FRONT_BASE_URL}/articles/article_detail.html?article_id=${
+		<div id="article-container" class="article-container" onclick="location.href='${FRONT_BASE_URL}/articles/article_detail.html?article_id=${
 			result.id
-		}'" style="cursor:pointer"/>
+		}'" style="cursor:pointer">
+					<img id="article-image" class="article-image" src=${articleImage}/>
                     <div id="article-content" class="article-content">
                         <div id="article-content__title" class="article-content__title">${result.title.slice(
 													0,
@@ -421,9 +410,7 @@ async function loadUserArticle(currentPage) {
                             <div id="article-content__comments_count" class="article-content__comments_count">댓글 수: ${
 															result.comments_count
 														}</div>
-                            <div id="article-content__edit" class="article-content__edit" onclick="location.href='${FRONT_BASE_URL}/articles/article_update.html?article_id=${
-			result.id
-		}'" style="cursor:pointer">수정하기</div>
+                            <div id="article-content__edit" class="article-content__edit" style="visibility:hidden;"></div>
                         </div>
                     </div>
 					</div>
@@ -445,10 +432,11 @@ async function loadUserArticle(currentPage) {
 	}
 }
 async function loadUserComment(currentCommentPage) {
+	const userResponse = await getUserDetail();
 	const response = await getUserComment(currentCommentPage);
 	const commentContainer = document.getElementById("comment");
 	commentContainer.innerHTML = "";
-	commentContainer.innerText = "내가 쓴 댓글";
+	commentContainer.innerText = `${userResponse.username}의 댓글`;
 	console.log("comment", response);
 	const totalComments = document.createElement("div");
 	totalComments.innerText = `댓글 : ${response.count}`;
@@ -496,29 +484,8 @@ async function loadUserComment(currentCommentPage) {
 	}
 }
 
-const otherUserFollowToggle = (id) => {
-	const followBtn = document.querySelector(`.follow-btn-${id}`);
-	otherUserFollowing(id);
-	if (followBtn.innerText === "언팔로우") {
-		followBtn.innerText = "팔로우";
-	} else if (followBtn.innerText === "팔로우") {
-		followBtn.innerText = "언팔로우";
-	}
-};
-const userFollowToggle = (userId) => {
-	const clickedClass = "clicked";
-	otherUserFollowing(userId);
-	if (followBtn.classList.contains(clickedClass)) {
-		followBtn.classList.remove(clickedClass);
-		followBtn.innerText = "언팔로우";
-	} else {
-		followBtn.classList.add(clickedClass);
-		followBtn.innerText = "팔로우";
-	}
-};
 async function loaderFunction() {
 	await loadUserDetail();
-	await loadUserFridge();
 	await loadUserArticle();
 	await loadUserComment();
 }

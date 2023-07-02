@@ -4,17 +4,20 @@ async function handleNavbarMode(loginUser) {
     const loggedInItems = document.querySelectorAll('.logged-in-item');
     const loggedOutItems = document.querySelectorAll('.logged-out-item');
     const navbarToggler = document.querySelector(".navbar-toggler");
+	const loginButton = document.getElementById("nav-login"); // 로그인 버튼 추가
 
     if (loginUser) {
         // 로그인시 드롭다운 및 버튼 표시
         loggedInItems.forEach(item => item.style.display = 'block');
         loggedOutItems.forEach(item => item.style.display = 'none');
         navbarToggler.style.display = "inline-block";
+		loginButton.style.display = "none"; // 로그인 버튼 숨기기
     } else {
         // 미로그인시 드롭다운 및 버튼 숨김
         loggedInItems.forEach(item => item.style.display = 'none');
         loggedOutItems.forEach(item => item.style.display = 'block');
         navbarToggler.style.display = "none";
+		loginButton.style.display = "block"; // 로그인 버튼 보이기
     }
 }
 
@@ -74,19 +77,6 @@ function checkNotLogin() {
 	const payload = localStorage.getItem("payload");
 	if (payload == null) {
 		window.location.replace(`${FRONT_BASE_URL}/`);
-	}
-}
-// token 만료되면 로그인페이지로 이동
-function checkTokenExp() {
-	const payload = localStorage.getItem("payload");
-	let current_time = String(new Date().getTime()).substring(0, 10);
-	if (payload) {
-		const payload_parse = JSON.parse(payload).exp;
-		if (payload_parse < current_time) {
-			handleLogout();
-		} else {
-			return;
-		}
 	}
 }
 

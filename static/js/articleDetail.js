@@ -1,11 +1,12 @@
-let articleId;
-let authorId;
+let articleId
+let authorId
 
-async function loadArticle() {
-	const response = await getArticleDetail(articleId);
-	const user_json = await getLoginUser();
-	if (response.status == 200) {
-		const response_json = await response.json();
+
+async function loadArticle(){
+    const response = await getArticleDetail(articleId);
+    const user_json = await getLoginUser()
+    if(response.status == 200) {
+        const response_json = await response.json()
 
 		const articleTitle = document.getElementById("title");
 		const articleContent = document.getElementById("content");
@@ -32,6 +33,7 @@ async function loadArticle() {
 		} else {
 			articleThumbnail.remove();
 		}
+
 
 		articleCategory.innerHTML = `카테고리: <a href="${FRONT_BASE_URL}/articles/article_list.html?category=${response_json.category}"><span class="badge bg-dark">${response_json.categoryname}</span></a>`;
 		articleAuthor.innerHTML = `${response_json.user}`;
@@ -94,11 +96,13 @@ async function loadArticle() {
 			);
 			updateBtn.innerText = "수정";
 
-			let deleteBtn = document.createElement("button");
-			deleteBtn.setAttribute("type", "button");
-			deleteBtn.setAttribute("class", "btn btn-outline-danger");
-			deleteBtn.setAttribute("onclick", `deleteArticleBtn(${articleId})`);
-			deleteBtn.innerText = "삭제";
+
+            let deleteBtn = document.createElement("button")
+            deleteBtn.setAttribute("type","button")
+            deleteBtn.setAttribute("class","btn btn-outline-danger")
+            deleteBtn.setAttribute("onclick",`deleteArticleBtn(${articleId})`)
+            deleteBtn.innerText = "삭제"
+
 
 			buttonArea1.append(updateBtn);
 			buttonArea1.append(deleteBtn);
@@ -151,132 +155,136 @@ async function loadArticle() {
 	}
 }
 
-async function loadComments(comment_page = 1) {
-	const response = await getComments(articleId, comment_page);
-	if (response == null) {
-		return null;
-	}
-	const commentList = document.getElementById("commentbox");
-	commentList.innerHTML = ``;
 
-	response.results.forEach((comment) => {
-		commentList.innerHTML += `
+async function loadComments(comment_page=1){
+    const response = await getComments(articleId,comment_page);
+    if (response == null){
+        return null
+    }
+    const commentList = document.getElementById("commentbox")
+    commentList.innerHTML = ``
+
+    response.results.forEach(comment => {
+        commentList.innerHTML += `
         <div class="card-text">
-        <small><a href="${FRONT_BASE_URL}/users/user_detail.html?user_id=${
-			comment.author
-		}">${comment.user}</a>, ${comment.updated_at
-			.split(".")[0]
-			.replace("T", " ")
-			.slice(0, -3)}</small></div>
-        <div class="card-text">${comment.comment}</div>`;
-		const payload = localStorage.getItem("payload");
-		if (payload) {
-			const payload_parse = JSON.parse(payload);
-			if (payload_parse.user_id == comment.author) {
-				commentList.innerHTML += `<button onclick="updateCommentButton(${comment.id},this)">수정</button><button onclick="deleteCommentButton(${comment.id})">삭제</button>`;
-			}
-			commentList.innerHTML += ` <button onclick="commentLikeBtn(${comment.id})">좋아요</button>`;
-		}
-		commentList.innerHTML += ` ${comment.likes_count}👍</div><hr>`;
-	});
-	const pagination = document.createElement("ul");
-	pagination.setAttribute("class", "pagination");
-	pagination.innerHTML = "";
-	const pagecount = response.count / 50 + 1;
-	if (pagecount >= 2) {
-		for (i = 1; i < pagecount; i++) {
-			const newPageBtn = document.createElement("li");
-			newPageBtn.setAttribute("class", "page-item");
-			const newPageLink = document.createElement("a");
-			newPageLink.setAttribute("class", "page-link");
-			newPageLink.setAttribute("onclick", `loadComments(${i})`);
-			newPageLink.innerText = i;
-			newPageBtn.appendChild(newPageLink);
-			pagination.appendChild(newPageBtn);
-		}
-		commentList.append(pagination);
-	}
+        <small><a href="${FRONT_BASE_URL}/users/user_detail.html?user_id=${comment.author}">${comment.user}</a>, ${comment.updated_at.split('.')[0].replace("T"," ").slice(0,-3)}</small></div><div class="card-text">${comment.comment}</div>`
+        const payload = localStorage.getItem("payload");
+	    if (payload) {
+		    const payload_parse = JSON.parse(payload);
+
+            commentList.innerHTML +=`<div class="btn-container">`;
+
+            if (payload_parse.user_id == comment.author){
+                commentList.innerHTML +=`
+                    <button class="comment-btn" id="comment-btn" onclick="updateCommentButton(${comment.id},this)">수정</button>
+                    <button class="comment-btn" id="comment-btn" onclick="deleteCommentButton(${comment.id})">삭제</button>`;
+            }
+            commentList.innerHTML +=`
+                <button class="bi bi-hand-thumbs-up" id="comment-like" onclick="commentLikeBtn(${comment.id})"> ${comment.likes_count}</button> 
+            </div>`;
+        }
+        // commentList.innerHTML +=` ${comment.likes_count}👍</div><hr>`
+    });
+    const pagination = document.createElement("ul")
+    pagination.setAttribute("class","pagination")
+    pagination.innerHTML = ""
+    const pagecount = response.count/50+1
+    if (pagecount >= 2){
+        for (i=1; i < pagecount; i++){
+            const newPageBtn = document.createElement("li")
+            newPageBtn.setAttribute("class", "page-item")
+            const newPageLink = document.createElement("a")
+            newPageLink.setAttribute("class", "page-link")
+            newPageLink.setAttribute("onclick", `loadComments(${i})`)
+            newPageLink.innerText = i
+            newPageBtn.appendChild(newPageLink)
+            pagination.appendChild(newPageBtn)
+        }
+        commentList.append(pagination)
+    }
 }
 
-async function submitComment() {
-	const commentElement = document.getElementById("comment-input");
-	const newComment = commentElement.value;
-	const response = await postComment(articleId, newComment);
-	commentElement.value = "";
-	const response_json = await response.json();
-	if (response.status == 200) {
-		loadComments();
-	} else {
-		alert(response.status);
-	}
+
+async function submitComment(){
+    const commentElement = document.getElementById("comment-input")
+    const newComment = commentElement.value
+    const response = await postComment(articleId, newComment)
+    commentElement.value = ""
+    const response_json = await response.json()
+    if(response.status == 200) {
+        loadComments()
+    } else {
+        alert(response.status)
+    }
 }
 
-async function updateCommentButton(commentId, element) {
-	const comment_content = element.previousElementSibling.innerText;
-	const commentElement = document.getElementById("comment-input");
-	commentElement.value = comment_content;
 
-	const submitCommentButton = document.getElementById("submitCommentButton");
-	submitCommentButton.innerText = "댓글수정";
-	submitCommentButton.setAttribute(
-		"onclick",
-		`submitUpdateComment(${commentId})`
-	);
+async function updateCommentButton(commentId, element){
+    const comment_content = element.previousElementSibling.innerText
+    const commentElement = document.getElementById("comment-input")
+    commentElement.value = comment_content
+    
+    const submitCommentButton = document.getElementById("submitCommentButton")
+    submitCommentButton.innerText = "댓글수정"
+    submitCommentButton.setAttribute("onclick",`submitUpdateComment(${commentId})`)
 }
 
-async function submitUpdateComment(commentId) {
-	const commentElement = document.getElementById("comment-input");
-	const newComment = commentElement.value;
-	const response = await updateComment(commentId, newComment);
-	commentElement.value = "";
-	const response_json = await response.json();
-	if (response.status == 200) {
-		loadComments();
-	} else {
-		alert(response.status);
-	}
 
-	const submitCommentButton = document.getElementById("submitCommentButton");
-	submitCommentButton.innerText = "댓글작성";
-	submitCommentButton.setAttribute("onclick", `submitComment()`);
+async function submitUpdateComment(commentId){
+    const commentElement = document.getElementById("comment-input")
+    const newComment = commentElement.value
+    const response = await updateComment(commentId, newComment)
+    commentElement.value = ""
+    const response_json = await response.json()
+    if(response.status == 200) {
+        
+        loadComments()
+    } else {
+        alert(response.status)
+    }
+
+    const submitCommentButton = document.getElementById("submitCommentButton")
+    submitCommentButton.innerText = "댓글작성"
+    submitCommentButton.setAttribute("onclick",`submitComment()`)
 }
 
-async function deleteCommentButton(commentId) {
-	const response = await deleteComment(commentId);
 
-	if (response.status == 204) {
-		alert("삭제 완료!");
-		loadComments();
-	} else {
-		alert(response.status);
-	}
+async function deleteCommentButton(commentId){
+    const response = await deleteComment(commentId)
+
+    if(response.status == 204) {
+        alert("삭제 완료!")
+        loadComments()
+    } else {
+        alert(response.status)
+    }
 }
 
-async function commentLikeBtn(commentId) {
-	const response = await likeComment(commentId);
-	const response_json = await response.json();
-	if (response.status == 200 || response.status == 204) {
-		alert(response_json);
-		loadComments();
-	} else {
-		alert(response.status);
-	}
+async function commentLikeBtn(commentId){
+    const response = await likeComment(commentId)
+    const response_json = await response.json()
+    if (response.status==200 || response.status==204){
+        alert(response_json)
+        loadComments()
+    }else{
+        alert(response.status)
+    }
 }
-async function deleteArticleBtn(articleId) {
-	const response = await deleteArticle(articleId);
-	if (response.status == 204) {
-		location.href = `${FRONT_BASE_URL}/`;
-	} else {
-		alert(response.status);
-	}
+async function deleteArticleBtn(articleId){
+    const response = await deleteArticle(articleId)
+    if (response.status==204){
+        location.href=`${FRONT_BASE_URL}/`
+    }else{
+        alert(response.status)
+    }
 }
 async function loaderFunction() {
-    const urlParams = new URLSearchParams(window.location.search);
-    articleId = urlParams.get('article_id');
-    
-    const token= localStorage.getItem("access")
-    fetchMissingIngredients(articleId, token);
+	const urlParams = new URLSearchParams(window.location.search);
+	articleId = urlParams.get("article_id");
+
+	const token = localStorage.getItem("access");
+	fetchMissingIngredients(articleId, token);
 
 	await loadArticle();
 	await loadComments(1);
-};
+}
