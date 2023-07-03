@@ -6,9 +6,11 @@
     font-weight: 400;
     font-style: normal;
 }
-
-body {
+html {
     font-family: 'Pretendard-Regular', sans-serif;
+}
+body {
+    /* font-family: 'Pretendard-Regular', sans-serif; */
     min-width: 375px;
     width: 50%;
     max-width: 550px;
@@ -188,4 +190,16 @@ a {
 a:hover {
     color:black;
     font-weight: bold;
+}
+#image_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.image-upload-header {
+    margin-top: 15px;
+}
+#user-update-button {
+    margin-top: 15px;
 }
