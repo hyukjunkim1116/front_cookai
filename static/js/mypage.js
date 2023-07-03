@@ -289,7 +289,8 @@ async function loadUserLikeComment(currentCommentPage) {
 async function loadUserDetail() {
 	const response = await getUserDetail();
 	const followingsList = await getUserFollowing();
-	const followingIdList = followingsList.map((following) => following.id);
+	if(followingsList !=null){
+		const followingIdList = followingsList.map((following) => following.id);
 	const avatar = document.getElementById("mypage-avatar");
 	avatar.setAttribute(
 		"src",
@@ -355,6 +356,25 @@ async function loadUserDetail() {
 			following.style.color = "black";
 		}
 	});
+	}else{
+		const avatar = document.getElementById("mypage-avatar");
+		avatar.setAttribute(
+			"src",
+			[null, undefined].includes(response.avatar)
+				? "/static/img/no_avatar.png"
+				: response.avatar
+		);
+		const username = document.getElementById("username");
+	username.innerText = `${response.username}`;
+	const userDetailFollowBtn = document.getElementById("mypage-following-btn");
+
+		userDetailFollowBtn.remove();
+	const following = document.getElementById("following");
+	following.remove()
+	const follower = document.getElementById("follower");
+	follower.remove()
+	}
+	
 	const bookmark = document.getElementById("bookmark-article");
 	bookmark.innerText = `북마크한 게시글 : ${response.total_bookmark_articles}`;
 	bookmark.addEventListener("click", async () => {
