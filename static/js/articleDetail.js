@@ -183,7 +183,7 @@ async function loadComments(comment_page=1){
                     <button class="comment-btn btn btn-danger" id="comment-btn${comment.id}" onclick="deleteCommentButton(${comment.id})">삭제</button>`;
             }
             commentList.innerHTML +=`
-                <button class="bi bi-hand-thumbs-up" id="comment-like" onclick="commentLikeBtn(${comment.id})"> ${comment.likes_count}</button> 
+                <button class="bi bi-hand-thumbs-up btn btn-outline-dark" id="comment-like" onclick="commentLikeBtn(${comment.id})"> ${comment.likes_count}</button> 
             </div>`;
         }
         // commentList.innerHTML +=` ${comment.likes_count}👍</div><hr>`
