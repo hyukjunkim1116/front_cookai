@@ -13,7 +13,7 @@ async function loadArticleList(page=1) {
         // 새로운 div 요소를 생성하고, class 속성을 "card"로 설정합니다.
         // 또한, 클릭 이벤트 핸들러와 id 속성을 게시물의 고유 식별자(pk)로 설정합니다.
         // 이렇게 생성한 카드를 newCardBox에 추가합니다.
-		const tempHtml=`<div id="article-container" class="article-container" onclick="location.href='http://127.0.0.1:5500/articles/article_detail.html?article_id=${article.id}'" style="cursor:pointer">
+		const tempHtml=`<div id="article-container" class="article-container" onclick="location.href='${FRONT_BASE_URL}/articles/article_detail.html?article_id=${article.id}'" style="cursor:pointer">
 		<div id="article-image" class="article-image" style="background-image: url('${[null,undefined].includes(article.image)?"https://cdn11.bigcommerce.com/s-1812kprzl2/images/stencil/original/products/426/5082/no-image__12882.1665668288.jpg?c=2/":article.image}');"></div>
 		<div id="article-content" class="article-content">
 			<div id="article-content__title" class="article-content__title">${article.title}</div>
