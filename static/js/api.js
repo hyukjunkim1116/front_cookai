@@ -1,5 +1,5 @@
-const FRONT_BASE_URL = "http://127.0.0.1:5500";
-const BACKEND_BASE_URL = "http://127.0.0.1:8000";
+const FRONT_BASE_URL = "https://cookai.today";
+const BACKEND_BASE_URL = "https://www.backend.cookai.today";
 
 // 로그인
 async function handleLogin() {
@@ -94,7 +94,7 @@ async function handleChangePasswordConfirm() {
 }
 
 async function handleUpdatePassword() {
-	await checkTokenExp()
+	await checkTokenExp();
 	const token = localStorage.getItem("access");
 	const oldPassword = document.getElementById("old_password").value;
 	const newPassword = document.getElementById("new_password").value;
@@ -123,15 +123,15 @@ async function handleUpdatePassword() {
 
 //로그인 한 유저 정보 조회
 async function getLoginUser() {
-	await checkTokenExp()
+	await checkTokenExp();
 	const payload = localStorage.getItem("payload");
-	const token = localStorage.getItem("access")
+	const token = localStorage.getItem("access");
 	if (payload) {
 		const payload_parse = JSON.parse(payload);
 		const response = await fetch(
 			`${BACKEND_BASE_URL}/users/${payload_parse.user_id}/`,
 			{
-				headers:{"Authorization":`Bearer ${token}`},
+				headers: { Authorization: `Bearer ${token}` },
 				method: "GET"
 			}
 		);
@@ -145,7 +145,7 @@ async function getLoginUser() {
 }
 //해당 유저 정보 조회
 async function getUserDetail() {
-	await checkTokenExp()
+	await checkTokenExp();
 	let token = localStorage.getItem("access");
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const response = await fetch(`${BACKEND_BASE_URL}/users/${userId}/`, {
@@ -154,11 +154,12 @@ async function getUserDetail() {
 		},
 		method: "GET"
 	});
-	if(response.status==404) location.href=`${FRONT_BASE_URL}/page_not_found.html`
+	if (response.status == 404)
+		location.href = `${FRONT_BASE_URL}/page_not_found.html`;
 	return await response.json();
 }
 async function deleteUser() {
-	await checkTokenExp()
+	await checkTokenExp();
 	let token = localStorage.getItem("access");
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const password = document.getElementById("password").value;
@@ -184,7 +185,7 @@ async function deleteUser() {
 }
 
 async function getUserArticle(currentPage = 1) {
-	await checkTokenExp()
+	await checkTokenExp();
 	let token = localStorage.getItem("access");
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const response = await fetch(
@@ -200,7 +201,7 @@ async function getUserArticle(currentPage = 1) {
 	return response.json();
 }
 async function getUserComment(currentCommentPage = 1, filter = 0) {
-	await checkTokenExp()
+	await checkTokenExp();
 	let token = localStorage.getItem("access");
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const response = await fetch(
@@ -216,7 +217,7 @@ async function getUserComment(currentCommentPage = 1, filter = 0) {
 	return response.json();
 }
 async function getUserCommentsList() {
-	await checkTokenExp()
+	await checkTokenExp();
 	let token = localStorage.getItem("access");
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const response = await fetch(
@@ -232,7 +233,7 @@ async function getUserCommentsList() {
 	return response.json();
 }
 async function getUserFridge() {
-	await checkTokenExp()
+	await checkTokenExp();
 	let token = localStorage.getItem("access");
 	const response = await fetch(`${BACKEND_BASE_URL}/users/fridge/`, {
 		headers: {
@@ -243,7 +244,7 @@ async function getUserFridge() {
 	return response.json();
 }
 async function postUserFridge() {
-	await checkTokenExp()
+	await checkTokenExp();
 	let token = localStorage.getItem("access");
 	const ingredient = document.getElementById("ingredient").value;
 	const response = await fetch(`${BACKEND_BASE_URL}/users/fridge/`, {
@@ -260,7 +261,7 @@ async function postUserFridge() {
 	return response;
 }
 async function deleteUserFridge(fridgeId) {
-	await checkTokenExp()
+	await checkTokenExp();
 	let token = localStorage.getItem("access");
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/users/fridge/${fridgeId}/`,
@@ -277,7 +278,7 @@ async function deleteUserFridge(fridgeId) {
 
 // 다른 유저의 팔로우리스트 보기
 async function getOtherUserFollowing() {
-	await checkTokenExp()
+	await checkTokenExp();
 	let token = localStorage.getItem("access");
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const response = await fetch(
@@ -293,7 +294,7 @@ async function getOtherUserFollowing() {
 }
 // 내가 팔로우한 유저 보기
 async function getUserFollowing() {
-	await checkTokenExp()
+	await checkTokenExp();
 	let token = localStorage.getItem("access");
 	const payload = localStorage.getItem("payload");
 	if (payload) {
@@ -314,7 +315,7 @@ async function getUserFollowing() {
 }
 // 나를 팔로우한 유저 보기
 async function getUserFollower() {
-	await checkTokenExp()
+	await checkTokenExp();
 	let token = localStorage.getItem("access");
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const response = await fetch(
@@ -331,7 +332,7 @@ async function getUserFollower() {
 
 // 특정 유저 팔로잉하기
 async function userFollowing() {
-	await checkTokenExp()
+	await checkTokenExp();
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	let token = localStorage.getItem("access");
 	const response = await fetch(
@@ -346,7 +347,7 @@ async function userFollowing() {
 	return response;
 }
 async function otherUserFollowing(userId) {
-	await checkTokenExp()
+	await checkTokenExp();
 	let token = localStorage.getItem("access");
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/users/${userId}/following/`,
@@ -368,7 +369,7 @@ async function getCategory() {
 }
 
 async function deleteArticle(articleId) {
-	await checkTokenExp()
+	await checkTokenExp();
 	const token = localStorage.getItem("access");
 
 	const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/`, {
@@ -380,7 +381,6 @@ async function deleteArticle(articleId) {
 	return response;
 }
 async function getArticleList(querystring, page = 1) {
-
 	if (querystring == ``) {
 		var pageQuery = `?page=${page}`;
 	} else {
@@ -393,7 +393,7 @@ async function getArticleList(querystring, page = 1) {
 }
 
 async function getArticleDetail(articleId) {
-	await checkTokenExp()
+	await checkTokenExp();
 	const token = localStorage.getItem("access");
 	if (token) {
 		const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/`, {
@@ -424,7 +424,7 @@ async function getComments(articleId, comment_page = 1) {
 	}
 }
 async function postComment(articleId, newComment) {
-	await checkTokenExp()
+	await checkTokenExp();
 	const token = localStorage.getItem("access");
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/articles/${articleId}/comment/`,
@@ -444,7 +444,7 @@ async function postComment(articleId, newComment) {
 }
 
 async function bookmarkArticle(articleId) {
-	await checkTokenExp()
+	await checkTokenExp();
 	const token = localStorage.getItem("access");
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/articles/${articleId}/bookmark/`,
@@ -466,7 +466,7 @@ async function bookmarkArticle(articleId) {
 }
 
 async function likeArticle(articleId) {
-	await checkTokenExp()
+	await checkTokenExp();
 	const token = localStorage.getItem("access");
 
 	const response = await fetch(
@@ -489,7 +489,7 @@ async function likeArticle(articleId) {
 }
 
 async function deleteComment(commentId) {
-	await checkTokenExp()
+	await checkTokenExp();
 	const token = localStorage.getItem("access");
 
 	const response = await fetch(
@@ -504,7 +504,7 @@ async function deleteComment(commentId) {
 	return response;
 }
 async function updateComment(commentId, newComment) {
-	await checkTokenExp()
+	await checkTokenExp();
 	const token = localStorage.getItem("access");
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/articles/1/comment/${commentId}/`,
@@ -524,7 +524,7 @@ async function updateComment(commentId, newComment) {
 }
 
 async function likeComment(commentId) {
-	await checkTokenExp()
+	await checkTokenExp();
 	const token = localStorage.getItem("access");
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/articles/comment/${commentId}/like/`,
@@ -539,7 +539,7 @@ async function likeComment(commentId) {
 	return response;
 }
 async function deleteArticle(articleId) {
-	await checkTokenExp()
+	await checkTokenExp();
 	const token = localStorage.getItem("access");
 
 	const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/`, {
@@ -574,7 +574,6 @@ async function fetchMissingIngredients(articleId, token) {
 
 	if (response.ok) {
 		const ingredientLinks = await response.json();
-
 
 		const ingredients = {};
 
@@ -616,19 +615,18 @@ async function fetchMissingIngredients(articleId, token) {
 										}
                 `;
 
-                missingLinksList.appendChild(listItem);
-            });
-        }
-        const container = document.getElementById('ingredientslink_list');
-        container.appendChild(missingLinksList);
-		if(ingredientLinks.length==0){
-			document.getElementById("coupang_ingredient").remove()
+				missingLinksList.appendChild(listItem);
+			});
 		}
-    } else {
-        console.error('API 요청 실패:', response.statusText);
-		document.getElementById("coupang_ingredient").remove()
-    }
-
+		const container = document.getElementById("ingredientslink_list");
+		container.appendChild(missingLinksList);
+		if (ingredientLinks.length == 0) {
+			document.getElementById("coupang_ingredient").remove();
+		}
+	} else {
+		console.error("API 요청 실패:", response.statusText);
+		document.getElementById("coupang_ingredient").remove();
+	}
 }
 
 async function getTagList(selector) {
@@ -659,7 +657,7 @@ async function checkTokenExp() {
 				})
 			});
 			const response_json = await response.json();
-			if(Boolean(response_json.access)){
+			if (Boolean(response_json.access)) {
 				localStorage.setItem("access", response_json.access);
 				const base64Url = response_json.access.split(".")[1];
 				const base64 = base64Url.replace(/-/g, "+");
@@ -673,10 +671,10 @@ async function checkTokenExp() {
 				);
 				localStorage.setItem("payload", jsonPayload);
 				window.location.replace(`${FRONT_BASE_URL}/`);
-			}else{
+			} else {
 				localStorage.removeItem("refresh");
-				alert("로그아웃되었습니다! 다시로그인해주세요.")
-				location.href=`${FRONT_BASE_URL}/login.html`
+				alert("로그아웃되었습니다! 다시로그인해주세요.");
+				location.href = `${FRONT_BASE_URL}/login.html`;
 			}
 		} else {
 			return;
@@ -685,7 +683,7 @@ async function checkTokenExp() {
 }
 
 async function getRecommend(recommendType) {
-	await checkTokenExp()
+	await checkTokenExp();
 	const token = localStorage.getItem("access");
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/ai_process/?recommend=${recommendType}`,
@@ -699,7 +697,7 @@ async function getRecommend(recommendType) {
 	return response;
 }
 async function getFollowArticles(userId, page = 1) {
-	await checkTokenExp()
+	await checkTokenExp();
 	const token = localStorage.getItem("access");
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/users/${userId}/articles/?filter=3`,
@@ -713,7 +711,7 @@ async function getFollowArticles(userId, page = 1) {
 	return response;
 }
 async function getUserFeedArticles(userId, filter, page = 1) {
-	await checkTokenExp()
+	await checkTokenExp();
 	const token = localStorage.getItem("access");
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/users/${userId}/articles/?filter=${filter}&page=${page}`,
@@ -728,7 +726,7 @@ async function getUserFeedArticles(userId, filter, page = 1) {
 }
 
 async function getUserFollowList(currentFollowPage = 1, filter = 0) {
-	await checkTokenExp()
+	await checkTokenExp();
 	let token = localStorage.getItem("access");
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const response = await fetch(
