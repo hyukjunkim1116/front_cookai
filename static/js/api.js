@@ -112,7 +112,7 @@ async function handleUpdatePassword() {
 	if (response.status == 200) {
 		alert("비밀번호가 변경되었습니다!");
 		handleLogout();
-		window.location = `${FRONT_BASE_URL}/users/login.html`;
+		window.location = `${FRONT_BASE_URL}/login.html`;
 		return response;
 	} else {
 		alert("현재 비밀번호가 일치하지 않습니다!");
