@@ -22,6 +22,7 @@ async function postUserFridgeObjDetection(){
 
       }
     });
+    await goMypage()
 }
 
 
@@ -31,6 +32,13 @@ async function loaderFunction(){
   const image_form = document.getElementById('image_form')
   const token= localStorage.getItem("access")
   image_form.addEventListener('submit', async (e) => {
+    const span = document.createElement("span");
+    span.setAttribute("id", "spinner-span");
+    span.setAttribute("class", "spinner-border spinner-border-sm");
+    span.setAttribute("role", "status");
+    span.setAttribute("aria-hidden", "true");
+    const imgBtn=document.getElementById("image-submit")
+    imgBtn.appendChild(span);
     e.preventDefault()
     const formData = new FormData(image_form)
     const response=await fetch(`${BACKEND_BASE_URL}/ai_process/upload/`, {
@@ -50,5 +58,7 @@ async function loaderFunction(){
       resultBox.innerHTML += ` <button class="btn btn-outline-dark" onclick="location.href='${FRONT_BASE_URL}/articles/article_list.html?search=2&selector=${temp_html}'">검색</button> <button class="btn btn-outline-dark" onclick="postUserFridgeObjDetection()">재료 저장</button>`
       document.getElementById("explain").innerHTML += `<h4>위의 내용이 인식 결과입니다.</h4><p>부정확 할 경우 직접 입력을 통해 정정할 수 있습니다.</p>`
     }
+    imgBtn.innerHTML=''
+    imgBtn.innerText="Submit"
   })
 }
