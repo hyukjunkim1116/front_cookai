@@ -84,7 +84,7 @@ async function loadArticle(){
 				""
 			);
 			p = p.replace(/class="form-label">레시피/g, 'class="form-label">과정');
-			p = p.replace(/<\/div><div class="mb-3/, '</div><hr><div class="mb-3');
+			p = p.replace(/<\/div>[\s]*<div class="mb-3/, '</div><hr><div class="mb-3');
 			articleRecipe.innerHTML = p;
 		} else {
 			document.getElementById("recipe_box").remove();
