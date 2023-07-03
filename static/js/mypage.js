@@ -18,17 +18,16 @@ async function loadUserFollowing(currentFollowPage = 1) {
 			followList.innerHTML = `
 				<img id="follow-avatar" class="follow-avatar" src=${userAvatar} onclick="location.href='${FRONT_BASE_URL}/mypage.html?user_id=${result.id}'" style="cursor:pointer;">
                 <div id="follow-name" class="follow-name" onclick="location.href='${FRONT_BASE_URL}/mypage.html?user_id=${result.id}'" style="cursor:pointer;">${result.username}</div>
-                <div id="follow-btn" class="follow-btn" onclick="userFollowToggle(${result.id})">언팔로우</div>
+				<div id="follow-btn" class="follow-btn follow-following-btn-${result.id}" onclick="userFollowToggle(${result.id})">언팔로우</div>
 			`;
+			if (isYOU(result.id)) {
+				const followBtn = document.getElementById(
+					`follow-following-btn-${result.id}`
+				);
+				followBtn.style.display = "none";
+			}
 			followPageList.appendChild(followList);
 		});
-	}
-	const followBtn = document.querySelectorAll("follow-btn");
-	if (await isYOU(userId)) {
-		return;
-	} else {
-		const followBtn = document.querySelectorAll("follow-btn");
-		followBtn.remove();
 	}
 	const pagination = document.createElement("div");
 	pagination.setAttribute("class", "pagination");
@@ -43,6 +42,9 @@ async function loadUserFollowing(currentFollowPage = 1) {
 		pagination.append(newPageLink);
 		followPageList.appendChild(pagination);
 	}
+	const followBtn = document.querySelector(
+		"#follow-following-btn-${result.id}"
+	);
 }
 async function loadUserFollower(currentFollowPage = 1) {
 	const response = await getUserFollowList(currentFollowPage, 1);
@@ -77,14 +79,12 @@ async function loadUserFollower(currentFollowPage = 1) {
 				followingIdList.includes(result.id) ? "언팔로우" : "팔로우"
 			}</div>
 			`;
+			if (isYOU(result.id)) {
+				const followBtn = document.getElementById(`follow-btn-${result.id}`);
+				followBtn.style.display = "none";
+			}
 			followPageList.appendChild(followList);
 		});
-	}
-	if (await isYOU(userId)) {
-		return;
-	} else {
-		const followBtn = document.querySelectorAll("follow-btn");
-		followBtn.remove();
 	}
 	const pagination = document.createElement("div");
 	pagination.setAttribute("class", "pagination");
