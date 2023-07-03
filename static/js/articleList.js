@@ -211,10 +211,10 @@ async function onEnter(e){
 }
 // 페이지 로드 시 게시글을 가져오도록 호출합니다
 async function loaderFunction() {
-	if(window.location.search){
+	if(window.location.search.includes("search")){
 	query=window.location.search.replace(/&selector=.*$/g,"")
 
-	const parameters = new URLSearchParams(window.location.href)
+	const parameters = new URLSearchParams(window.location.search)
 
 	document.getElementById("selector").value=parameters.get("selector")
 	const searchType=document.getElementById("search_type")
@@ -268,4 +268,13 @@ async function loaderFunction() {
 		SelectOrderBtn.innerHTML +=`<input type="radio" class="btn-check" name="selectorder" id="selectorder1" autocomplete="off">
 <label class="btn btn-outline-primary" for="selectorder1" onclick="orderQueryString(1)">좋아요순</label>`
 	document.getElementById("selectorder").appendChild(SelectOrderBtn)
+	if(window.location.search.includes("category")){
+		const parameters = new URLSearchParams(window.location.search)
+		console.log(parameters.get("category"))
+		document.getElementById(`btnradio0`).checked=false
+		const button=document.getElementById(`btnradio${parameters.get("category")}`)
+		button.checked=true
+		categoryQueryString(parameters.get("category"),button.nextElementSibling.innerText)
+		
+	}
 }
