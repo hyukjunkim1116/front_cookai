@@ -21,10 +21,10 @@ async function loadUserFollowing(currentFollowPage = 1) {
 				<div id="follow-btn" class="follow-btn follow-following-btn-${result.id}" onclick="userFollowToggle(${result.id})">언팔로우</div>
 			`;
 			if (isYOU(result.id)) {
-				const followBtn = document.getElementById(
-					`follow-following-btn-${result.id}`
+				const followBtn = document.querySelector(
+					`#follow-following-btn-${result.id}`
 				);
-				followBtn.remove();
+				followBtn.style.display = "none";
 			}
 			followPageList.appendChild(followList);
 		});
@@ -77,8 +77,8 @@ async function loadUserFollower(currentFollowPage = 1) {
 			}</div>
 			`;
 			if (isYOU(result.id)) {
-				const followBtn = document.getElementById(`follow-btn-${result.id}`);
-				followBtn.remove();
+				const followBtn = document.querySelector(`#follow-btn-${result.id}`);
+				followBtn.style.display = "none";
 			}
 			followPageList.appendChild(followList);
 		});
