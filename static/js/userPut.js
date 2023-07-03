@@ -73,7 +73,7 @@ async function putUserDetail() {
 			})
 		});
 		if (response.status == 400) {
-			alert("다시 입력하세요!");
+			alert(response_json.error);
 		} else {
 			alert("변경 완료!");
 			window.location.reload();
