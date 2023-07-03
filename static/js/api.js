@@ -1,7 +1,5 @@
-const FRONT_BASE_URL = "http://127.0.0.1:5500";
-const BACKEND_BASE_URL = "http://127.0.0.1:8000";
-//http://127.0.0.1:5500
-//http://127.0.0.1:8000
+const FRONT_BASE_URL = "https://cookai.today";
+const BACKEND_BASE_URL = "https://www.backend.cookai.today";
 
 // 로그인
 async function handleLogin() {
@@ -289,7 +287,7 @@ async function getUserFollowing() {
 		);
 		return response.json();
 	} else {
-		return null;
+		return null
 	}
 }
 // 나를 팔로우한 유저 보기
