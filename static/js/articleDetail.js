@@ -179,11 +179,11 @@ async function loadComments(comment_page=1){
 
             if (payload_parse.user_id == comment.author){
                 commentList.innerHTML +=`
-                    <button class="comment-btn" id="comment-btn" onclick="updateCommentButton(${comment.id},this)">수정</button>
-                    <button class="comment-btn" id="comment-btn" onclick="deleteCommentButton(${comment.id})">삭제</button>`;
+                    <button class="comment-btn btn btn-secondary" id="comment-btn${comment.id}" onclick="updateCommentButton(${comment.id})">수정</button>
+                    <button class="comment-btn btn btn-danger" id="comment-btn${comment.id}" onclick="deleteCommentButton(${comment.id})">삭제</button>`;
             }
             commentList.innerHTML +=`
-                <button class="bi bi-hand-thumbs-up" id="comment-like" onclick="commentLikeBtn(${comment.id})"> ${comment.likes_count}</button> 
+                <button class="bi bi-hand-thumbs-up btn btn-outline-dark" id="comment-like" onclick="commentLikeBtn(${comment.id})"> ${comment.likes_count}</button> 
             </div>`;
         }
         // commentList.innerHTML +=` ${comment.likes_count}👍</div><hr>`
@@ -222,8 +222,8 @@ async function submitComment(){
 }
 
 
-async function updateCommentButton(commentId, element){
-    const comment_content = element.previousElementSibling.innerText
+async function updateCommentButton(commentId){
+    const comment_content = document.getElementById(`comment-btn${commentId}`).innerText
     const commentElement = document.getElementById("comment-input")
     commentElement.value = comment_content
     
