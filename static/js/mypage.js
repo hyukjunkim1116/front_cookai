@@ -1,10 +1,7 @@
-
-
 async function loadUserFollowing(currentFollowPage = 1) {
 	const response = await getUserFollowList(currentFollowPage);
 	const followListResponse = await response.json();
 	const followPageList = document.getElementById("follow-page");
-	// followPageList.style.display = "flex";
 	followPageList.innerHTML = "";
 	followPageList.innerText = "팔로잉 목록";
 
@@ -26,7 +23,12 @@ async function loadUserFollowing(currentFollowPage = 1) {
 			followPageList.appendChild(followList);
 		});
 	}
-
+	const followBtn = document.querySelectorAll("follow-btn");
+	if (await isYOU(userId)) {
+		return;
+	} else {
+		followBtn.style.display = "none";
+	}
 	const pagination = document.createElement("div");
 	pagination.setAttribute("class", "pagination");
 	pagination.innerHTML = "";
@@ -77,7 +79,11 @@ async function loadUserFollower(currentFollowPage = 1) {
 			followPageList.appendChild(followList);
 		});
 	}
-
+	if (await isYOU(userId)) {
+		return;
+	} else {
+		followBtn.style.display = "none";
+	}
 	const pagination = document.createElement("div");
 	pagination.setAttribute("class", "pagination");
 	pagination.innerHTML = "";
@@ -405,7 +411,7 @@ async function loadUserArticle(currentPage) {
 	totalArticles.setAttribute("id", "total_articles");
 	totalArticles.innerText = `게시글 : ${response.count}`;
 	articleContainer.appendChild(totalArticles);
-	console.log(response)
+	console.log(response);
 	response.results.forEach((result) => {
 		const articleContent = document.createElement("div");
 		const articleImage = result.avatar
