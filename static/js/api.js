@@ -315,6 +315,13 @@ async function userFollowing() {
 			method: "POST"
 		}
 	);
+	if(response.status==200){
+		alert("follow!")
+	}else if(response.status==204){
+		alert("unfollow!")
+	}else{
+		alert("올바르지 않은 요청이거나 존재하지 않는 회원입니다!")
+	}
 	return response;
 }
 async function otherUserFollowing(userId) {
@@ -327,6 +334,13 @@ async function otherUserFollowing(userId) {
 			method: "POST"
 		}
 	);
+	if(response.status==200){
+		alert("follow!")
+	}else if(response.status==204){
+		alert("unfollow!")
+	}else{
+		alert("올바르지 않은 요청이거나 존재하지 않는 회원입니다!")
+	}
 	return response;
 }
 
@@ -686,8 +700,8 @@ async function getUserFollowList(currentFollowPage = 1, filter = 0) {
 }
 async function getHeader(json=true){
 	var headers={}
-	if(localStorage.getItem(access)!=null&&localStorage.getItem(access)!=undefined){
-		headers["Authorization"]=`Bearer ${localStorage.getItem(access)}`
+	if(localStorage.getItem("access")!=null&&localStorage.getItem("access")!=undefined){
+		headers["Authorization"]=`Bearer ${localStorage.getItem("access")}`
 	}
 	if(json){
 		headers["content-type"]="application/json"
