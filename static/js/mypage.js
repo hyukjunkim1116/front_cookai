@@ -1,6 +1,6 @@
 
 
-async function loadUserFollowing(currentFollowPage=1) {
+async function loadUserFollowing(currentFollowPage = 1) {
 	const response = await getUserFollowList(currentFollowPage);
 	const followListResponse = await response.json();
 	const followPageList = document.getElementById("follow-page");
@@ -41,7 +41,7 @@ async function loadUserFollowing(currentFollowPage=1) {
 		followPageList.appendChild(pagination);
 	}
 }
-async function loadUserFollower(currentFollowPage=1) {
+async function loadUserFollower(currentFollowPage = 1) {
 	const response = await getUserFollowList(currentFollowPage, 1);
 	const followListResponse = await response.json();
 	const followingsList = await getUserFollowing();
@@ -272,7 +272,9 @@ async function loadUserDetail() {
 	const avatar = document.getElementById("mypage-avatar");
 	avatar.setAttribute(
 		"src",
-		[null,undefined].includes(response.avatar) ? "/static/img/no_avatar.png":response.avatar
+		[null, undefined].includes(response.avatar)
+			? "/static/img/no_avatar.png"
+			: response.avatar
 	);
 	const username = document.getElementById("username");
 	username.innerText = `${response.username}`;
@@ -377,7 +379,7 @@ async function loadUserFridge() {
 	const response = await getUserFridge();
 
 	const userFridgeContent = document.getElementById("fridge-content");
-	if(await isYOU(userId)){
+	if (await isYOU(userId)) {
 		if (response !== []) {
 			response.forEach((fridge) => {
 				const newUserFridge = document.createElement("div");
@@ -387,9 +389,9 @@ async function loadUserFridge() {
 				userFridgeContent.appendChild(newUserFridge);
 			});
 		}
-	}else{
-		const fridge_container = document.getElementById("fridge")
-		fridge_container.remove()
+	} else {
+		const fridge_container = document.getElementById("fridge");
+		fridge_container.remove();
 	}
 }
 async function loadUserArticle(currentPage) {
@@ -513,6 +515,7 @@ const otherUserFollowToggle = (id) => {
 	}
 };
 const userFollowToggle = (userId) => {
+	const followBtn = document.getElementById("follow-btn");
 	const clickedClass = "clicked";
 	otherUserFollowing(userId);
 	if (followBtn.classList.contains(clickedClass)) {
