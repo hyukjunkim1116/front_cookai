@@ -116,6 +116,8 @@ text-transform: capitalize;
     border: 1px solid var(--grey-200, #EAEBED);
     background: lightgray 50% / cover no-repeat;
     background-size: cover;
+    object-fit: cover;
+    background-repeat: no-repeat;
 }
 .article-container {
     display: flex;

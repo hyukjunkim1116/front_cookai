@@ -128,8 +128,8 @@ async function loadUserBookmarkArticle(currentPage) {
 	articleContainer.appendChild(totalArticles);
 	bookmarkResponse.results.forEach((result) => {
 		const articleContent = document.createElement("div");
-		const articleImage = result.avatar
-			? result.avatar
+		const articleImage = result.image
+			? result.image
 			: "https://cdn11.bigcommerce.com/s-1812kprzl2/images/stencil/original/products/426/5082/no-image__12882.1665668288.jpg?c=2";
 		articleContent.innerHTML = `
 		<div id="article-container" class="article-container"  >
@@ -188,8 +188,8 @@ async function loadUserLikeArticle(currentPage) {
 	articleContainer.appendChild(totalArticles);
 	likeArticleResponse.results.forEach((result) => {
 		const articleContent = document.createElement("div");
-		const articleImage = result.avatar
-			? result.avatar
+		const articleImage = result.image
+			? result.image
 			: "https://cdn11.bigcommerce.com/s-1812kprzl2/images/stencil/original/products/426/5082/no-image__12882.1665668288.jpg?c=2";
 		articleContent.innerHTML = `
 		<div id="article-container" class="article-container"  >
