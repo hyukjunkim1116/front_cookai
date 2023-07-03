@@ -1,24 +1,23 @@
-
 //드롭다운 불러오기
 async function handleNavbarMode(loginUser) {
-    const loggedInItems = document.querySelectorAll('.logged-in-item');
-    const loggedOutItems = document.querySelectorAll('.logged-out-item');
-    const navbarToggler = document.querySelector(".navbar-toggler");
+	const loggedInItems = document.querySelectorAll(".logged-in-item");
+	const loggedOutItems = document.querySelectorAll(".logged-out-item");
+	const navbarToggler = document.querySelector(".navbar-toggler");
 	const loginButton = document.getElementById("nav-login"); // 로그인 버튼 추가
 
-    if (loginUser) {
-        // 로그인시 드롭다운 및 버튼 표시
-        loggedInItems.forEach(item => item.style.display = 'block');
-        loggedOutItems.forEach(item => item.style.display = 'none');
-        navbarToggler.style.display = "inline-block";
+	if (loginUser) {
+		// 로그인시 드롭다운 및 버튼 표시
+		loggedInItems.forEach((item) => (item.style.display = "block"));
+		loggedOutItems.forEach((item) => (item.style.display = "none"));
+		navbarToggler.style.display = "inline-block";
 		loginButton.style.display = "none"; // 로그인 버튼 숨기기
-    } else {
-        // 미로그인시 드롭다운 및 버튼 숨김
-        loggedInItems.forEach(item => item.style.display = 'none');
-        loggedOutItems.forEach(item => item.style.display = 'block');
-        navbarToggler.style.display = "none";
+	} else {
+		// 미로그인시 드롭다운 및 버튼 숨김
+		loggedInItems.forEach((item) => (item.style.display = "none"));
+		loggedOutItems.forEach((item) => (item.style.display = "block"));
+		navbarToggler.style.display = "none";
 		loginButton.style.display = "block"; // 로그인 버튼 보이기
-    }
+	}
 }
 
 // 네비게이션 바 불러오기,
@@ -52,9 +51,9 @@ async function injectNavbar() {
 		// 사용자가 로그인하지 않은 경우
 		await handleNavbarMode(null);
 	}
-	const my=document.getElementById("my")
-	if (payload == null){
-		my.innerHTML = "Login"
+	const my = document.getElementById("my");
+	if (payload == null) {
+		my.innerHTML = "Login";
 	}
 }
 //푸터 불러오기
@@ -158,26 +157,25 @@ async function goUserDeletePage() {
 	var user_id = payload_parse.user_id;
 	window.location.href = `${FRONT_BASE_URL}/users/user_delete.html?user_id=${user_id}`;
 }
-async function getLoginedUserId(){
+async function getLoginedUserId() {
 	const payload = localStorage.getItem("payload");
 	if (payload == null) {
-		return 0
-	}else{
-		return payload_parse.user_id
-
+		return 0;
+	} else {
+		return payload_parse.user_id;
 	}
 }
-async function isYOU(userId){
+function isYOU(userId) {
 	const payload = localStorage.getItem("payload");
 	if (payload == null) {
-		return false
+		return false;
 	}
 	const payload_parse = JSON.parse(payload);
 
 	var user_id = payload_parse.user_id.toString();
-	if(userId == user_id){
-		return true
-	}else{
-		return false
+	if (userId == user_id) {
+		return true;
+	} else {
+		return false;
 	}
 }
