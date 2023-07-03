@@ -26,7 +26,9 @@
 
 .mypage-avatar {
     width: 20%;
-    height: auto;
+    height: 20%;
+    object-fit: cover;
+    background-repeat: no-repeat;
     border-radius: 50%;
     margin-right: 5px;
 }
