@@ -1,6 +1,11 @@
 async function loadUserFollowing(currentFollowPage = 1) {
 	const response = await getUserFollowList(currentFollowPage);
 	const followListResponse = await response.json();
+	const followingsList = await getUserFollowing();
+	const followingIdList = followingsList.map((following) => following.id);
+	const currentUserPage = new URLSearchParams(window.location.search).get(
+		"user_id"
+	);
 	const followPageList = document.getElementById("follow-page");
 	followPageList.innerHTML = "";
 	followPageList.innerText = "팔로잉 목록";
@@ -20,13 +25,17 @@ async function loadUserFollowing(currentFollowPage = 1) {
                 <div id="follow-name" class="follow-name" onclick="location.href='${FRONT_BASE_URL}/mypage.html?user_id=${result.id}'" style="cursor:pointer;">${result.username}</div>
 				<div id="follow-btn" class="follow-btn follow-following-btn-${result.id}" onclick="userFollowToggle(${result.id})">언팔로우</div>
 			`;
-			if (isYOU(result.id)) {
-				const followBtn = document.querySelector(
-					`.follow-following-btn-${result.id}`
-				);
-				followBtn.style.display = "none";
-			}
 			followPageList.appendChild(followList);
+			const followBtn = document.querySelector(
+				`.follow-following-btn-${result.id}`
+			);
+			if (isYOU(result.id)) {
+				followBtn.remove();
+			}
+			if (!isYOU(currentUserPage)) {
+				if (!followingIdList.includes(result.id))
+					followBtn.innerText = "팔로우";
+			}
 		});
 	}
 	const pagination = document.createElement("div");
@@ -47,6 +56,9 @@ async function loadUserFollower(currentFollowPage = 1) {
 	const response = await getUserFollowList(currentFollowPage, 1);
 	const followListResponse = await response.json();
 	const followingsList = await getUserFollowing();
+	const currentUserPage = new URLSearchParams(window.location.search).get(
+		"user_id"
+	);
 	const followingIdList = followingsList.map((following) => following.id);
 	const followPageList = document.getElementById("follow-page");
 	followPageList.style.display = "flex";
@@ -76,11 +88,15 @@ async function loadUserFollower(currentFollowPage = 1) {
 				followingIdList.includes(result.id) ? "언팔로우" : "팔로우"
 			}</div>
 			`;
-			if (isYOU(result.id)) {
-				const followBtn = document.querySelector(`.follow-btn-${result.id}`);
-				followBtn.style.display = "none";
-			}
 			followPageList.appendChild(followList);
+			const followBtn = document.querySelector(`.follow-btn-${result.id}`);
+			if (isYOU(result.id)) {
+				followBtn.remove();
+			}
+			if (!isYOU(currentUserPage)) {
+				if (!followingIdList.includes(result.id))
+					followBtn.innerText = "팔로우";
+			}
 		});
 	}
 	const pagination = document.createElement("div");
@@ -272,8 +288,8 @@ async function loadUserLikeComment(currentCommentPage) {
 
 async function loadUserDetail() {
 	const response = await getUserDetail();
-
-	const mypageList = document.getElementById("mypage");
+	const followingsList = await getUserFollowing();
+	const followingIdList = followingsList.map((following) => following.id);
 	const avatar = document.getElementById("mypage-avatar");
 	avatar.setAttribute(
 		"src",
@@ -283,8 +299,19 @@ async function loadUserDetail() {
 	);
 	const username = document.getElementById("username");
 	username.innerText = `${response.username}`;
-
-	mypageList.appendChild(username);
+	const userDetailFollowBtn = document.getElementById("mypage-following-btn");
+	if (isYOU(response.id)) {
+		userDetailFollowBtn.remove();
+	} else {
+		userDetailFollowBtn.innerText = followingIdList.includes(response.id)
+			? "언팔로우"
+			: "팔로우";
+	}
+	userDetailFollowBtn.setAttribute(
+		"onclick",
+		`loadedUserFollowToggle(${response.id})`
+	);
+	console.log(userDetailFollowBtn);
 	const following = document.getElementById("following");
 	following.innerText = `팔로잉 : ${response.total_followings}`;
 	following.addEventListener("click", () => {
@@ -294,13 +321,16 @@ async function loadUserDetail() {
 			followPageList.classList.remove(clickedClass);
 			followPageList.style.display = "none";
 			following.style.backgroundColor = "#FFF";
+			following.style.color = "black";
 		} else {
 			followPageList.classList.remove("followerPageListClicked");
 			loadUserFollowing();
 			followPageList.classList.add(clickedClass);
 			following.style.backgroundColor = "#FE6B38";
+			following.style.color = "#FFF";
 			followPageList.style.display = "flex";
 			follower.style.backgroundColor = "#FFF";
+			follower.style.color = "black";
 		}
 	});
 	const follower = document.getElementById("follower");
@@ -313,13 +343,16 @@ async function loadUserDetail() {
 			followerPageList.classList.remove(clickedClass);
 			followerPageList.style.display = "none";
 			follower.style.backgroundColor = "#FFF";
+			follower.style.color = "black";
 		} else {
 			followerPageList.classList.remove("followPageListClicked");
 			loadUserFollower();
 			followerPageList.classList.add(clickedClass);
 			followerPageList.style.display = "flex";
 			follower.style.backgroundColor = "#FE6B38";
+			follower.style.color = "#FFF";
 			following.style.backgroundColor = "#FFF";
+			following.style.color = "black";
 		}
 	});
 	const bookmark = document.getElementById("bookmark-article");
@@ -332,13 +365,16 @@ async function loadUserDetail() {
 			articlePageList.classList.remove("likeArticlePageListClicked");
 			await loadUserArticle();
 			bookmark.style.backgroundColor = "#FFF";
+			bookmark.style.color = "black";
 			likeArticle.style.backgroundColor = "#FFF";
 		} else {
 			articlePageList.classList.remove("likeArticlePageListClicked");
 			await loadUserBookmarkArticle();
 			articlePageList.classList.add(clickedClass);
+			bookmark.style.color = "#FFF";
 			bookmark.style.backgroundColor = "#FE6B38";
 			likeArticle.style.backgroundColor = "#FFF";
+			likeArticle.style.color = "black";
 		}
 	});
 	const likeArticle = document.getElementById("like-article");
@@ -351,13 +387,16 @@ async function loadUserDetail() {
 			articlePageList.classList.remove("bookmarkArticlePageListClicked");
 			await loadUserArticle();
 			likeArticle.style.backgroundColor = "#FFF";
+			likeArticle.style.color = "black";
 			bookmark.style.backgroundColor = "#FFF";
 		} else {
 			articlePageList.classList.remove("bookmarkArticlePageListClicked");
 			await loadUserLikeArticle();
 			articlePageList.classList.add(clickedClass);
 			likeArticle.style.backgroundColor = "#FE6B38";
+			likeArticle.style.color = "#FFF";
 			bookmark.style.backgroundColor = "#FFF";
+			bookmark.style.color = "black";
 		}
 	});
 	const likeComment = document.getElementById("like-comment");
@@ -369,11 +408,13 @@ async function loadUserDetail() {
 			commentPageList.classList.remove(clickedClass);
 			await loadUserComment();
 			likeComment.style.backgroundColor = "#FFF";
+			likeComment.style.color = "black";
 		} else {
 			commentPageList.classList.remove("likeCommentPageListClicked");
 			await loadUserLikeComment();
 			commentPageList.classList.add(clickedClass);
 			likeComment.style.backgroundColor = "#FE6B38";
+			likeComment.style.color = "#FFF";
 		}
 	});
 }
@@ -384,7 +425,7 @@ async function loadUserFridge() {
 	const response = await getUserFridge();
 
 	const userFridgeContent = document.getElementById("fridge-content");
-	if (await isYOU(userId)) {
+	if (isYOU(userId)) {
 		if (response !== []) {
 			response.forEach((fridge) => {
 				const newUserFridge = document.createElement("div");
@@ -510,7 +551,15 @@ async function loadUserComment(currentCommentPage) {
 		commentContainer.appendChild(commentPagination);
 	}
 }
-
+const loadedUserFollowToggle = (id) => {
+	const followBtn = document.getElementById("mypage-following-btn");
+	otherUserFollowing(id);
+	if (followBtn.innerText === "언팔로우") {
+		followBtn.innerText = "팔로우";
+	} else if (followBtn.innerText === "팔로우") {
+		followBtn.innerText = "언팔로우";
+	}
+};
 const otherUserFollowToggle = (id) => {
 	const followBtn = document.querySelector(`.follow-btn-${id}`);
 	otherUserFollowing(id);
