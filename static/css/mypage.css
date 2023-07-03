@@ -342,3 +342,11 @@ font-style: normal;
 font-weight: 700;
 line-height: 1.375rem;
 }
+.search-icon {
+    color:#FE6B38;
+    position: absolute; /* 아이콘의 위치를 절대적으로 설정 */
+    top: 28.6em;
+    left:53%;
+    cursor:pointer;/* 아이콘 클릭 방지 (터치, 클릭 등 이벤트 동작 제한) */
+}
+
