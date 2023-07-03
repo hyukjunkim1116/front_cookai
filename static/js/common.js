@@ -64,6 +64,7 @@ async function injectfooter() {
 
 	// 여기서 부터 동적인 부분 작성하면 됩니다.
 }
+
 // 로그인 상태에서 로그인, 회원가입 페이지 접속 시 홈으로 이동하는 함수
 function checkLogin() {
 	const payload = localStorage.getItem("payload");
@@ -94,9 +95,9 @@ function setThumbnail(event) {
 		img.setAttribute("src", event.target.result);
 
 		// 썸네일 크기 조절
-		img.setAttribute("style", "max-height: 300px;"); // 높이 제한 300px
-		img.setAttribute("style", "objectfit:cover;"); // 높이 제한 300px
-		img.setAttribute("style", "margin-top: 15px;"); // 높이 제한 300px
+		img.setAttribute("style", "max-height: 300px;");
+		img.setAttribute("style", "object-fit:cover;");
+		img.setAttribute("style", "margin-top: 15px;");
 		img.style.width = "50%"; // 너비 200px로 설정
 		img.style.height = "auto"; // 높이 자동 설정
 		// 썸네일 리셋 후 미리보기 보여주기
