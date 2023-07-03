@@ -60,7 +60,7 @@
                 <div class="mb-2">
                     <label for="file" class="form-label">프로필 사진</label>
                     <input type="file" class="form-control" id="file" aria-describedby="inputGroupFileAddon03"
-                        aria-label="Upload">
+                        onchange="setThumbnail(event)" aria-label="Upload">
                 </div>
                 <div id="image_container" style="margin: 0 auto 0 auto ;"></div>
                 <div class="text-end mb-3">
