@@ -269,7 +269,6 @@ async function articleUpdate() {
 
 		let tagsList= tagsCleaned.split(",");
 
-		alert("123")
 		formdata["tags"]=tagsList
 	}
 
