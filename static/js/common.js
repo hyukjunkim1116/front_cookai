@@ -95,7 +95,9 @@ function setThumbnail(event) {
 
 		// 썸네일 크기 조절
 		img.setAttribute("style", "max-height: 300px;"); // 높이 제한 300px
-		img.style.width = "80px"; // 너비 200px로 설정
+		img.setAttribute("style", "objectfit:cover;"); // 높이 제한 300px
+		img.setAttribute("style", "margin-top: 15px;"); // 높이 제한 300px
+		img.style.width = "50%"; // 너비 200px로 설정
 		img.style.height = "auto"; // 높이 자동 설정
 		// 썸네일 리셋 후 미리보기 보여주기
 		document.getElementById("image_container").innerHTML = "";
