@@ -22,7 +22,7 @@ async function loadUserFollowing(currentFollowPage = 1) {
 			`;
 			if (isYOU(result.id)) {
 				const followBtn = document.querySelector(
-					`#follow-following-btn-${result.id}`
+					`.follow-following-btn-${result.id}`
 				);
 				followBtn.style.display = "none";
 			}
@@ -77,7 +77,7 @@ async function loadUserFollower(currentFollowPage = 1) {
 			}</div>
 			`;
 			if (isYOU(result.id)) {
-				const followBtn = document.querySelector(`#follow-btn-${result.id}`);
+				const followBtn = document.querySelector(`.follow-btn-${result.id}`);
 				followBtn.style.display = "none";
 			}
 			followPageList.appendChild(followList);
