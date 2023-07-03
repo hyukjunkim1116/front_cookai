@@ -64,11 +64,6 @@ async function handleEmailConfirm() {
 			email: email
 		})
 	});
-	if (response.status == 200) {
-		alert("이메일인증을 진행해주세요!");
-	} else {
-		alert("일치하는 이메일이 없습니다!");
-	}
 	return response;
 }
 
@@ -91,10 +86,10 @@ async function handleChangePasswordConfirm() {
 		})
 	});
 	if (response.status == 200) {
-		alert(response.message);
-		window.location.replace(`${FRONT_BASE_URL}/login.html`);
+		alert("비밀번호 변경 완료!");
+		window.location.replace(`${FRONT_BASE_URL}/`);
 	} else {
-		alert(response.error);
+		alert("다시 입력하세요!");
 	}
 }
 
