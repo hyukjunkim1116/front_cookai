@@ -97,7 +97,7 @@ async function handleChangePasswordConfirm() {
 		alert("비밀번호 변경 완료!");
 		window.location.replace(`${FRONT_BASE_URL}/`);
 	} else {
-		alert(response.error);
+		alert(response_json.detail);
 	}
 }
 
