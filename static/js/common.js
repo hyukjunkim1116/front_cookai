@@ -132,7 +132,7 @@ async function goMypage() {
 	}
 	const payload_parse = JSON.parse(payload);
 
-	user_id = payload_parse.user_id;
+	var user_id = payload_parse.user_id;
 	window.location.href = `${FRONT_BASE_URL}/mypage.html?user_id=${user_id}`;
 }
 
@@ -144,7 +144,7 @@ async function goUserUpdatePage() {
 	}
 	const payload_parse = JSON.parse(payload);
 
-	user_id = payload_parse.user_id;
+	var user_id = payload_parse.user_id;
 	window.location.href = `${FRONT_BASE_URL}/users/user_update.html?user_id=${user_id}`;
 }
 async function goUserDeletePage() {

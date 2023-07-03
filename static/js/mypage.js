@@ -1,6 +1,6 @@
-checkNotLogin();
 
-async function loadUserFollowing(currentFollowPage=1) {
+
+async function loadUserFollowing(currentFollowPage = 1) {
 	const response = await getUserFollowList(currentFollowPage);
 	const followListResponse = await response.json();
 	const followPageList = document.getElementById("follow-page");
@@ -19,8 +19,8 @@ async function loadUserFollowing(currentFollowPage=1) {
 				userAvatar = "/static/img/no_avatar.png";
 			}
 			followList.innerHTML = `
-				<img id="follow-avatar" class="follow-avatar" src=${userAvatar} onclick="location.href='${FRONT_BASE_URL}/profile.html?user_id=${result.id}'" style="cursor:pointer;">
-                <div id="follow-name" class="follow-name" onclick="location.href='${FRONT_BASE_URL}/profile.html?user_id=${result.id}'" style="cursor:pointer;">${result.username}</div>
+				<img id="follow-avatar" class="follow-avatar" src=${userAvatar} onclick="location.href='${FRONT_BASE_URL}/mypage.html?user_id=${result.id}'" style="cursor:pointer;">
+                <div id="follow-name" class="follow-name" onclick="location.href='${FRONT_BASE_URL}/mypage.html?user_id=${result.id}'" style="cursor:pointer;">${result.username}</div>
                 <div id="follow-btn" class="follow-btn" onclick="userFollowToggle(${result.id})">언팔로우</div>
 			`;
 			followPageList.appendChild(followList);
@@ -41,7 +41,7 @@ async function loadUserFollowing(currentFollowPage=1) {
 		followPageList.appendChild(pagination);
 	}
 }
-async function loadUserFollower(currentFollowPage=1) {
+async function loadUserFollower(currentFollowPage = 1) {
 	const response = await getUserFollowList(currentFollowPage, 1);
 	const followListResponse = await response.json();
 	const followingsList = await getUserFollowing();
@@ -62,10 +62,10 @@ async function loadUserFollower(currentFollowPage=1) {
 				userAvatar = "/static/img/no_avatar.png";
 			}
 			followList.innerHTML = `
-				<img id="follow-avatar" class="follow-avatar" src=${userAvatar} onclick="location.href='${FRONT_BASE_URL}/profile.html?user_id=${
+				<img id="follow-avatar" class="follow-avatar" src=${userAvatar} onclick="location.href='${FRONT_BASE_URL}/mypage.html?user_id=${
 				result.id
 			}'" style="cursor:pointer;">
-                <div id="follow-name" class="follow-name" onclick="location.href='${FRONT_BASE_URL}/profile.html?user_id=${
+                <div id="follow-name" class="follow-name" onclick="location.href='${FRONT_BASE_URL}/mypage.html?user_id=${
 				result.id
 			}'" style="cursor:pointer;">${result.username}</div>
                 <div id="follower-btn" class="follow-btn follow-btn-${
@@ -272,7 +272,9 @@ async function loadUserDetail() {
 	const avatar = document.getElementById("mypage-avatar");
 	avatar.setAttribute(
 		"src",
-		[null,undefined].includes(response.avatar) ? "/static/img/no_avatar.png":response.avatar
+		[null, undefined].includes(response.avatar)
+			? "/static/img/no_avatar.png"
+			: response.avatar
 	);
 	const username = document.getElementById("username");
 	username.innerText = `${response.username}`;
@@ -377,7 +379,7 @@ async function loadUserFridge() {
 	const response = await getUserFridge();
 
 	const userFridgeContent = document.getElementById("fridge-content");
-	if(await isYOU(userId)){
+	if (await isYOU(userId)) {
 		if (response !== []) {
 			response.forEach((fridge) => {
 				const newUserFridge = document.createElement("div");
@@ -387,9 +389,9 @@ async function loadUserFridge() {
 				userFridgeContent.appendChild(newUserFridge);
 			});
 		}
-	}else{
-		const fridge_container = document.getElementById("fridge")
-		fridge_container.remove()
+	} else {
+		const fridge_container = document.getElementById("fridge");
+		fridge_container.remove();
 	}
 }
 async function loadUserArticle(currentPage) {
@@ -513,6 +515,7 @@ const otherUserFollowToggle = (id) => {
 	}
 };
 const userFollowToggle = (userId) => {
+	const followBtn = document.getElementById("follow-btn");
 	const clickedClass = "clicked";
 	otherUserFollowing(userId);
 	if (followBtn.classList.contains(clickedClass)) {

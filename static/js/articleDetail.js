@@ -170,7 +170,7 @@ async function loadComments(comment_page=1){
     response.results.forEach(comment => {
         commentList.innerHTML += `
         <div class="card-text">
-        <small><a href="${FRONT_BASE_URL}/users/user_detail.html?user_id=${comment.author}">${comment.user}</a>, ${comment.updated_at.split('.')[0].replace("T"," ").slice(0,-3)}</small></div><div class="card-text">${comment.comment}</div>`
+        <small><a href="${FRONT_BASE_URL}/mypage.html?user_id=${comment.author}">${comment.user}</a>, ${comment.updated_at.split('.')[0].replace("T"," ").slice(0,-3)}</small></div><div class="card-text">${comment.comment}</div>`
         const payload = localStorage.getItem("payload");
 	    if (payload) {
 		    const payload_parse = JSON.parse(payload);
@@ -284,7 +284,7 @@ async function deleteArticleBtn(articleId){
 async function loaderFunction() {
 	const urlParams = new URLSearchParams(window.location.search);
 	articleId = urlParams.get("article_id");
-	await checkTokenExp()
+
 	const token = localStorage.getItem("access");
 	fetchMissingIngredients(articleId, token);
 
