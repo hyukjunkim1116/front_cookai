@@ -48,11 +48,11 @@
                 <div class="row g-3" id="fridge-input">
                     <div class="col-auto">
                         <label for="ingredient" class="visually-hidden"></label>
-                        <input type="text" class="form-control" id="ingredient" name="ingredient"
-                            placeholder="재료를 입력하세요">
+                        <input type="text" class="form-control upload-form" id="ingredient" name="ingredient"
+                            placeholder="재료를 입력또는 업로드">
                     </div>
+                    <i class="bi bi-camera search-icon fs-5" onclick="location.href='/image_upload.html'"></i>
                     <div class="col-auto">
-
                         <button type="button" class="btn btn-primary mb-3 post-fridge" id="post-fridge"
                             onclick="postUserFridge()">추가하기</button>
                     </div>
