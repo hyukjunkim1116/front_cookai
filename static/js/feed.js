@@ -17,7 +17,7 @@ async function renderList(recommendType,response_json){
         // articlePhoto가 존재하지 않는다면, 기본 이미지 주소를 src 속성으로 설정합니다.
 		const articleimage = document.createElement("img");
 		articleimage.setAttribute("class", "img-fluid card-img-top");
-		if (image) {
+		if (![null,undefined,""].includes(image)) {
 			articleimage.setAttribute("src", `${image}`);
 		} else {
 			articleimage.setAttribute(
@@ -119,7 +119,7 @@ async function loadFeedArticles(queryType,page=1){
         // articlePhoto가 존재하지 않는다면, 기본 이미지 주소를 src 속성으로 설정합니다.
 		const articleimage = document.createElement("img");
 		articleimage.setAttribute("class", "card-img-top");
-		if (image) {
+		if (![null,undefined,""].includes(image)) {
 			articleimage.setAttribute("src", `${image}`);
 		} else {
 			articleimage.setAttribute(
@@ -184,15 +184,15 @@ async function loadFeedArticles(queryType,page=1){
 async function tabs(id){
 	for(var i =0 ;i<3;i ++){
 		if(i==id){
-			document.getElementById(`${i}`).hidden=false
+			document.getElementById(`feedBox${i}`).hidden=false
 		}else{
-			document.getElementById(`${i}`).hidden=true
+			document.getElementById(`feedBox${i}`).hidden=true
 		}
 	}
 
 }
 async function loaderFunction() {
-	await tabs(0)
+	await tabs(0);
 	checkNotLogin();
 	await loadCollavorativeRecommend();
 	await loadContentRecommend();
