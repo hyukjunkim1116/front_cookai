@@ -24,7 +24,7 @@ async function loadUserFollowing(currentFollowPage = 1) {
 				const followBtn = document.getElementById(
 					`follow-following-btn-${result.id}`
 				);
-				followBtn.style.display = "none";
+				followBtn.remove();
 			}
 			followPageList.appendChild(followList);
 		});
@@ -42,9 +42,6 @@ async function loadUserFollowing(currentFollowPage = 1) {
 		pagination.append(newPageLink);
 		followPageList.appendChild(pagination);
 	}
-	const followBtn = document.querySelector(
-		"#follow-following-btn-${result.id}"
-	);
 }
 async function loadUserFollower(currentFollowPage = 1) {
 	const response = await getUserFollowList(currentFollowPage, 1);
@@ -81,7 +78,7 @@ async function loadUserFollower(currentFollowPage = 1) {
 			`;
 			if (isYOU(result.id)) {
 				const followBtn = document.getElementById(`follow-btn-${result.id}`);
-				followBtn.style.display = "none";
+				followBtn.remove();
 			}
 			followPageList.appendChild(followList);
 		});
