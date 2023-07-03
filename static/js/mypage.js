@@ -405,6 +405,7 @@ async function loadUserArticle(currentPage) {
 	totalArticles.setAttribute("id", "total_articles");
 	totalArticles.innerText = `게시글 : ${response.count}`;
 	articleContainer.appendChild(totalArticles);
+	console.log(response)
 	response.results.forEach((result) => {
 		const articleContent = document.createElement("div");
 		const articleImage = result.avatar

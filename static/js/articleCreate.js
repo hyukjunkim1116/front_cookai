@@ -200,10 +200,7 @@ async function postArticle() {
 		data["image"]=realFileURL;
 	}
 		const response = await fetch(`${BACKEND_BASE_URL}/articles/`, {
-			headers: {
-				Authorization: `Bearer ${token}`,
-				"content-type": "application/json"
-			},
+			headers: await getHeader(),
 			body: JSON.stringify(data),
 			method: "POST"
 		});
@@ -223,10 +220,7 @@ async function postArticle() {
 				const ingredientResponse = await fetch(
 					`${BACKEND_BASE_URL}/articles/${articleResponse.id}/recipeingredient/`,
 					{
-						headers: {
-							Authorization: `Bearer ${token}`,
-							"content-type": "application/json"
-						},
+						headers: await getHeader(),
 						body: JSON.stringify({
 							ingredient: ingredientTitle.value,
 							ingredient_quantity: ingredientQuantity,

@@ -177,9 +177,7 @@ async function articleUpdate() {
 			const ingredientPutResponse = await fetch(
 				`${BACKEND_BASE_URL}/articles/recipeingredient/${kv[0]}/`,
 				{
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
+					headers: await getHeader(json=false),
 					method:"DELETE"
 				},
 			)
@@ -189,10 +187,7 @@ async function articleUpdate() {
 			const ingredientPutResponse = await fetch(
 				`${BACKEND_BASE_URL}/articles/recipeingredient/${kv[0]}/`,
 				{
-					headers: {
-						Authorization: `Bearer ${token}`,
-						"content-type": "application/json"
-					},
+					headers: await getHeader(),
 					body: JSON.stringify({
 						ingredient:  document.getElementById(`ingredient-title-${index}`).value,
 						ingredient_quantity: document.getElementById(`ingredient-amount-${index}`).value,
@@ -225,10 +220,7 @@ async function articleUpdate() {
 			const ingredientResponse = await fetch(
 				`${BACKEND_BASE_URL}/articles/${articleId}/recipeingredient/`,
 				{
-					headers: {
-						Authorization: `Bearer ${token}`,
-						"content-type": "application/json"
-					},
+					headers: await getHeader(),
 					body: JSON.stringify({
 						ingredient: ingredientTitle,
 						ingredient_quantity: ingredientQuantity,
@@ -286,7 +278,7 @@ async function articleUpdate() {
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/articles/${articleId}/`,
 		{
-		headers: {Authorization: `Bearer ${token}`,"content-type": "application/json"},
+		headers: await getHeader(),
 		body: JSON.stringify(formdata),
 		method: "PUT"
 		}

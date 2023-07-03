@@ -48,10 +48,7 @@ async function putUserDetail() {
 		const results = await responseRealURL.json();
 		const realFileURL = results.result.variants[0];
 		const response = await fetch(`${BACKEND_BASE_URL}/users/${userId}/`, {
-			headers: {
-				Authorization: `Bearer ${token}`,
-				"content-type": "application/json"
-			},
+			headers: await getHeader(),
 			method: "PUT",
 			body: JSON.stringify({
 				username: username,
@@ -68,10 +65,7 @@ async function putUserDetail() {
 		}
 	} else {
 		const response = await fetch(`${BACKEND_BASE_URL}/users/${userId}/`, {
-			headers: {
-				Authorization: `Bearer ${token}`,
-				"content-type": "application/json"
-			},
+			headers: await getHeader(),
 			method: "PUT",
 			body: JSON.stringify({
 				username: username,

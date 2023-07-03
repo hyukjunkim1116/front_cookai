@@ -5,10 +5,7 @@ async function postUserFridge(ingredient) {
 
 	let token = localStorage.getItem("access");
 	const response = await fetch(`${BACKEND_BASE_URL}/users/fridge/`, {
-		headers: {
-			Authorization: `Bearer ${token}`,
-			"content-type": "application/json"
-		},
+		headers: await getHeader(),
 		body: JSON.stringify({
 			"ingredient": ingredient
 		}),
@@ -38,9 +35,7 @@ async function loaderFunction(){
     const formData = new FormData(image_form)
     const response=await fetch(`${BACKEND_BASE_URL}/ai_process/upload/`, {
       method: 'POST',
-      headers: {
-          "Authorization": `Bearer ${token}`
-      },
+      headers: await getHeader(json=false),
       body: formData
     })
     const response_json= await response.json()
