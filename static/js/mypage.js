@@ -27,7 +27,8 @@ async function loadUserFollowing(currentFollowPage = 1) {
 	if (await isYOU(userId)) {
 		return;
 	} else {
-		followBtn.style.display = "none";
+		const followBtn = document.querySelectorAll("follow-btn");
+		followBtn.remove();
 	}
 	const pagination = document.createElement("div");
 	pagination.setAttribute("class", "pagination");
@@ -82,7 +83,8 @@ async function loadUserFollower(currentFollowPage = 1) {
 	if (await isYOU(userId)) {
 		return;
 	} else {
-		followBtn.style.display = "none";
+		const followBtn = document.querySelectorAll("follow-btn");
+		followBtn.remove();
 	}
 	const pagination = document.createElement("div");
 	pagination.setAttribute("class", "pagination");
