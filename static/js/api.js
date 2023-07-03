@@ -1,5 +1,5 @@
-const FRONT_BASE_URL = "http://localhost:5500";
-const BACKEND_BASE_URL = "http://localhost:8000";
+const FRONT_BASE_URL = "http://cookai.today";
+const BACKEND_BASE_URL = "https://www.backend.cookai.today";
 
 // 로그인
 async function handleLogin() {
