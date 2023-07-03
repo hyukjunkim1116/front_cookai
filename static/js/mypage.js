@@ -289,74 +289,8 @@ async function loadUserLikeComment(currentCommentPage) {
 async function loadUserDetail() {
 	const response = await getUserDetail();
 	const followingsList = await getUserFollowing();
-	if(followingsList !=null){
+	if (followingsList != null) {
 		const followingIdList = followingsList.map((following) => following.id);
-	const avatar = document.getElementById("mypage-avatar");
-	avatar.setAttribute(
-		"src",
-		[null, undefined].includes(response.avatar)
-			? "/static/img/no_avatar.png"
-			: response.avatar
-	);
-	const username = document.getElementById("username");
-	username.innerText = `${response.username}`;
-	const userDetailFollowBtn = document.getElementById("mypage-following-btn");
-	if (isYOU(response.id)) {
-		userDetailFollowBtn.remove();
-	} else {
-		userDetailFollowBtn.innerText = followingIdList.includes(response.id)
-			? "언팔로우"
-			: "팔로우";
-	}
-	userDetailFollowBtn.setAttribute(
-		"onclick",
-		`loadedUserFollowToggle(${response.id})`
-	);
-	console.log(userDetailFollowBtn);
-	const following = document.getElementById("following");
-	following.innerText = `팔로잉 : ${response.total_followings}`;
-	following.addEventListener("click", () => {
-		const followPageList = document.getElementById("follow-page");
-		const clickedClass = "followPageListClicked";
-		if (followPageList.classList.contains(clickedClass)) {
-			followPageList.classList.remove(clickedClass);
-			followPageList.style.display = "none";
-			following.style.backgroundColor = "#FFF";
-			following.style.color = "black";
-		} else {
-			followPageList.classList.remove("followerPageListClicked");
-			loadUserFollowing();
-			followPageList.classList.add(clickedClass);
-			following.style.backgroundColor = "#FE6B38";
-			following.style.color = "#FFF";
-			followPageList.style.display = "flex";
-			follower.style.backgroundColor = "#FFF";
-			follower.style.color = "black";
-		}
-	});
-	const follower = document.getElementById("follower");
-	follower.innerText = `팔로워 : ${response.total_followers}`;
-	follower.addEventListener("click", () => {
-		const followerPageList = document.getElementById("follow-page");
-		const clickedClass = "followerPageListClicked";
-
-		if (followerPageList.classList.contains(clickedClass)) {
-			followerPageList.classList.remove(clickedClass);
-			followerPageList.style.display = "none";
-			follower.style.backgroundColor = "#FFF";
-			follower.style.color = "black";
-		} else {
-			followerPageList.classList.remove("followPageListClicked");
-			loadUserFollower();
-			followerPageList.classList.add(clickedClass);
-			followerPageList.style.display = "flex";
-			follower.style.backgroundColor = "#FE6B38";
-			follower.style.color = "#FFF";
-			following.style.backgroundColor = "#FFF";
-			following.style.color = "black";
-		}
-	});
-	}else{
 		const avatar = document.getElementById("mypage-avatar");
 		avatar.setAttribute(
 			"src",
@@ -365,16 +299,82 @@ async function loadUserDetail() {
 				: response.avatar
 		);
 		const username = document.getElementById("username");
-	username.innerText = `${response.username}`;
-	const userDetailFollowBtn = document.getElementById("mypage-following-btn");
+		username.innerText = `${response.username}`;
+		const userDetailFollowBtn = document.getElementById("mypage-following-btn");
+		if (isYOU(response.id)) {
+			userDetailFollowBtn.remove();
+		} else {
+			userDetailFollowBtn.innerText = followingIdList.includes(response.id)
+				? "언팔로우"
+				: "팔로우";
+		}
+		userDetailFollowBtn.setAttribute(
+			"onclick",
+			`loadedUserFollowToggle(${response.id})`
+		);
+		console.log(userDetailFollowBtn);
+		const following = document.getElementById("following");
+		following.innerText = `팔로잉 : ${response.total_followings}`;
+		following.addEventListener("click", () => {
+			const followPageList = document.getElementById("follow-page");
+			const clickedClass = "followPageListClicked";
+			if (followPageList.classList.contains(clickedClass)) {
+				followPageList.classList.remove(clickedClass);
+				followPageList.style.display = "none";
+				following.style.backgroundColor = "#FFF";
+				following.style.color = "black";
+			} else {
+				followPageList.classList.remove("followerPageListClicked");
+				loadUserFollowing();
+				followPageList.classList.add(clickedClass);
+				following.style.backgroundColor = "#FE6B38";
+				following.style.color = "#FFF";
+				followPageList.style.display = "flex";
+				follower.style.backgroundColor = "#FFF";
+				follower.style.color = "black";
+			}
+		});
+		const follower = document.getElementById("follower");
+		follower.innerText = `팔로워 : ${response.total_followers}`;
+		follower.addEventListener("click", () => {
+			const followerPageList = document.getElementById("follow-page");
+			const clickedClass = "followerPageListClicked";
+
+			if (followerPageList.classList.contains(clickedClass)) {
+				followerPageList.classList.remove(clickedClass);
+				followerPageList.style.display = "none";
+				follower.style.backgroundColor = "#FFF";
+				follower.style.color = "black";
+			} else {
+				followerPageList.classList.remove("followPageListClicked");
+				loadUserFollower();
+				followerPageList.classList.add(clickedClass);
+				followerPageList.style.display = "flex";
+				follower.style.backgroundColor = "#FE6B38";
+				follower.style.color = "#FFF";
+				following.style.backgroundColor = "#FFF";
+				following.style.color = "black";
+			}
+		});
+	} else {
+		const avatar = document.getElementById("mypage-avatar");
+		avatar.setAttribute(
+			"src",
+			[null, undefined].includes(response.avatar)
+				? "/static/img/no_avatar.png"
+				: response.avatar
+		);
+		const username = document.getElementById("username");
+		username.innerText = `${response.username}`;
+		const userDetailFollowBtn = document.getElementById("mypage-following-btn");
 
 		userDetailFollowBtn.remove();
-	const following = document.getElementById("following");
-	following.remove()
-	const follower = document.getElementById("follower");
-	follower.remove()
+		const following = document.getElementById("following");
+		following.remove();
+		const follower = document.getElementById("follower");
+		follower.remove();
 	}
-	
+
 	const bookmark = document.getElementById("bookmark-article");
 	bookmark.innerText = `북마크한 게시글 : ${response.total_bookmark_articles}`;
 	bookmark.addEventListener("click", async () => {
@@ -473,8 +473,8 @@ async function loadUserArticle(currentPage) {
 	articleContainer.appendChild(totalArticles);
 	response.results.forEach((result) => {
 		const articleContent = document.createElement("div");
-		const articleImage = result.avatar
-			? result.avatar
+		const articleImage = result.image
+			? result.image
 			: "https://cdn11.bigcommerce.com/s-1812kprzl2/images/stencil/original/products/426/5082/no-image__12882.1665668288.jpg?c=2";
 		articleContent.innerHTML = `
 		<div id="article-container" class="article-container" >
