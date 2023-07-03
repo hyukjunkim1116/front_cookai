@@ -95,15 +95,13 @@ async function handleChangePasswordConfirm() {
 
 async function handleUpdatePassword() {
 	await checkTokenExp();
+
 	const token = localStorage.getItem("access");
 	const oldPassword = document.getElementById("old_password").value;
 	const newPassword = document.getElementById("new_password").value;
 	const newPasswordCheck = document.getElementById("new_password_check").value;
 	const response = await fetch(`${BACKEND_BASE_URL}/users/change-password/`, {
-		headers: {
-			Authorization: `Bearer ${token}`,
-			"content-type": "application/json"
-		},
+		headers: await getHeader(),
 		method: "PUT",
 		body: JSON.stringify({
 			old_password: oldPassword,
@@ -131,7 +129,8 @@ async function getLoginUser() {
 		const response = await fetch(
 			`${BACKEND_BASE_URL}/users/${payload_parse.user_id}/`,
 			{
-				headers: { Authorization: `Bearer ${token}` },
+				headers: await getHeader((json = false)),
+
 				method: "GET"
 			}
 		);
@@ -149,9 +148,7 @@ async function getUserDetail() {
 	let token = localStorage.getItem("access");
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const response = await fetch(`${BACKEND_BASE_URL}/users/${userId}/`, {
-		headers: {
-			Authorization: `Bearer ${token}`
-		},
+		headers: await getHeader((json = false)),
 		method: "GET"
 	});
 	if (response.status == 404)
@@ -166,10 +163,7 @@ async function deleteUser() {
 	const secondPassword = document.getElementById("password-check").value;
 	if (password === secondPassword) {
 		const response = await fetch(`${BACKEND_BASE_URL}/users/${userId}/`, {
-			headers: {
-				Authorization: `Bearer ${token}`,
-				"content-type": "application/json"
-			},
+			headers: await getHeader(),
 			method: "PATCH",
 			body: JSON.stringify({
 				password: password
@@ -191,14 +185,12 @@ async function getUserArticle(currentPage = 1) {
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/users/${userId}/articles/?page=${currentPage}`,
 		{
-			headers: {
-				Authorization: `Bearer ${token}`
-			},
+			headers: await getHeader((json = false)),
 			method: "GET"
 		}
 	);
 
-	return response.json();
+	return await response.json();
 }
 async function getUserComment(currentCommentPage = 1, filter = 0) {
 	await checkTokenExp();
@@ -207,9 +199,7 @@ async function getUserComment(currentCommentPage = 1, filter = 0) {
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/users/${userId}/comments/?filter=${filter}&page=${currentCommentPage}`,
 		{
-			headers: {
-				Authorization: `Bearer ${token}`
-			},
+			headers: await getHeader((json = false)),
 			method: "GET"
 		}
 	);
@@ -223,9 +213,7 @@ async function getUserCommentsList() {
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/users/${userId}/comments?filter=0`,
 		{
-			headers: {
-				Authorization: `Bearer ${token}`
-			},
+			headers: await getHeader((json = false)),
 			method: "GET"
 		}
 	);
@@ -236,9 +224,7 @@ async function getUserFridge() {
 	await checkTokenExp();
 	let token = localStorage.getItem("access");
 	const response = await fetch(`${BACKEND_BASE_URL}/users/fridge/`, {
-		headers: {
-			Authorization: `Bearer ${token}`
-		},
+		headers: await getHeader((json = false)),
 		method: "GET"
 	});
 	return response.json();
@@ -248,10 +234,7 @@ async function postUserFridge() {
 	let token = localStorage.getItem("access");
 	const ingredient = document.getElementById("ingredient").value;
 	const response = await fetch(`${BACKEND_BASE_URL}/users/fridge/`, {
-		headers: {
-			Authorization: `Bearer ${token}`,
-			"content-type": "application/json"
-		},
+		headers: await getHeader(),
 		body: JSON.stringify({
 			ingredient: ingredient
 		}),
@@ -266,9 +249,7 @@ async function deleteUserFridge(fridgeId) {
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/users/fridge/${fridgeId}/`,
 		{
-			headers: {
-				Authorization: `Bearer ${token}`
-			},
+			headers: await getHeader((json = false)),
 			method: "DELETE"
 		}
 	);
@@ -284,9 +265,7 @@ async function getOtherUserFollowing() {
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/users/${userId}/following/`,
 		{
-			headers: {
-				Authorization: `Bearer ${token}`
-			},
+			headers: await getHeader((json = false)),
 			method: "GET"
 		}
 	);
@@ -302,9 +281,7 @@ async function getUserFollowing() {
 		const response = await fetch(
 			`${BACKEND_BASE_URL}/users/${payload_parse.user_id}/following/`,
 			{
-				headers: {
-					Authorization: `Bearer ${token}`
-				},
+				headers: await getHeader((json = false)),
 				method: "GET"
 			}
 		);
@@ -321,9 +298,7 @@ async function getUserFollower() {
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/users/${userId}/follower/`,
 		{
-			headers: {
-				Authorization: `Bearer ${token}`
-			},
+			headers: await getHeader((json = false)),
 			method: "GET"
 		}
 	);
@@ -338,12 +313,17 @@ async function userFollowing() {
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/users/${userId}/following/`,
 		{
-			headers: {
-				Authorization: `Bearer ${token}`
-			},
+			headers: await getHeader((json = false)),
 			method: "POST"
 		}
 	);
+	if (response.status == 200) {
+		alert("follow!");
+	} else if (response.status == 204) {
+		alert("unfollow!");
+	} else {
+		alert("올바르지 않은 요청이거나 존재하지 않는 회원입니다!");
+	}
 	return response;
 }
 async function otherUserFollowing(userId) {
@@ -352,12 +332,17 @@ async function otherUserFollowing(userId) {
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/users/${userId}/following/`,
 		{
-			headers: {
-				Authorization: `Bearer ${token}`
-			},
+			headers: await getHeader((json = false)),
 			method: "POST"
 		}
 	);
+	const response_json = await response.json();
+	if (response.status == 200) {
+		alert(response_json.message);
+		window.location.reload();
+	} else {
+		alert("올바르지 않은 요청이거나 존재하지 않는 회원입니다!");
+	}
 	return response;
 }
 
@@ -374,9 +359,7 @@ async function deleteArticle(articleId) {
 
 	const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/`, {
 		method: "DELETE",
-		headers: {
-			Authorization: `Bearer ${token}`
-		}
+		headers: await getHeader((json = false))
 	});
 	return response;
 }
@@ -397,9 +380,7 @@ async function getArticleDetail(articleId) {
 	const token = localStorage.getItem("access");
 	if (token) {
 		const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/`, {
-			headers: {
-				Authorization: `Bearer ${token}`
-			}
+			headers: await getHeader((json = false))
 		});
 
 		return response;
@@ -430,10 +411,7 @@ async function postComment(articleId, newComment) {
 		`${BACKEND_BASE_URL}/articles/${articleId}/comment/`,
 		{
 			method: "POST",
-			headers: {
-				"content-type": "application/json",
-				Authorization: `Bearer ${token}`
-			},
+			headers: await getHeader(),
 			body: JSON.stringify({
 				comment: newComment
 			})
@@ -450,9 +428,7 @@ async function bookmarkArticle(articleId) {
 		`${BACKEND_BASE_URL}/articles/${articleId}/bookmark/`,
 		{
 			method: "POST",
-			headers: {
-				Authorization: `Bearer ${token}`
-			}
+			headers: await getHeader((json = false))
 		}
 	);
 
@@ -473,9 +449,7 @@ async function likeArticle(articleId) {
 		`${BACKEND_BASE_URL}/articles/${articleId}/like/`,
 		{
 			method: "POST",
-			headers: {
-				Authorization: `Bearer ${token}`
-			}
+			headers: await getHeader((json = false))
 		}
 	);
 
@@ -496,9 +470,7 @@ async function deleteComment(commentId) {
 		`${BACKEND_BASE_URL}/articles/1/comment/${commentId}/`,
 		{
 			method: "DELETE",
-			headers: {
-				Authorization: `Bearer ${token}`
-			}
+			headers: await getHeader((json = false))
 		}
 	);
 	return response;
@@ -510,10 +482,7 @@ async function updateComment(commentId, newComment) {
 		`${BACKEND_BASE_URL}/articles/1/comment/${commentId}/`,
 		{
 			method: "PUT",
-			headers: {
-				"content-type": "application/json",
-				Authorization: `Bearer ${token}`
-			},
+			headers: await getHeader(),
 			body: JSON.stringify({
 				comment: newComment
 			})
@@ -530,9 +499,7 @@ async function likeComment(commentId) {
 		`${BACKEND_BASE_URL}/articles/comment/${commentId}/like/`,
 		{
 			method: "POST",
-			headers: {
-				Authorization: `Bearer ${token}`
-			}
+			headers: await getHeader((json = false))
 		}
 	);
 
@@ -544,9 +511,7 @@ async function deleteArticle(articleId) {
 
 	const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/`, {
 		method: "DELETE",
-		headers: {
-			Authorization: `Bearer ${token}`
-		}
+		headers: await getHeader((json = false))
 	});
 	return response;
 }
@@ -566,9 +531,7 @@ async function fetchMissingIngredients(articleId, token) {
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/articles/${articleId}/order/`,
 		{
-			headers: {
-				Authorization: `Bearer ${token}`
-			}
+			headers: await getHeader((json = false))
 		}
 	);
 
@@ -677,8 +640,10 @@ async function checkTokenExp() {
 				location.href = `${FRONT_BASE_URL}/login.html`;
 			}
 		} else {
-			return;
+			return null;
 		}
+	} else {
+		return null;
 	}
 }
 
@@ -689,9 +654,7 @@ async function getRecommend(recommendType) {
 		`${BACKEND_BASE_URL}/ai_process/?recommend=${recommendType}`,
 		{
 			method: "GET",
-			headers: {
-				Authorization: `Bearer ${token}`
-			}
+			headers: await getHeader((json = false))
 		}
 	);
 	return response;
@@ -703,9 +666,7 @@ async function getFollowArticles(userId, page = 1) {
 		`${BACKEND_BASE_URL}/users/${userId}/articles/?filter=3`,
 		{
 			method: "GET",
-			headers: {
-				Authorization: `Bearer ${token}`
-			}
+			headers: await getHeader((json = false))
 		}
 	);
 	return response;
@@ -717,9 +678,7 @@ async function getUserFeedArticles(userId, filter, page = 1) {
 		`${BACKEND_BASE_URL}/users/${userId}/articles/?filter=${filter}&page=${page}`,
 		{
 			method: "GET",
-			headers: {
-				Authorization: `Bearer ${token}`
-			}
+			headers: await getHeader((json = false))
 		}
 	);
 	return response;
@@ -732,11 +691,22 @@ async function getUserFollowList(currentFollowPage = 1, filter = 0) {
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/users/${userId}/follow/?follow_page=${currentFollowPage}&filter=${filter}`,
 		{
-			headers: {
-				Authorization: `Bearer ${token}`
-			},
+			headers: await getHeader((json = false)),
 			method: "GET"
 		}
 	);
 	return response;
+}
+async function getHeader(json = true) {
+	var headers = {};
+	if (
+		localStorage.getItem("access") != null &&
+		localStorage.getItem("access") != undefined
+	) {
+		headers["Authorization"] = `Bearer ${localStorage.getItem("access")}`;
+	}
+	if (json) {
+		headers["content-type"] = "application/json";
+	}
+	return headers;
 }
