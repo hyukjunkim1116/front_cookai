@@ -192,9 +192,11 @@ async function tabs(id){
 
 }
 async function loaderFunction() {
+	await tabs(0)
 	checkNotLogin();
 	await loadCollavorativeRecommend();
 	await loadContentRecommend();
 	await loadFeedArticles(3);
 	await loadFeedArticles(2);
+	
 }
