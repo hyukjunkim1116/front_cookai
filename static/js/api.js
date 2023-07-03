@@ -92,11 +92,12 @@ async function handleChangePasswordConfirm() {
 		})
 	});
 	const response_json = await response.json();
-	if (response_json.status == 200) {
+	console.log(response, response_json);
+	if (response.status == 200) {
 		alert("비밀번호 변경 완료!");
 		window.location.replace(`${FRONT_BASE_URL}/`);
 	} else {
-		alert(response_json.error);
+		alert(response.error);
 	}
 }
 
