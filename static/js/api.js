@@ -334,10 +334,10 @@ async function otherUserFollowing(userId) {
 			method: "POST"
 		}
 	);
+	const response_json= await response.json()
 	if(response.status==200){
-		alert("follow!")
-	}else if(response.status==204){
-		alert("unfollow!")
+		alert(response_json.message)
+		window.location.reload()
 	}else{
 		alert("올바르지 않은 요청이거나 존재하지 않는 회원입니다!")
 	}

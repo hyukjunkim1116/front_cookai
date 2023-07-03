@@ -117,7 +117,7 @@ async function loadArticle(){
 			followToggleBtn.setAttribute("type", "button");
 			followToggleBtn.setAttribute(
 				"onclick",
-				`userFollowing(${response_json.author})`
+				`otherUserFollowing(${response_json.author})`
 			);
 			if (user_json.followings.includes(response_json.author)) {
 				followToggleBtn.innerText = "팔로우 취소";
