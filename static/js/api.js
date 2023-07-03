@@ -1,5 +1,5 @@
-const FRONT_BASE_URL = "https://cookai.today";
-const BACKEND_BASE_URL = "https://www.backend.cookai.today";
+const FRONT_BASE_URL = "http://127.0.0.1:5500";
+const BACKEND_BASE_URL = "http://127.0.0.1:8000";
 
 // 로그인
 async function handleLogin() {
@@ -533,68 +533,55 @@ async function getArticle(articleId) {
 }
 
 async function fetchMissingIngredients(articleId, token) {
-	const response = await fetch(
-		`${BACKEND_BASE_URL}/articles/${articleId}/order/`,
-		{
-			headers: await getHeader((json = false))
-		}
-	);
+    const response = await fetch(
+        `${BACKEND_BASE_URL}/articles/${articleId}/order/`,
+        {
+            headers: await getHeader((json = false))
+        }
+    );
 
-	if (response.ok) {
-		const ingredientLinks = await response.json();
+    if (response.ok) {
+        const ingredientLinks = await response.json();
 
-		const ingredients = {};
+        const missingLinksList = document.createElement("div");
+        missingLinksList.style.display = "flex";
+        missingLinksList.style.flexWrap = "wrap";
 
-		// 재료별로 링크 분류
-		ingredientLinks.forEach((link) => {
-			if (!ingredients[link.ingredientName]) {
-				ingredients[link.ingredientName] = [];
-			}
-			ingredients[link.ingredientName].push(link);
-		});
+        const randomLinks = [];
+        const length = Math.min(ingredientLinks.length, 5);
 
-		const missingLinksList = document.createElement("div");
-		missingLinksList.style.display = "flex";
-		missingLinksList.style.flexWrap = "wrap";
+        for (let i = 0; i < length; i++) {
+            const randomIndex = Math.floor(Math.random() * ingredientLinks.length);
+            randomLinks.push(ingredientLinks[randomIndex]);
+            ingredientLinks.splice(randomIndex, 1);
+        }
 
-		for (const ingredientName in ingredients) {
-			const ingredientLink = ingredients[ingredientName];
-			const randomLinks = [];
-			const length = Math.min(ingredientLink.length, 5);
+		randomLinks.forEach((link) => {
+            const listItem = document.createElement("div");
+            listItem.style.padding = "10px";
+            listItem.innerHTML = `
+                ${
+                    link.link
+                        ? `<a href="${link.link}" target="_blank">${
+                            link.link_img
+                                ? `<img src="${link.link_img}" style="width: 5em; height: auto;"/><br>`
+                                : ""
+                        }${link.ingredient_name}</a>`
+                        : `<span>${link.ingredient_name}</span>`
+                }
+            `;
+            missingLinksList.appendChild(listItem);
+        });
 
-			for (let i = 0; i < length; i++) {
-				const randomIndex = Math.floor(Math.random() * ingredientLink.length);
-				randomLinks.push(ingredientLink[randomIndex]);
-				ingredientLink.splice(randomIndex, 1);
-			}
-
-			randomLinks.forEach((link) => {
-				const listItem = document.createElement("div");
-				listItem.style.padding = "10px";
-				listItem.innerHTML = `
-                    ${
-											link.link
-												? `<a href="${link.link}" target="_blank">${
-														link.link_img
-															? `<img src="${link.link_img}" style="width: 5em; height: auto;"/>`
-															: "링크"
-												  }</a>`
-												: ""
-										}
-                `;
-
-				missingLinksList.appendChild(listItem);
-			});
-		}
-		const container = document.getElementById("ingredientslink_list");
-		container.appendChild(missingLinksList);
-		if (ingredientLinks.length == 0) {
-			document.getElementById("coupang_ingredient").remove();
-		}
-	} else {
-		console.error("API 요청 실패:", response.statusText);
-		document.getElementById("coupang_ingredient").remove();
-	}
+        const container = document.getElementById("ingredientslink_list");
+        container.appendChild(missingLinksList);
+        if (ingredientLinks.length == 0) {
+            document.getElementById("coupang_ingredient").remove();
+        }
+    } else {
+        console.error("API 요청 실패:", response.statusText);
+        document.getElementById("coupang_ingredient").remove();
+    }
 }
 
 async function getTagList(selector) {
