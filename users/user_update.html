@@ -11,6 +11,7 @@
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="/static/css/navbar.css">
+    <link rel="stylesheet" href="/static/css/userPut.css">
 
 
     <!-- JavaScript Bundle with Popper -->
@@ -50,7 +51,7 @@
             </div>
             <div id="image_container" style="margin: 0 auto 0 auto ; display:flex; justify-content:center;"></div>
             <div class="text-center">
-                <button class="sign-btn btn btn-outline-primary" type="button" id="user-update-button"
+                <button class="sign-btn btn btn-outline-primary put-user-btn" type="button" id="user-update-button"
                     onclick="putUserDetail()">변경하기</button>
             </div>
             </form>
@@ -73,7 +74,7 @@
                         placeholder="비밀번호 확인">
                 </div>
                 <div class="text-center">
-                    <button class="sign-btn btn btn-outline-primary" type="button" id="user-password-update-btn"
+                    <button class="sign-btn btn btn-outline-primary put-user-btn" type="button" id="user-password-update-btn"
                         onclick="handleUpdatePassword()">비밀번호 변경하기</button>
                 </div>
             </form>
@@ -85,7 +86,7 @@
 
 <script src="/static/js/api.js"></script>
 <script src="/static/js/common.js"></script>
-<script src="/static/js/userUpdate.js"></script>
+<script src="/static/js/userPut.js"></script>
 <script defer="defer" src="/static/js/windowOnLoad.js"></script>
 
 

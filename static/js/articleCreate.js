@@ -178,7 +178,6 @@ async function postArticle() {
 	if(tags.trim()!==""){
 		var tagsList=tags.trim().replace(/,[\s]*,/g,",").replace(/^,/g,"").replace(/,$/g,"").split(",");
 		data["tags"]=tagsList
-		alert("123")
 	}
 	if (file) {
 		const responseURL = await fetch(`${BACKEND_BASE_URL}/articles/get-url/`, {
