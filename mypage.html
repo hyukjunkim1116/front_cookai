@@ -46,15 +46,14 @@
                 <div id="fridge-title" class="fridge-title">나의 냉장고</div>
                 <div id="fridge-content" class="fridge-content"></div>
                 <div class="row g-3" id="fridge-input">
-                    <div class="col-auto">
                         <label for="ingredient" class="visually-hidden"></label>
-                        <input type="text" class="form-control upload-form" id="ingredient" name="ingredient"
-                            placeholder="재료를 입력또는 업로드">
-                    </div>
-                    <div class="col-auto">
+                        <input type="text" class="form-control" id="ingredient" name="ingredient"
+                        placeholder="재료를 입력또는 업로드">
+                        <button type="submit" class="btn btn-primary mb-3 camera-btn"  onclick="location.href='/image_upload.html'">사진 업로드
+                            <i class="bi bi-camera fs-6 ml-3"></i>
+                        </button>
                         <button type="button" class="btn btn-primary mb-3 post-fridge" id="post-fridge"
                             onclick="postUserFridge()">추가하기</button>
-                    </div>
                 </div>
             </div>
             <!-- 재료 목록, 재료 추가버튼, 재료 삭제버튼-->

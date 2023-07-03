@@ -5,10 +5,10 @@ async function loadUserData() {
 	const usernameText = document.getElementById("username");
 	const genderSelect = document.getElementById("gender");
 	const BirthDate = document.getElementById("age");
-	BirthDate.value=response.age
-	for(var i = 0;i<genderSelect.options.length;i++){
-		if(genderSelect.options[i].value==response.gender){
-			genderSelect.options[i].setAttribute("selected",true)
+	BirthDate.value = response.age;
+	for (var i = 0; i < genderSelect.options.length; i++) {
+		if (genderSelect.options[i].value == response.gender) {
+			genderSelect.options[i].setAttribute("selected", true);
 		}
 	}
 
