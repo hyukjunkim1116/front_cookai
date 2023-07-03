@@ -1,10 +1,7 @@
-
-
 async function loadUserFollowing(currentFollowPage = 1) {
 	const response = await getUserFollowList(currentFollowPage);
 	const followListResponse = await response.json();
 	const followPageList = document.getElementById("follow-page");
-	// followPageList.style.display = "flex";
 	followPageList.innerHTML = "";
 	followPageList.innerText = "팔로잉 목록";
 
@@ -21,12 +18,17 @@ async function loadUserFollowing(currentFollowPage = 1) {
 			followList.innerHTML = `
 				<img id="follow-avatar" class="follow-avatar" src=${userAvatar} onclick="location.href='${FRONT_BASE_URL}/mypage.html?user_id=${result.id}'" style="cursor:pointer;">
                 <div id="follow-name" class="follow-name" onclick="location.href='${FRONT_BASE_URL}/mypage.html?user_id=${result.id}'" style="cursor:pointer;">${result.username}</div>
-                <div id="follow-btn" class="follow-btn" onclick="userFollowToggle(${result.id})">언팔로우</div>
+				<div id="follow-btn" class="follow-btn follow-following-btn-${result.id}" onclick="userFollowToggle(${result.id})">언팔로우</div>
 			`;
+			if (isYOU(result.id)) {
+				const followBtn = document.querySelector(
+					`.follow-following-btn-${result.id}`
+				);
+				followBtn.style.display = "none";
+			}
 			followPageList.appendChild(followList);
 		});
 	}
-
 	const pagination = document.createElement("div");
 	pagination.setAttribute("class", "pagination");
 	pagination.innerHTML = "";
@@ -74,10 +76,13 @@ async function loadUserFollower(currentFollowPage = 1) {
 				followingIdList.includes(result.id) ? "언팔로우" : "팔로우"
 			}</div>
 			`;
+			if (isYOU(result.id)) {
+				const followBtn = document.querySelector(`.follow-btn-${result.id}`);
+				followBtn.style.display = "none";
+			}
 			followPageList.appendChild(followList);
 		});
 	}
-
 	const pagination = document.createElement("div");
 	pagination.setAttribute("class", "pagination");
 	pagination.innerHTML = "";
@@ -405,7 +410,7 @@ async function loadUserArticle(currentPage) {
 	totalArticles.setAttribute("id", "total_articles");
 	totalArticles.innerText = `게시글 : ${response.count}`;
 	articleContainer.appendChild(totalArticles);
-	console.log(response)
+	console.log(response);
 	response.results.forEach((result) => {
 		const articleContent = document.createElement("div");
 		const articleImage = result.avatar
