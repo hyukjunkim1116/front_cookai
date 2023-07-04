@@ -557,21 +557,26 @@ async function fetchMissingIngredients(articleId, token) {
         }
 
 		randomLinks.forEach((link) => {
-            const listItem = document.createElement("div");
-            listItem.style.padding = "10px";
-            listItem.innerHTML = `
-                ${
-                    link.link
-                        ? `<a href="${link.link}" target="_blank">${
-                            link.link_img
-                                ? `<img src="${link.link_img}" style="width: 5em; height: auto;"/><br>`
-                                : ""
-                        }${link.ingredient_name}</a>`
-                        : `<span>${link.ingredient_name}</span>`
-                }
-            `;
-            missingLinksList.appendChild(listItem);
-        });
+			const listItem = document.createElement("div");
+			listItem.style.width = "calc(20%)";
+            listItem.style.padding = "5px";
+			listItem.innerHTML = `
+				${
+					link.link
+						? `<a href="${link.link}" target="_blank"> 
+							<span  style="font-size: 0.9em">${link.ingredient_name}</span><br>
+							${
+								link.link_img
+									? `<img src="${link.link_img}" style="width: 100%; height: auto;"/><br>`
+									: ""
+							}
+							${link.price ? '<span class="sparkle" style="font-size: 0.8em">' + link.price + '원</span>' : ''}
+						</a>`
+						: `<span>${link.ingredient_name}${link.price ? '<br><span>' + link.price + '</span>' : ''}</span>`
+				}
+			`;
+			missingLinksList.appendChild(listItem);
+		});
 
         const container = document.getElementById("ingredientslink_list");
         container.appendChild(missingLinksList);
