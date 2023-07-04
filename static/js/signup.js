@@ -1,5 +1,3 @@
-// 일반 회원가입하는 함수
-
 async function handleSignUp() {
 	const email = document.getElementById("email").value;
 	const firstPassword = document.getElementById("first_password").value;
@@ -30,28 +28,27 @@ async function handleSignUp() {
 				method: "POST",
 				body: JSON.stringify({
 					email: email,
-					"password": firstPassword,
-					"second_password": secondPassword,
+					password: firstPassword,
+					second_password: secondPassword,
 					username: username,
-					gender: Boolean(gender)?gender:null,
-					age: Boolean(age)?age:null,
+					gender: Boolean(gender) ? gender : null,
+					age: Boolean(age) ? age : null,
 					avatar: realFileURL
 				})
 			});
 			if (response.status == 400) {
-				var alertMsg=''
-				const response_json = await response.json()
-				var list=Object.values(response_json)
-				list.forEach(element => {
-
-					if(element[0]=='password'){
-						alertMsg +="비밀번호는 8자리이상이어야 하며 하나이상의 숫자,알파벳,특수문자(!@#$%^&*())들로 구성됩니다.\n"
-					}else{
-						alertMsg +=`${element}\n`
+				var alertMsg = "";
+				const response_json = await response.json();
+				var list = Object.values(response_json);
+				list.forEach((element) => {
+					if (element[0] == "password") {
+						alertMsg +=
+							"비밀번호는 8자리이상이어야 하며 하나이상의 숫자,알파벳,특수문자(!@#$%^&*())들로 구성됩니다.\n";
+					} else {
+						alertMsg += `${element}\n`;
 					}
 				});
 				alert(alertMsg);
-
 			} else {
 				alert("이메일 인증을 진행해 주세요!");
 				window.location.replace(`${FRONT_BASE_URL}/login.html`);
@@ -65,23 +62,23 @@ async function handleSignUp() {
 				method: "POST",
 				body: JSON.stringify({
 					email: email,
-					"password": firstPassword,
-					"second_password": secondPassword,
+					password: firstPassword,
+					second_password: secondPassword,
 					username: username,
-					gender: Boolean(gender)?gender:null,
-					age: Boolean(age)?age:null,
+					gender: Boolean(gender) ? gender : null,
+					age: Boolean(age) ? age : null
 				})
 			});
 			if (response.status == 400) {
-				var alertMsg=''
-				const response_json = await response.json()
-				var list=Object.values(response_json)
-				list.forEach(element => {
-
-					if(element[0]=='password'){
-						alertMsg +="비밀번호는 8자리이상이어야 하며 하나이상의 숫자,알파벳,특수문자(!@#$%^&*())들로 구성됩니다.\n"
-					}else{
-						alertMsg +=`${element}\n`
+				var alertMsg = "";
+				const response_json = await response.json();
+				var list = Object.values(response_json);
+				list.forEach((element) => {
+					if (element[0] == "password") {
+						alertMsg +=
+							"비밀번호는 8자리이상이어야 하며 하나이상의 숫자,알파벳,특수문자(!@#$%^&*())들로 구성됩니다.\n";
+					} else {
+						alertMsg += `${element}\n`;
 					}
 				});
 				alert(alertMsg);
@@ -97,4 +94,4 @@ async function handleSignUp() {
 }
 async function loaderFunction() {
 	checkLogin();
-};
+}

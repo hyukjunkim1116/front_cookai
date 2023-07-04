@@ -77,6 +77,8 @@ async function handleEmailConfirm() {
 // 비밀번호 리셋 - 새로운 비밀번호 설정
 async function handleChangePasswordConfirm() {
 	const userId = new URLSearchParams(window.location.search).get("uid");
+	const uidb64 = new URLSearchParams(window.location.search).get("uidb64");
+	const token = new URLSearchParams(window.location.search).get("token");
 	const newFirstPassword = document.getElementById("new_first_password").value;
 	const newSecondPassword = document.getElementById(
 		"new_second_password"
@@ -89,7 +91,9 @@ async function handleChangePasswordConfirm() {
 		body: JSON.stringify({
 			new_first_password: newFirstPassword,
 			new_second_password: newSecondPassword,
-			user_id: userId
+			user_id: userId,
+			uidb64: uidb64,
+			token: token
 		})
 	});
 	const response_json = await response.json();
