@@ -107,7 +107,21 @@ async function handleUpdatePassword() {
 		alert(response_json.error);
 	}
 }
-
+const passwordToggle = () => {
+	const passwordToggleBtn = document.querySelector(".check-password");
+	const oldPassword = document.getElementById("old_password");
+	const firstPassword = document.getElementById("new_password");
+	const secondPassword = document.getElementById("new_password_check");
+	if (passwordToggleBtn.checked) {
+		firstPassword.type = "text";
+		secondPassword.type = "text";
+		oldPassword.type = "text";
+	} else {
+		firstPassword.type = "password";
+		secondPassword.type = "password";
+		oldPassword.type = "password";
+	}
+};
 async function loaderFunction() {
 	checkNotLogin();
 	const preview = document.getElementById("file");
