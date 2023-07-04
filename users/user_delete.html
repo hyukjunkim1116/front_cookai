@@ -16,6 +16,18 @@
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
         crossorigin="anonymous"></script>
     <script>
+        const passwordToggle = () => {
+            const passwordToggleBtn = document.querySelector(".check-password");
+            const firstPassword = document.getElementById("password");
+            const secondPassword = document.getElementById("password-check");
+            if (passwordToggleBtn.checked) {
+                firstPassword.type = "text";
+                secondPassword.type = "text";
+            } else {
+                firstPassword.type = "password";
+                secondPassword.type = "password";
+            }
+        };
         async function loaderFunction() {
             checkNotLogin();
             const userId = new URLSearchParams(window.location.search).get("user_id");
@@ -43,6 +55,10 @@
                         <label for="password-check" class="form-label">비밀번호</label>
                         <input type="password" class="form-control" name="password-check" id="password-check"
                             placeholder="비밀번호 확인">
+                    </div>
+                    <div class="form-check form-switch d-flex justify-content-center mb-2">
+                        <input class="form-check-input check-password" type="checkbox" role="switch" id="flexSwitchCheckDefault" onclick="passwordToggle()">
+                        <label class="form-check-label align-self-center" for="flexSwitchCheckDefault" style="font-size:small; margin-left:5px; color:#4A4A4A;">비밀번호 확인</label>
                     </div>
                     <div class="text-center">
                         <button type="button" class="sign-btn btn btn-outline-primary put-user-btn" id="delete-user-btn"

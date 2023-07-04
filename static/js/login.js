@@ -25,6 +25,15 @@ async function handleLoginBtn() {
 		alert("회원정보가 일치하지 않습니다!");
 	}
 }
+const passwordToggle = () => {
+	const passwordToggleBtn = document.querySelector(".check-password");
+	const firstPassword = document.getElementById("password");
+	if (passwordToggleBtn.checked) {
+		firstPassword.type = "text";
+	} else {
+		firstPassword.type = "password";
+	}
+};
 async function loaderFunction() {
 	checkLogin();
-};
+}

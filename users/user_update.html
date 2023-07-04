@@ -83,6 +83,10 @@
                     margin-top: 5px;
                     font-size:x-small;">영문,숫자,특수문자가 1회 이상 포함되어야 하며 8자 이상이어야 합니다.</span>
                 </div>
+                <div class="form-check form-switch d-flex justify-content-center mb-2">
+                    <input class="form-check-input check-password" type="checkbox" role="switch" id="flexSwitchCheckDefault" onclick="passwordToggle()">
+                    <label class="form-check-label align-self-center" for="flexSwitchCheckDefault" style="font-size:small; margin-left:5px; color:#4A4A4A;">비밀번호 확인</label>
+                </div>
                 <div class="text-center">
                     <button class="sign-btn btn btn-outline-primary put-user-btn" type="button" id="user-password-update-btn"
                         onclick="handleUpdatePassword()">비밀번호 변경하기</button>
