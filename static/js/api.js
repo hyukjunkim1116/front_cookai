@@ -91,13 +91,12 @@ async function handleChangePasswordConfirm() {
 		body: JSON.stringify({
 			new_first_password: newFirstPassword,
 			new_second_password: newSecondPassword,
-			user_id: parseInt(userId),
+			user_id: userId,
 			uidb64: uidb64,
 			token: token
 		})
 	});
 	const response_json = await response.json();
-	console.log(response, response_json);
 	if (response.status == 200) {
 		alert("비밀번호 변경 완료!");
 		window.location.replace(`${FRONT_BASE_URL}/`);
