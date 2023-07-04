@@ -91,7 +91,7 @@ async function handleChangePasswordConfirm() {
 		body: JSON.stringify({
 			new_first_password: newFirstPassword,
 			new_second_password: newSecondPassword,
-			user_id: String(userId),
+			user_id: parseInt(userId),
 			uidb64: uidb64,
 			token: token
 		})
