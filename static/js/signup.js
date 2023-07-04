@@ -83,7 +83,9 @@ async function handleSignUp() {
 				});
 				alert(alertMsg);
 			} else {
-				alert("이메일 인증을 진행해 주세요!");
+				alert(
+					"입력하신 이메일을 확인하여 인증을 진행하고 회원가입을 완료해주세요!"
+				);
 				window.location.replace(`${FRONT_BASE_URL}/login.html`);
 				return response;
 			}
