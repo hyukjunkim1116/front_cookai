@@ -81,6 +81,33 @@ async function putUserDetail() {
 	}
 }
 
+async function handleUpdatePassword() {
+	await checkTokenExp();
+
+	const token = localStorage.getItem("access");
+	const oldPassword = document.getElementById("old_password").value;
+	const newPassword = document.getElementById("new_password").value;
+	const newPasswordCheck = document.getElementById("new_password_check").value;
+	const response = await fetch(`${BACKEND_BASE_URL}/users/change-password/`, {
+		headers: await getHeader(),
+		method: "PUT",
+		body: JSON.stringify({
+			old_password: oldPassword,
+			new_password: newPassword,
+			new_password2: newPasswordCheck
+		})
+	});
+	const response_json = await response.json();
+	if (response.status == 200) {
+		alert(response_json.message);
+		handleLogout();
+		window.location = `${FRONT_BASE_URL}/login.html`;
+		return response;
+	} else {
+		alert(response_json.error);
+	}
+}
+
 async function loaderFunction() {
 	checkNotLogin();
 	const preview = document.getElementById("file");
