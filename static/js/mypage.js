@@ -467,7 +467,7 @@ async function loadUserFridge() {
 async function loadUserArticle(currentPage) {
 	const response = await getUserArticle(currentPage);
 	const articleContainer = document.getElementById("article");
-
+	const userId = new URLSearchParams(window.location.search).get("user_id");
 	articleContainer.innerHTML = "";
 	articleContainer.innerText = "작성 글";
 	const totalArticles = document.createElement("div");
@@ -508,6 +508,10 @@ async function loadUserArticle(currentPage) {
 					</div>
 		`;
 		articleContainer.appendChild(articleContent);
+		const updateArticleBtn = document.querySelector(`.article-content__edit`);
+		if (!isYOU(userId)) {
+			updateArticleBtn.remove();
+		}
 	});
 	const pagination = document.createElement("div");
 	pagination.setAttribute("class", "pagination");
