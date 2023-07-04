@@ -348,4 +348,16 @@ line-height: 1.375rem;
     background-color: #FE6B38;
     border: none;
 }
+.user-email {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8125rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.375rem;
+}
+.envelope-icon {
+    margin-right: 5px;
+}
 

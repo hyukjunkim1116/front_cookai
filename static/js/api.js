@@ -512,55 +512,55 @@ async function getArticle(articleId) {
 }
 
 async function fetchMissingIngredients(articleId, token) {
-    const response = await fetch(
-        `${BACKEND_BASE_URL}/articles/${articleId}/order/`,
-        {
-            headers: await getHeader((json = false))
-        }
-    );
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/articles/${articleId}/order/`,
+		{
+			headers: await getHeader((json = false))
+		}
+	);
 
-    if (response.ok) {
-        const ingredientLinks = await response.json();
+	if (response.ok) {
+		const ingredientLinks = await response.json();
 
-        const missingLinksList = document.createElement("div");
-        missingLinksList.style.display = "flex";
-        missingLinksList.style.flexWrap = "wrap";
+		const missingLinksList = document.createElement("div");
+		missingLinksList.style.display = "flex";
+		missingLinksList.style.flexWrap = "wrap";
 
-        const randomLinks = [];
-        const length = Math.min(ingredientLinks.length, 5);
+		const randomLinks = [];
+		const length = Math.min(ingredientLinks.length, 5);
 
-        for (let i = 0; i < length; i++) {
-            const randomIndex = Math.floor(Math.random() * ingredientLinks.length);
-            randomLinks.push(ingredientLinks[randomIndex]);
-            ingredientLinks.splice(randomIndex, 1);
-        }
+		for (let i = 0; i < length; i++) {
+			const randomIndex = Math.floor(Math.random() * ingredientLinks.length);
+			randomLinks.push(ingredientLinks[randomIndex]);
+			ingredientLinks.splice(randomIndex, 1);
+		}
 
 		randomLinks.forEach((link) => {
-            const listItem = document.createElement("div");
-            listItem.style.padding = "10px";
-            listItem.innerHTML = `
+			const listItem = document.createElement("div");
+			listItem.style.padding = "10px";
+			listItem.innerHTML = `
                 ${
-                    link.link
-                        ? `<a href="${link.link}" target="_blank">${
-                            link.link_img
-                                ? `<img src="${link.link_img}" style="width: 5em; height: auto;"/><br>`
-                                : ""
-                        }${link.ingredient_name}</a>`
-                        : `<span>${link.ingredient_name}</span>`
-                }
+									link.link
+										? `<a href="${link.link}" target="_blank">${
+												link.link_img
+													? `<img src="${link.link_img}" style="width: 5em; height: auto;"/><br>`
+													: ""
+										  }${link.ingredient_name}</a>`
+										: `<span>${link.ingredient_name}</span>`
+								}
             `;
-            missingLinksList.appendChild(listItem);
-        });
+			missingLinksList.appendChild(listItem);
+		});
 
-        const container = document.getElementById("ingredientslink_list");
-        container.appendChild(missingLinksList);
-        if (ingredientLinks.length == 0) {
-            document.getElementById("coupang_ingredient").remove();
-        }
-    } else {
-        console.error("API 요청 실패:", response.statusText);
-        document.getElementById("coupang_ingredient").remove();
-    }
+		const container = document.getElementById("ingredientslink_list");
+		container.appendChild(missingLinksList);
+		if (ingredientLinks.length == 0) {
+			document.getElementById("coupang_ingredient").remove();
+		}
+	} else {
+		console.error("API 요청 실패:", response.statusText);
+		document.getElementById("coupang_ingredient").remove();
+	}
 }
 
 async function getTagList(selector) {

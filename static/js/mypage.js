@@ -289,6 +289,7 @@ async function loadUserLikeComment(currentCommentPage) {
 async function loadUserDetail() {
 	const response = await getUserDetail();
 	const followingsList = await getUserFollowing();
+
 	if (followingsList != null) {
 		const followingIdList = followingsList.map((following) => following.id);
 		const avatar = document.getElementById("mypage-avatar");
@@ -302,7 +303,11 @@ async function loadUserDetail() {
 		username.innerText = `${response.username}`;
 		const userDetailFollowBtn = document.getElementById("mypage-following-btn");
 		if (isYOU(response.id)) {
+			const mypage = document.querySelector(".mypage");
 			userDetailFollowBtn.remove();
+			const userEmail = document.createElement("null");
+			userEmail.innerHTML = `<div class="user-email" id="user-email"><i class="bi bi-envelope envelope-icon"></i>${response.email}</div>`;
+			mypage.insertAdjacentHTML("afterend", userEmail.innerHTML);
 		} else {
 			userDetailFollowBtn.innerText = followingIdList.includes(response.id)
 				? "언팔로우"
@@ -312,7 +317,6 @@ async function loadUserDetail() {
 			"onclick",
 			`loadedUserFollowToggle(${response.id})`
 		);
-		console.log(userDetailFollowBtn);
 		const following = document.getElementById("following");
 		following.innerText = `팔로잉 : ${response.total_followings}`;
 		following.addEventListener("click", () => {
@@ -601,8 +605,8 @@ const userFollowToggle = (userId) => {
 	}
 };
 async function loaderFunction() {
-	await loadUserDetail();
 	await loadUserFridge();
 	await loadUserArticle();
 	await loadUserComment();
+	await loadUserDetail();
 }
