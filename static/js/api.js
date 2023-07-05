@@ -64,10 +64,12 @@ async function handleEmailConfirm() {
 			email: email
 		})
 	});
+	const response_json = await response.json();
 	if (response.status == 200) {
 		alert("이메일인증을 진행해주세요!");
+		window.location.replace(`${FRONT_BASE_URL}/`);
 	} else {
-		alert("일치하는 이메일이 없습니다!");
+		alert(response_json.error);
 	}
 	return response;
 }
@@ -75,6 +77,8 @@ async function handleEmailConfirm() {
 // 비밀번호 리셋 - 새로운 비밀번호 설정
 async function handleChangePasswordConfirm() {
 	const userId = new URLSearchParams(window.location.search).get("uid");
+	const uidb64 = new URLSearchParams(window.location.search).get("uidb64");
+	const token = new URLSearchParams(window.location.search).get("token");
 	const newFirstPassword = document.getElementById("new_first_password").value;
 	const newSecondPassword = document.getElementById(
 		"new_second_password"
@@ -87,43 +91,19 @@ async function handleChangePasswordConfirm() {
 		body: JSON.stringify({
 			new_first_password: newFirstPassword,
 			new_second_password: newSecondPassword,
-			user_id: userId
+			user_id: userId,
+			uidb64: uidb64,
+			token: token
 		})
 	});
+	const response_json = await response.json();
 	if (response.status == 200) {
-		alert(response.message);
-		window.location.replace(`${FRONT_BASE_URL}/login.html`);
+		alert("비밀번호 변경 완료!");
+		window.location.replace(`${FRONT_BASE_URL}/`);
 	} else {
-		alert(response.error);
+		alert(response_json.error);
 	}
 }
-
-async function handleUpdatePassword() {
-	await checkTokenExp();
-
-	const token = localStorage.getItem("access");
-	const oldPassword = document.getElementById("old_password").value;
-	const newPassword = document.getElementById("new_password").value;
-	const newPasswordCheck = document.getElementById("new_password_check").value;
-	const response = await fetch(`${BACKEND_BASE_URL}/users/change-password/`, {
-		headers: await getHeader(),
-		method: "PUT",
-		body: JSON.stringify({
-			old_password: oldPassword,
-			new_password: newPassword,
-			new_password2: newPasswordCheck
-		})
-	});
-	if (response.status == 200) {
-		alert("비밀번호가 변경되었습니다!");
-		handleLogout();
-		window.location = `${FRONT_BASE_URL}/login.html`;
-		return response;
-	} else {
-		alert("현재 비밀번호가 일치하지 않습니다!");
-	}
-}
-
 //로그인 한 유저 정보 조회
 async function getLoginUser() {
 	await checkTokenExp();
@@ -174,9 +154,12 @@ async function deleteUser() {
 				password: password
 			})
 		});
+		response_json = await response.json();
 		if (response.status == 200) {
 			alert("탈퇴 완료!");
 			handleLogout();
+		} else {
+			alert(response_json.error);
 		}
 	} else {
 		alert("비밀번호가 일치하지 않습니다!");
@@ -194,7 +177,6 @@ async function getUserArticle(currentPage = 1) {
 			method: "GET"
 		}
 	);
-
 	return await response.json();
 }
 async function getUserComment(currentCommentPage = 1, filter = 0) {

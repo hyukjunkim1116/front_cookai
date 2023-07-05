@@ -11,6 +11,7 @@
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="/static/css/navbar.css">
+    <link rel="stylesheet" href="/static/css/userPut.css">
 
 
     <!-- JavaScript Bundle with Popper -->
@@ -50,7 +51,7 @@
             </div>
             <div id="image_container" style="margin: 0 auto 0 auto ; display:flex; justify-content:center;"></div>
             <div class="text-center">
-                <button class="sign-btn btn btn-outline-primary" type="button" id="user-update-button"
+                <button class="sign-btn btn btn-outline-primary put-user-btn" type="button" id="user-update-button"
                     onclick="putUserDetail()">변경하기</button>
             </div>
             </form>
@@ -66,14 +67,28 @@
                     <label for="second_password" class="form-label">변경할 비밀번호</label>
                     <input type="password" class="form-control" name="second_password" id="new_password"
                         placeholder="새로운 비밀번호">
+                        <span class="form-text" style="justify-content: center;
+                        align-items: center;
+                        display: flex;
+                        margin-top: 5px;
+                        font-size:x-small;">영문,숫자,특수문자가 1회 이상 포함되어야 하며 8자 이상이어야 합니다.</span>
                 </div>
                 <div class="mb-2">
                     <label for="second_password" class="form-label">변경할 비밀번호 확인</label>
                     <input type="password" class="form-control" name="second_password" id="new_password_check"
                         placeholder="비밀번호 확인">
+                        <span class="form-text" style="justify-content: center;
+                    align-items: center;
+                    display: flex;
+                    margin-top: 5px;
+                    font-size:x-small;">영문,숫자,특수문자가 1회 이상 포함되어야 하며 8자 이상이어야 합니다.</span>
+                </div>
+                <div class="form-check form-switch d-flex justify-content-center mb-2">
+                    <input class="form-check-input check-password" type="checkbox" role="switch" id="flexSwitchCheckDefault" onclick="passwordToggle()">
+                    <label class="form-check-label align-self-center" for="flexSwitchCheckDefault" style="font-size:small; margin-left:5px; color:#4A4A4A;">비밀번호 확인</label>
                 </div>
                 <div class="text-center">
-                    <button class="sign-btn btn btn-outline-primary" type="button" id="user-password-update-btn"
+                    <button class="sign-btn btn btn-outline-primary put-user-btn" type="button" id="user-password-update-btn"
                         onclick="handleUpdatePassword()">비밀번호 변경하기</button>
                 </div>
             </form>
@@ -85,7 +100,7 @@
 
 <script src="/static/js/api.js"></script>
 <script src="/static/js/common.js"></script>
-<script src="/static/js/userUpdate.js"></script>
+<script src="/static/js/userPut.js"></script>
 <script defer="defer" src="/static/js/windowOnLoad.js"></script>
 
 

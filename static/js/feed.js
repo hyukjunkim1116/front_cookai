@@ -9,16 +9,14 @@ async function renderList(recommendType,response_json){
 		newCard.setAttribute("class", "card h-100");
 		newCard.setAttribute("onclick", `location.href="${FRONT_BASE_URL}/articles/article_detail.html?article_id=${article.id}"`);
 		newCard.setAttribute("id", article.id);
-		
-		const image = response_json.image
 
         // 게시물의 대표 이미지를 생성하고, 생성한 이미지를 카드에 추가합니다.
         // 게시물의 photos 배열에서 첫 번째 요소의 file 속성을 가져와서 이미지의 src 속성으로 설정합니다.
         // articlePhoto가 존재하지 않는다면, 기본 이미지 주소를 src 속성으로 설정합니다.
 		const articleimage = document.createElement("img");
 		articleimage.setAttribute("class", "img-fluid card-img-top");
-		if (image) {
-			articleimage.setAttribute("src", `${image}`);
+		if (article.image) {
+			articleimage.setAttribute("src", `${article.image}`);
 		} else {
 			articleimage.setAttribute(
 				"src",
@@ -111,16 +109,14 @@ async function loadFeedArticles(queryType,page=1){
 		newCard.setAttribute("class", "card");
 		newCard.setAttribute("onclick", `location.href="${FRONT_BASE_URL}/articles/article_detail.html?article_id=${article.id}"`);
 		newCard.setAttribute("id", article.id);
-		
-		const image = response_json.image
 
         // 게시물의 대표 이미지를 생성하고, 생성한 이미지를 카드에 추가합니다.
         // 게시물의 photos 배열에서 첫 번째 요소의 file 속성을 가져와서 이미지의 src 속성으로 설정합니다.
         // articlePhoto가 존재하지 않는다면, 기본 이미지 주소를 src 속성으로 설정합니다.
 		const articleimage = document.createElement("img");
 		articleimage.setAttribute("class", "card-img-top");
-		if (image) {
-			articleimage.setAttribute("src", `${image}`);
+		if (article.image) {
+			articleimage.setAttribute("src", `${article.image}`);
 		} else {
 			articleimage.setAttribute(
 				"src",
@@ -182,17 +178,17 @@ async function loadFeedArticles(queryType,page=1){
 
 }
 async function tabs(id){
-	for(var i =0 ;i<3;i ++){
+	for(var i =0;i<3;i++){
 		if(i==id){
-			document.getElementById(`${i}`).hidden=false
+			document.getElementById(`feedBox${i}`).hidden=false
 		}else{
-			document.getElementById(`${i}`).hidden=true
+			document.getElementById(`feedBox${i}`).hidden=true
 		}
 	}
 
 }
 async function loaderFunction() {
-	await tabs(0)
+	await tabs(0);
 	checkNotLogin();
 	await loadCollavorativeRecommend();
 	await loadContentRecommend();
