@@ -29,6 +29,11 @@
                 <div class="mb-2">
                     <label for="email" class="form-label">이메일</label>
                     <input type="email" class="form-control" name="email" id="email" placeholder="이메일">
+                    <span class="form-text" style="justify-content: center;
+                    align-items: center;
+                    display: flex;
+                    margin-top: 5px;
+                    font-size:x-small;">이메일 인증시 사용되므로 실제 이메일을 적어주세요!</span>
                 </div>
                 <div class="mb-2">
                     <label for="first_password" class="form-label">비밀번호</label>
@@ -42,7 +47,7 @@
                     font-size:x-small;">영문,숫자,특수문자가 1회 이상 포함되어야 하며 8자 이상이어야 합니다.</span>
                 </div>
                 <div class="mb-2">
-                    <label for="second_password" class="form-label">비밀번호 보기</label>
+                    <label for="second_password" class="form-label">비밀번호 확인</label>
                     <input type="password" class="form-control" name="second_password" id="second_password"
                         placeholder="비밀번호 확인">
                     <span class="form-text" style="justify-content: center;
@@ -53,31 +58,13 @@
                 </div>
                 <div class="form-check form-switch d-flex justify-content-center mb-2">
                     <input class="form-check-input check-password" type="checkbox" role="switch" id="flexSwitchCheckDefault" onclick="passwordToggle()">
-                    <label class="form-check-label align-self-center" for="flexSwitchCheckDefault" style="font-size:small; margin-left:5px; color:#4A4A4A;">비밀번호 확인</label>
+                    <label class="form-check-label align-self-center" for="flexSwitchCheckDefault" style="font-size:small; margin-left:5px; color:#4A4A4A;">비밀번호 보기</label>
                 </div>
                 <div class="mb-2">
                     <label for="username" class="form-label">닉네임</label>
                     <input type="text" class="form-control" name="username" id="username" placeholder="닉네임">
                 </div>
-                <div class="mb-2">
-                    <label for="gender" class="form-label">성별</label>
-                    <select class="form-select" name="gender" id="gender">
-                        <option value="" disabled selected>성별을 선택하세요</option>
-                        <option value="male">남자</option>
-                        <option value="female">여자</option>
-                    </select>
-                </div>
-                <div class="mb-2">
-                    <label for="age" class="form-label">출생년월일</label>
-                    <input type="date" class="form-control" name="age" id="age" placeholder="출생년월일">
-                </div>
-                <div class="mb-2">
-                    <label for="file" class="form-label">프로필 사진</label>
-                    <input type="file" class="form-control" id="file" aria-describedby="inputGroupFileAddon03"
-                        onchange="setThumbnail(event)" aria-label="Upload">
-                </div>
-                <div id="image_container" style="margin: 0 auto 0 auto ;"></div>
-                <div class="text-end mb-3">
+                <div class="text-center mt-3 mb-3">
                     <a href="/login.html" style="text-decoration: none;" class=" link-dark">이미 계정이 있다면?</a>
                 </div>
                 <div class="text-center">

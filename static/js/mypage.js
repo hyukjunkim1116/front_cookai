@@ -302,6 +302,7 @@ async function loadUserDetail() {
 		const username = document.getElementById("username");
 		username.innerText = `${response.username}`;
 		const userDetailFollowBtn = document.getElementById("mypage-following-btn");
+		const userUpdateProfileBtn = document.getElementById("update-user");
 		if (isYOU(response.id)) {
 			const mypage = document.querySelector(".mypage");
 			userDetailFollowBtn.remove();
@@ -309,6 +310,7 @@ async function loadUserDetail() {
 			userEmail.innerHTML = `<div class="user-email" id="user-email"><i class="bi bi-envelope envelope-icon"></i>${response.email}</div>`;
 			mypage.insertAdjacentHTML("afterend", userEmail.innerHTML);
 		} else {
+			userUpdateProfileBtn.remove();
 			userDetailFollowBtn.innerText = followingIdList.includes(response.id)
 				? "언팔로우"
 				: "팔로우";
