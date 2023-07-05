@@ -99,7 +99,7 @@ async function handleChangePasswordConfirm() {
 	const response_json = await response.json();
 	if (response.status == 200) {
 		alert("비밀번호 변경 완료!");
-		window.location.replace(`${FRONT_BASE_URL}/`);
+		window.location.replace(`${FRONT_BASE_URL}/login.html`);
 	} else {
 		alert(response_json.error);
 	}
