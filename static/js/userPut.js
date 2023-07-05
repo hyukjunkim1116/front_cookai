@@ -4,14 +4,23 @@ async function loadUserData() {
 
 	const usernameText = document.getElementById("username");
 	const genderSelect = document.getElementById("gender");
-	const BirthDate = document.getElementById("age");
-	BirthDate.value = response.age;
 	for (var i = 0; i < genderSelect.options.length; i++) {
 		if (genderSelect.options[i].value == response.gender) {
 			genderSelect.options[i].setAttribute("selected", true);
 		}
 	}
+	let img = document.createElement("img");
+	img.setAttribute("src", response.avatar);
 
+	// 썸네일 크기 조절
+	img.setAttribute("style", "max-height: 300px;");
+	img.setAttribute("style", "object-fit:cover;");
+	img.setAttribute("style", "margin-top: 15px;");
+	img.style.width = "50%"; // 너비 200px로 설정
+	img.style.height = "auto"; // 높이 자동 설정
+	// 썸네일 리셋 후 미리보기 보여주기
+	document.getElementById("image_container").innerHTML = "";
+	document.getElementById("image_container").appendChild(img);
 	const changePasswordForm = document.getElementById("change-password-form");
 	usernameText.value = `${response.username}`;
 
@@ -29,7 +38,6 @@ async function putUserDetail() {
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const username = document.getElementById("username").value;
 	const gender = document.getElementById("gender").value;
-	const age = document.getElementById("age").value;
 	const file = document.getElementById("file").files[0];
 	if (file) {
 		const responseURL = await fetch(`${BACKEND_BASE_URL}/users/get-url/`, {
@@ -51,7 +59,6 @@ async function putUserDetail() {
 			body: JSON.stringify({
 				username: username,
 				gender: gender,
-				age: age,
 				avatar: realFileURL
 			})
 		});
@@ -68,8 +75,7 @@ async function putUserDetail() {
 			method: "PUT",
 			body: JSON.stringify({
 				username: username,
-				gender: gender,
-				age: age
+				gender: gender
 			})
 		});
 		if (response.status == 400) {
