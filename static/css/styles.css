@@ -191,15 +191,36 @@ a:hover {
     color:black;
     font-weight: bold;
 }
+
 #image_container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
+
 .image-upload-header {
     margin-top: 15px;
 }
 #user-update-button {
     margin-top: 15px;
+}
+
+
+.sparkle {
+    color: rgb(255, 138, 0);
+    text-shadow: 0 0 3px rgba(255, 120, 0, 1), 0 0 10px rgba(255, 110, 0, 0.5),
+        0 0 15px rgba(255, 100, 0, 0.3);
+    animation: sparkle 1s linear infinite;
+}
+
+@keyframes sparkle {
+    0% {
+        text-shadow: 0 0 3px rgba(255, 120, 0, 1), 0 0 10px rgba(255, 110, 0, 0.5),
+            0 0 15px rgba(255, 100, 0, 0.3);
+    }
+    50% {
+        text-shadow: 0 0 5px rgba(255, 140, 0, 1), 0 0 15px rgba(255, 130, 0, 0.5),
+            0 0 20px rgba(255, 120, 0, 0.3);
+    }
 }
