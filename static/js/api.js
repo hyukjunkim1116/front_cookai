@@ -1,5 +1,5 @@
-const FRONT_BASE_URL = "https://cookai.today";
-const BACKEND_BASE_URL = "https://www.backend.cookai.today";
+const FRONT_BASE_URL = "http://127.0.0.1:5500";
+const BACKEND_BASE_URL = "http://127.0.0.1:8000";
 
 // 로그인
 async function handleLogin() {
@@ -108,7 +108,6 @@ async function handleChangePasswordConfirm() {
 async function getLoginUser() {
 	await checkTokenExp();
 	const payload = localStorage.getItem("payload");
-	const token = localStorage.getItem("access");
 	if (payload) {
 		const payload_parse = JSON.parse(payload);
 		const response = await fetch(
@@ -123,7 +122,7 @@ async function getLoginUser() {
 			response_json = await response.json();
 			return response_json;
 		} else {
-			alert(response.statusText);
+			alert(response_json.error);
 		}
 	}
 }
@@ -143,9 +142,9 @@ async function getUserDetail() {
 async function deleteUser() {
 	await checkTokenExp();
 	const userId = new URLSearchParams(window.location.search).get("user_id");
-	const password = document.getElementById("password").value;
-	const secondPassword = document.getElementById("password-check").value;
-	if (password) {
+	try {
+		const password = document.getElementById("password").value;
+		const secondPassword = document.getElementById("password-check").value;
 		if (password === secondPassword) {
 			const response = await fetch(`${BACKEND_BASE_URL}/users/${userId}/`, {
 				headers: await getHeader(),
@@ -164,7 +163,7 @@ async function deleteUser() {
 		} else {
 			alert("비밀번호가 일치하지 않습니다!");
 		}
-	} else {
+	} catch {
 		const response = await fetch(`${BACKEND_BASE_URL}/users/${userId}/`, {
 			headers: await getHeader(),
 			method: "PATCH"
