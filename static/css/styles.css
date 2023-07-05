@@ -191,18 +191,21 @@ a:hover {
     color:black;
     font-weight: bold;
 }
+
 #image_container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
+
 .image-upload-header {
     margin-top: 15px;
 }
 #user-update-button {
     margin-top: 15px;
 }
+
 
 .sparkle {
     color: rgb(255, 138, 0);
