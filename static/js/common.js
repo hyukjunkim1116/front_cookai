@@ -1,70 +1,3 @@
-//드롭다운 불러오기
-async function handleNavbarMode(loginUser) {
-	const loggedInItems = document.querySelectorAll(".logged-in-item");
-	const loggedOutItems = document.querySelectorAll(".logged-out-item");
-	const navbarToggler = document.querySelector(".navbar-toggler");
-	const loginButton = document.getElementById("nav-login"); // 로그인 버튼 추가
-
-	if (loginUser) {
-		// 로그인시 드롭다운 및 버튼 표시
-		loggedInItems.forEach((item) => (item.style.display = "block"));
-		loggedOutItems.forEach((item) => (item.style.display = "none"));
-		navbarToggler.style.display = "inline-block";
-		loginButton.style.display = "none"; // 로그인 버튼 숨기기
-	} else {
-		// 미로그인시 드롭다운 및 버튼 숨김
-		loggedInItems.forEach((item) => (item.style.display = "none"));
-		loggedOutItems.forEach((item) => (item.style.display = "block"));
-		navbarToggler.style.display = "none";
-		loginButton.style.display = "block"; // 로그인 버튼 보이기
-	}
-}
-
-// 네비게이션 바 불러오기,
-async function injectNavbar() {
-	let navbarHtml = await fetch("/navbar.html");
-	let data = await navbarHtml.text();
-	const original = document.querySelector("body").innerHTML;
-	document.querySelector("body").innerHTML = original + data;
-	const payload = localStorage.getItem("payload");
-	if (payload) {
-		const loginUser = await getLoginUser();
-		if (
-			loginUser.avatar &&
-			loginUser.avatar !== "" &&
-			loginUser.avatar !== "null"
-		) {
-			const avatar = document.getElementById("avatar");
-			avatar.setAttribute("src", `${loginUser.avatar}`);
-			avatar.style.visibility = "visible";
-		} else {
-			const avatar = document.getElementById("avatar");
-			avatar.setAttribute("src", "/static/img/no_avatar.png");
-			avatar.style.visibility = "visible";
-		}
-		const intro = document.getElementById("intro");
-		intro.innerText = `${loginUser.username}님`;
-
-		// 로그인 사용자 정보가 설정된 후 handleNavbarMode() 호출
-		await handleNavbarMode(loginUser);
-	} else {
-		// 사용자가 로그인하지 않은 경우
-		await handleNavbarMode(null);
-	}
-	const my = document.getElementById("my");
-	if (payload == null) {
-		my.innerHTML = "Login";
-	}
-}
-//푸터 불러오기
-async function injectfooter() {
-	let footer = await fetch("/footer.html");
-	let data = await footer.text();
-	document.querySelector("footer").innerHTML = data;
-
-	// 여기서 부터 동적인 부분 작성하면 됩니다.
-}
-
 // 로그인 상태에서 로그인, 회원가입 페이지 접속 시 홈으로 이동하는 함수
 function checkLogin() {
 	const payload = localStorage.getItem("payload");
@@ -181,4 +114,78 @@ function isYOU(userId) {
 	} else {
 		return false;
 	}
+}
+//드롭다운 불러오기
+async function handleNavbarMode(loginUser) {
+	const loggedInItems = document.querySelectorAll(".logged-in-item");
+	const loggedOutItems = document.querySelectorAll(".logged-out-item");
+	const navbarToggler = document.querySelector(".navbar-toggler");
+	const loginButton = document.getElementById("nav-login"); // 로그인 버튼 추가
+
+	if (loginUser) {
+		// 로그인시 드롭다운 및 버튼 표시
+		loggedInItems.forEach((item) => (item.style.display = "block"));
+		loggedOutItems.forEach((item) => (item.style.display = "none"));
+		navbarToggler.style.display = "inline-block";
+		loginButton.style.display = "none"; // 로그인 버튼 숨기기
+	} else {
+		// 미로그인시 드롭다운 및 버튼 숨김
+		loggedInItems.forEach((item) => (item.style.display = "none"));
+		loggedOutItems.forEach((item) => (item.style.display = "block"));
+		navbarToggler.style.display = "none";
+		loginButton.style.display = "block"; // 로그인 버튼 보이기
+	}
+}
+
+// 네비게이션 바 불러오기,
+async function injectNavbar() {
+	let navbarHtml = await fetch("/navbar.html");
+	let data = await navbarHtml.text();
+	const original = document.querySelector("body").innerHTML;
+	document.querySelector("body").innerHTML = original + data;
+	const payload = localStorage.getItem("payload");
+	if (payload) {
+		const loginUser = await getLoginUser();
+		if (
+			loginUser.avatar &&
+			loginUser.avatar !== "" &&
+			loginUser.avatar !== "null"
+		) {
+			const avatar = document.getElementById("avatar");
+			avatar.setAttribute("src", `${loginUser.avatar}`);
+			avatar.style.visibility = "visible";
+			avatar.setAttribute("onclick", "goMypage()");
+			avatar.style.cursor = "pointer";
+		} else {
+			const avatar = document.getElementById("avatar");
+			avatar.setAttribute("src", "/static/img/no_avatar.png");
+			avatar.setAttribute("onclick", "goMypage()");
+			avatar.style.cursor = "pointer";
+			avatar.style.visibility = "visible";
+		}
+		const logoutBtn = document.getElementById("nav-logout");
+		logoutBtn.style.display = "block";
+		logoutBtn.style.cursor = "pointer";
+		logoutBtn.innerText = "로그아웃";
+		const intro = document.getElementById("intro");
+		intro.innerText = `${loginUser.username}님`;
+
+		// 로그인 사용자 정보가 설정된 후 handleNavbarMode() 호출
+		await handleNavbarMode(loginUser);
+	} else {
+		// 사용자가 로그인하지 않은 경우
+		await handleNavbarMode(null);
+	}
+	const my = document.getElementById("my");
+	if (payload == null) {
+		my.innerHTML = "Login";
+	}
+}
+//푸터 불러오기
+async function injectfooter() {
+	let footer = await fetch("/footer.html");
+	let data = await footer.text();
+	document.querySelector("footer").innerHTML = data;
+
+	// 여기서 부터 동적인 부분 작성하면 됩니다.
 }

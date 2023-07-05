@@ -5,6 +5,7 @@
         <a class="navbar-top-brand" href="/index.html">cookai</a>
         <div id="intro" class="intro"></div>
         <img id="avatar" class="avatar" style="width:2em"></img>
+        <a class="nav-login" id="nav-logout" onclick="handleLogout()" style="display:none"></a>
         <a class="nav-login" id="nav-login" href="/login.html" style="display:none">로그인</a>
         <button class="navbar-toggler" type="button" style="display:none" data-bs-toggle="offcanvas"
             data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
@@ -22,9 +23,8 @@
                         <a class="nav-link active" aria-current="page" href="/index.html">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="create-article-btn" style="cursor:pointer"
-                            onclick="window.location.href = `${FRONT_BASE_URL}/articles/article_create.html`">Create
-                            article</a>
+                        <a class="nav-link" id="create-article-btn" style="cursor:pointer" onclick="goMypage()"
+                            >Mypage</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -62,19 +62,19 @@
         <a href="/articles/article_list.html">
             <div class="navbar-bottom-item">
                 <img src="/static/img/search.png" alt="search" class="navbar-bottom-icon">
-                <span>EXPLORE</span>
+                <span>검색</span>
             </div>
         </a>
         <a href="/users/feed.html">
             <div class="navbar-bottom-item">
                 <img src="/static/img/home.png" alt="home" class="navbar-bottom-icon">
-                <span>FEED</span>
+                <span>피드</span>
             </div>
         </a>
-        <a href="javascript:void(0);" onclick="goMypage()">
+        <a href="javascript:void(0);" onclick="window.location.href = `${FRONT_BASE_URL}/articles/article_create.html`">
             <div class="navbar-bottom-item">
-                <img src="/static/img/mypage.png" alt="mypage" class="navbar-bottom-icon">
-                <span id="my">MY</span>
+                <i class="bi bi-pencil" alt="mypage" class="navbar-bottom-icon" style="opacity:0.6;"></i>
+                <span id="my">글작성</span>
             </div>
         </a>
     </div>
