@@ -552,7 +552,7 @@ async function fetchMissingIngredients(articleId, token) {
 									? `<img src="${link.link_img}" style="width: 100%; height: auto;"/><br>`
 									: ""
 							}
-							${link.price ? '<span class="sparkle" style="font-size: 0.8em">' + link.price + '원</span>' : ''}
+							${link.price ? '<span style="font-size: 0.8em; color:#DF3A01">' + link.price + '원</span>' : ''}
 						</a>`
 						: `<span>${link.ingredient_name}${link.price ? '<br><span>' + link.price + '</span>' : ''}</span>`
 				}
