@@ -30,11 +30,18 @@
         };
         async function loaderFunction() {
             checkNotLogin();
+            const loginUser = await getLoginUser()
             const userId = new URLSearchParams(window.location.search).get("user_id");
+            const passwordForm = document.querySelectorAll("#normal-user-password")
             if (isYOU(userId)) {
                 return;
             } else {
                 window.location.href = `${FRONT_BASE_URL}/`;
+            }
+            if (loginUser.login_type==="normal") {
+                return ;
+            } else {
+                passwordForm.remove()
             }
         }
     </script>
@@ -45,18 +52,18 @@
     <div class="main">
         <div class="main-info">
             <div class="main-info-contents1">
-                <form class="email-confirm">
-                    <h2 class="text-center mt-3 mb-3">비밀번호 확인</h2>
-                    <div class="mb-3">
+                <form class="email-confirm" id="normal-user-form">
+                    <h2 class="text-center mt-3 mb-3 normal-user-password">비밀번호 확인</h2>
+                    <div class="mb-3 normal-user-password">
                         <label for="password" class="form-label">비밀번호</label>
                         <input type="password" class="form-control" name="password" id="password" placeholder="비밀번호">
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-3 normal-user-password">
                         <label for="password-check" class="form-label">비밀번호</label>
                         <input type="password" class="form-control" name="password-check" id="password-check"
                             placeholder="비밀번호 확인">
                     </div>
-                    <div class="form-check form-switch d-flex justify-content-center mb-2">
+                    <div class="normal-user-password form-check form-switch d-flex justify-content-center mb-2">
                         <input class="form-check-input check-password" type="checkbox" role="switch" id="flexSwitchCheckDefault" onclick="passwordToggle()">
                         <label class="form-check-label align-self-center" for="flexSwitchCheckDefault" style="font-size:small; margin-left:5px; color:#4A4A4A;">비밀번호 확인</label>
                     </div>
@@ -65,7 +72,7 @@
                             onclick="deleteUser()">회원 탈퇴하기</button>
                     </div>
                 </form>
-                <div class="text-center mt-1 mb-2">
+                <div class="text-center mt-1 mb-2" id="normal-user">
                     <span class="form-text" style="color:cornflowerblue;">
                         회원 탈퇴시 휴면계정으로 전환되며 7일 후 완전삭제됩니다.
                     </span>

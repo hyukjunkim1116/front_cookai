@@ -142,17 +142,32 @@ async function getUserDetail() {
 }
 async function deleteUser() {
 	await checkTokenExp();
-	let token = localStorage.getItem("access");
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const password = document.getElementById("password").value;
 	const secondPassword = document.getElementById("password-check").value;
-	if (password === secondPassword) {
+	if (password) {
+		if (password === secondPassword) {
+			const response = await fetch(`${BACKEND_BASE_URL}/users/${userId}/`, {
+				headers: await getHeader(),
+				method: "PATCH",
+				body: JSON.stringify({
+					password: password
+				})
+			});
+			response_json = await response.json();
+			if (response.status == 200) {
+				alert("탈퇴 완료!");
+				handleLogout();
+			} else {
+				alert(response_json.error);
+			}
+		} else {
+			alert("비밀번호가 일치하지 않습니다!");
+		}
+	} else {
 		const response = await fetch(`${BACKEND_BASE_URL}/users/${userId}/`, {
 			headers: await getHeader(),
-			method: "PATCH",
-			body: JSON.stringify({
-				password: password
-			})
+			method: "PATCH"
 		});
 		response_json = await response.json();
 		if (response.status == 200) {
@@ -161,8 +176,6 @@ async function deleteUser() {
 		} else {
 			alert(response_json.error);
 		}
-	} else {
-		alert("비밀번호가 일치하지 않습니다!");
 	}
 }
 
@@ -515,33 +528,33 @@ async function getArticle(articleId) {
 }
 
 async function fetchMissingIngredients(articleId, token) {
-    const response = await fetch(
-        `${BACKEND_BASE_URL}/articles/${articleId}/order/`,
-        {
-            headers: await getHeader((json = false))
-        }
-    );
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/articles/${articleId}/order/`,
+		{
+			headers: await getHeader((json = false))
+		}
+	);
 
-    if (response.ok) {
-        const ingredientLinks = await response.json();
+	if (response.ok) {
+		const ingredientLinks = await response.json();
 
-        const missingLinksList = document.createElement("div");
-        missingLinksList.style.display = "flex";
-        missingLinksList.style.flexWrap = "wrap";
+		const missingLinksList = document.createElement("div");
+		missingLinksList.style.display = "flex";
+		missingLinksList.style.flexWrap = "wrap";
 
-        const randomLinks = [];
-        const length = Math.min(ingredientLinks.length, 5);
+		const randomLinks = [];
+		const length = Math.min(ingredientLinks.length, 5);
 
-        for (let i = 0; i < length; i++) {
-            const randomIndex = Math.floor(Math.random() * ingredientLinks.length);
-            randomLinks.push(ingredientLinks[randomIndex]);
-            ingredientLinks.splice(randomIndex, 1);
-        }
+		for (let i = 0; i < length; i++) {
+			const randomIndex = Math.floor(Math.random() * ingredientLinks.length);
+			randomLinks.push(ingredientLinks[randomIndex]);
+			ingredientLinks.splice(randomIndex, 1);
+		}
 
 		randomLinks.forEach((link) => {
 			const listItem = document.createElement("div");
 			listItem.style.width = "calc(20%)";
-            listItem.style.padding = "5px";
+			listItem.style.padding = "5px";
 			listItem.innerHTML = `
 				${
 					link.link
@@ -552,23 +565,31 @@ async function fetchMissingIngredients(articleId, token) {
 									? `<img src="${link.link_img}" style="width: 100%; height: auto;"/><br>`
 									: ""
 							}
-							${link.price ? '<span style="font-size: 0.8em; color:#DF3A01">' + link.price + '원</span>' : ''}
+							${
+								link.price
+									? '<span style="font-size: 0.8em; color:#DF3A01">' +
+									  link.price +
+									  "원</span>"
+									: ""
+							}
 						</a>`
-						: `<span>${link.ingredient_name}${link.price ? '<br><span>' + link.price + '</span>' : ''}</span>`
+						: `<span>${link.ingredient_name}${
+								link.price ? "<br><span>" + link.price + "</span>" : ""
+						  }</span>`
 				}
 			`;
 			missingLinksList.appendChild(listItem);
 		});
 
-        const container = document.getElementById("ingredientslink_list");
-        container.appendChild(missingLinksList);
-        if (ingredientLinks.length == 0) {
-            document.getElementById("coupang_ingredient").remove();
-        }
-    } else {
-        console.error("API 요청 실패:", response.statusText);
-        document.getElementById("coupang_ingredient").remove();
-    }
+		const container = document.getElementById("ingredientslink_list");
+		container.appendChild(missingLinksList);
+		if (ingredientLinks.length == 0) {
+			document.getElementById("coupang_ingredient").remove();
+		}
+	} else {
+		console.error("API 요청 실패:", response.statusText);
+		document.getElementById("coupang_ingredient").remove();
+	}
 }
 
 async function getTagList(selector) {
