@@ -160,20 +160,20 @@ async function loadArticle() {
 	}
 }
 
-async function loadComments(comment_page=1){
-	if(!isLogin()){
-		document.getElementById("comment-input").disabled=true
-		document.getElementById("submitCommentButton").innerText="로그인필요"
+async function loadComments(comment_page = 1) {
+	if (!isLogin()) {
+		document.getElementById("comment-input").disabled = true;
+		document.getElementById("submitCommentButton").innerText = "로그인필요";
 	}
-    const response = await getComments(articleId,comment_page);
-    if (response == null){
-        return null
-    }
-    const commentList = document.getElementById("commentbox")
-    commentList.innerHTML = ``
+	const response = await getComments(articleId, comment_page);
+	if (response == null) {
+		return null;
+	}
+	const commentList = document.getElementById("commentbox");
+	commentList.innerHTML = ``;
 
-    response.results.forEach(comment => {
-        commentList.innerHTML += `
+	response.results.forEach((comment) => {
+		commentList.innerHTML += `
 
         <div class="card-text">
         <small><a href="${FRONT_BASE_URL}/mypage.html?user_id=${
@@ -222,7 +222,6 @@ async function loadComments(comment_page=1){
 		commentList.append(pagination);
 	}
 }
-}
 async function loadReComments(commentId, recomment_page = 1) {
 	const response = await getReComments(articleId, commentId, recomment_page);
 	console.log(response);
@@ -251,7 +250,6 @@ async function loadReComments(commentId, recomment_page = 1) {
 		<div class="card-text">${recomment.recomment}</div>`;
 		const btnContainer = document.createElement("div");
 		btnContainer.className = "btn-container";
-
 
 		const payload = localStorage.getItem("payload");
 		if (payload) {
@@ -289,19 +287,19 @@ async function loadReComments(commentId, recomment_page = 1) {
 		recommentList.append(pagination);
 	}
 }
-async function submitComment(){
-    const commentElement = document.getElementById("comment-input")
-    const newComment = commentElement.value
-	checkNotLogin()
-    const response = await postComment(articleId, newComment)
-    commentElement.value = ""
-    const response_json = await response.json()
-    if(response.status == 200) {
-        loadComments()
-    } else if (response.status == 400){
-        alert("빈 내용이거나 올바르지 않은 내용입니다!")
-	}else{
-		alert("오류. 다시 시도하거나 로그아웃 후 재로그인 해주세요!")
+async function submitComment() {
+	const commentElement = document.getElementById("comment-input");
+	const newComment = commentElement.value;
+	checkNotLogin();
+	const response = await postComment(articleId, newComment);
+	commentElement.value = "";
+	const response_json = await response.json();
+	if (response.status == 200) {
+		loadComments();
+	} else if (response.status == 400) {
+		alert("빈 내용이거나 올바르지 않은 내용입니다!");
+	} else {
+		alert("오류. 다시 시도하거나 로그아웃 후 재로그인 해주세요!");
 	}
 }
 
@@ -357,13 +355,13 @@ async function commentLikeBtn(commentId) {
 		alert(response.status);
 	}
 }
-async function deleteArticleBtn(articleId){
-    const response = await deleteArticle(articleId)
-    if (response.status==204){
-        location.href=`${FRONT_BASE_URL}/`
-    }else{
-        alert("오류. 다시 시도하시거나 로그아웃 후 재로그인해주세요!")
-    }
+async function deleteArticleBtn(articleId) {
+	const response = await deleteArticle(articleId);
+	if (response.status == 204) {
+		location.href = `${FRONT_BASE_URL}/`;
+	} else {
+		alert("오류. 다시 시도하시거나 로그아웃 후 재로그인해주세요!");
+	}
 }
 async function recommentLikeBtn(commentId, recommentId) {
 	const response = await likeReComment(recommentId);
@@ -524,5 +522,4 @@ async function loaderFunction() {
 	await loadArticle();
 	await loadComments(1);
 	await fetchMissingIngredients(articleId);
-
 }
