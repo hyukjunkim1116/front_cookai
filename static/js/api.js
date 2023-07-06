@@ -355,18 +355,7 @@ async function getCategory() {
 	return await response.json();
 }
 
-async function 
 
-(articleId) {
-	await checkTokenExp();
-	const token = localStorage.getItem("access");
-
-	const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/`, {
-		method: "DELETE",
-		headers: await getHeader((json = false))
-	});
-	return response;
-}
 async function getArticleList(querystring, page = 1) {
 	if (querystring == ``) {
 		var pageQuery = `?page=${page}`;
