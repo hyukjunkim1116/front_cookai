@@ -160,6 +160,10 @@ async function loadArticle(){
 
 
 async function loadComments(comment_page=1){
+	if(!isLogin()){
+		document.getElementById("comment-input").disabled=true
+		document.getElementById("submitCommentButton").innerText="로그인필요"
+	}
     const response = await getComments(articleId,comment_page);
     if (response == null){
         return null
@@ -211,14 +215,17 @@ async function loadComments(comment_page=1){
 async function submitComment(){
     const commentElement = document.getElementById("comment-input")
     const newComment = commentElement.value
+	checkNotLogin()
     const response = await postComment(articleId, newComment)
     commentElement.value = ""
     const response_json = await response.json()
     if(response.status == 200) {
         loadComments()
-    } else {
-        alert(response.status)
-    }
+    } else if (response.status == 400){
+        alert("빈 내용이거나 올바르지 않은 내용입니다!")
+	}else{
+		alert("오류. 다시 시도하거나 로그아웃 후 재로그인 해주세요!")
+	}
 }
 
 
@@ -278,16 +285,14 @@ async function deleteArticleBtn(articleId){
     if (response.status==204){
         location.href=`${FRONT_BASE_URL}/`
     }else{
-        alert(response.status)
+        alert("오류. 다시 시도하시거나 로그아웃 후 재로그인해주세요!")
     }
 }
 async function loaderFunction() {
 	const urlParams = new URLSearchParams(window.location.search);
 	articleId = urlParams.get("article_id");
-
-	const token = localStorage.getItem("access");
-	fetchMissingIngredients(articleId, token);
-
 	await loadArticle();
 	await loadComments(1);
+	await fetchMissingIngredients(articleId);
+
 }
