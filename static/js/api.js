@@ -506,16 +506,7 @@ async function likeComment(commentId) {
 
 	return response;
 }
-async function deleteArticle(articleId) {
-	await checkTokenExp();
-	const token = localStorage.getItem("access");
 
-	const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/`, {
-		method: "DELETE",
-		headers: await getHeader((json = false))
-	});
-	return response;
-}
 
 async function getArticle(articleId) {
 	const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/`);
