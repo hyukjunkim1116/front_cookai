@@ -1,5 +1,8 @@
 const FRONT_BASE_URL = "https://cookai.today";
 const BACKEND_BASE_URL = "https://www.backend.cookai.today";
+// const FRONT_BASE_URL = "http://localhost:5500";
+// const BACKEND_BASE_URL = "http://localhost:8000";
+
 
 // 로그인
 async function handleLogin() {
@@ -433,10 +436,9 @@ async function bookmarkArticle(articleId) {
 
 	if (response.status == 200 || response.status == 204) {
 		const response_json = await response.json();
-		alert(response_json);
 		location.reload();
 	} else {
-		alert(response.status);
+		alert("북마크 기능이 실패했습니다. 재시도해시거나, 다시 로그인해주세요.");
 	}
 }
 
@@ -456,8 +458,8 @@ async function likeArticle(articleId) {
 		const response_json = await response.json();
 		alert(response_json);
 		location.reload();
-	} else {
-		alert(response.status);
+	}else{
+		alert("좋아요 기능이 실패했습니다. 재시도해시거나, 다시 로그인해주세요.");
 	}
 }
 
@@ -526,7 +528,8 @@ async function getArticle(articleId) {
 	return article_data;
 }
 
-async function fetchMissingIngredients(articleId, token) {
+async function fetchMissingIngredients(articleId) {
+	await checkTokenExp();
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/articles/${articleId}/order/`,
 		{
