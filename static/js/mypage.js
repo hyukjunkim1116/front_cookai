@@ -455,9 +455,12 @@ async function loadUserFridge() {
 		if (response !== []) {
 			response.forEach((fridge) => {
 				const newUserFridge = document.createElement("div");
+				const deleteUserFridgeBtn = document.createElement("div");
+				deleteUserFridgeBtn.innerHTML = `<div onclick="deleteUserFridge(${fridge.id})"><i style="cursor:pointer;" class="bi bi-x"></i></div>`;
 				newUserFridge.setAttribute("class", "fridge-ingredient");
 				newUserFridge.setAttribute("id", `fridge-${fridge.id}`);
-				newUserFridge.innerHTML = `${fridge.ingredient} <div onclick="deleteUserFridge(${fridge.id})"><i style="cursor:pointer;" class="bi bi-x"></i></div>`;
+				newUserFridge.innerText = `${fridge.ingredient}`;
+				newUserFridge.appendChild(deleteUserFridgeBtn);
 				userFridgeContent.appendChild(newUserFridge);
 			});
 		}
