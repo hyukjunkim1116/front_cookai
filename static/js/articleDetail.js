@@ -222,6 +222,7 @@ async function loadComments(comment_page=1){
 		commentList.append(pagination);
 	}
 }
+}
 async function loadReComments(commentId, recomment_page = 1) {
 	const response = await getReComments(articleId, commentId, recomment_page);
 	console.log(response);
