@@ -20,7 +20,8 @@ async function handleLoginBtn() {
 		);
 		localStorage.setItem("payload", jsonPayload);
 		alert("환영합니다!");
-		window.location.replace(`${FRONT_BASE_URL}/`);
+		window.history.back();
+		// window.location.replace(`${FRONT_BASE_URL}/`);
 	} else {
 		alert("회원정보가 일치하지 않습니다!");
 	}
