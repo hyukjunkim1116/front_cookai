@@ -5,20 +5,29 @@ function checkLogin() {
 		window.location.replace(`${FRONT_BASE_URL}/`);
 	}
 }
-// 비로그인 상태에서 페이지 접속 시 홈으로 이동하는 함수
+// 비로그인 상태에서 페이지 접속 시 로그인페이지로 이동하는 함수
 function checkNotLogin() {
 	const payload = localStorage.getItem("payload");
 	if (payload == null) {
-		window.location.replace(`${FRONT_BASE_URL}/`);
+		alert("로그인해주세요!")
+		window.location.replace(`${FRONT_BASE_URL}/login.html`);
 	}
 }
-
+function isLogin(){
+	const payload = localStorage.getItem("payload");
+	if (payload == null) {
+		return false
+	}
+	return true
+}
 // 로그아웃
 function handleLogout() {
 	localStorage.removeItem("access");
 	localStorage.removeItem("refresh");
 	localStorage.removeItem("payload");
-	window.location.replace(`${FRONT_BASE_URL}/login.html`);
+	// window.location.replace(`${FRONT_BASE_URL}`);
+	// window.location.reload();
+	window.history.back()
 }
 function setThumbnail(event) {
 	let reader = new FileReader();
