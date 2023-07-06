@@ -160,16 +160,6 @@ async function loadArticle() {
 	}
 }
 
-async function loadComments(comment_page = 1) {
-	const response = await getComments(articleId, comment_page);
-	console.log(response);
-	if (response == null) {
-		return null;
-	}
-	const commentList = document.getElementById("commentbox");
-	commentList.innerHTML = ``;
-
-
 async function loadComments(comment_page=1){
 	if(!isLogin()){
 		document.getElementById("comment-input").disabled=true
