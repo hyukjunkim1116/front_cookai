@@ -194,5 +194,4 @@ async function injectfooter() {
 	let data = await footer.text();
 	document.querySelector("footer").innerHTML = data;
 
-	// 여기서 부터 동적인 부분 작성하면 됩니다.
 }
