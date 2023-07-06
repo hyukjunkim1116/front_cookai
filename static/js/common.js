@@ -25,9 +25,7 @@ function handleLogout() {
 	localStorage.removeItem("access");
 	localStorage.removeItem("refresh");
 	localStorage.removeItem("payload");
-	// window.location.replace(`${FRONT_BASE_URL}`);
-	// window.location.reload();
-	window.history.back()
+	window.location.replace(`${FRONT_BASE_URL}/`);
 }
 function setThumbnail(event) {
 	let reader = new FileReader();
