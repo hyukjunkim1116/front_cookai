@@ -355,7 +355,9 @@ async function getCategory() {
 	return await response.json();
 }
 
-async function deleteArticle(articleId) {
+async function 
+
+(articleId) {
 	await checkTokenExp();
 	const token = localStorage.getItem("access");
 
@@ -495,7 +497,6 @@ async function updateComment(commentId, newComment) {
 
 async function likeComment(commentId) {
 	await checkTokenExp();
-	const token = localStorage.getItem("access");
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/articles/comment/${commentId}/like/`,
 		{
@@ -504,6 +505,15 @@ async function likeComment(commentId) {
 		}
 	);
 
+	return response;
+}
+
+async function deleteArticle(articleId) {
+	await checkTokenExp();
+	const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/`, {
+		method: "DELETE",
+		headers: await getHeader((json = false))
+	});
 	return response;
 }
 
@@ -690,6 +700,7 @@ async function getUserFollowList(currentFollowPage = 1, filter = 0) {
 	);
 	return response;
 }
+
 async function getHeader(json = true) {
 	var headers = {};
 	if (
@@ -702,4 +713,72 @@ async function getHeader(json = true) {
 		headers["content-type"] = "application/json";
 	}
 	return headers;
+}
+
+async function getReComments(articleId, commentId, recomment_page = 1) {
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/articles/${articleId}/recomment/${commentId}/?recomment_page=${recomment_page}`
+	);
+
+	if (response.status == 200) {
+		response_json = await response.json();
+		return response_json;
+	} else {
+		alert(response.status);
+		return null;
+	}
+}
+
+async function postReComment(articleId, commentId, newReComment) {
+	await checkTokenExp();
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/articles/${articleId}/recomment/${commentId}/`,
+		{
+			method: "POST",
+			headers: await getHeader(),
+			body: JSON.stringify({
+				recomment: newReComment
+			})
+		}
+	);
+	return response;
+}
+
+async function deleteReComment(commentId, recommentId) {
+	await checkTokenExp();
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/articles/1/recomment/${commentId}/${recommentId}`,
+		{
+			method: "DELETE",
+			headers: await getHeader((json = false))
+		}
+	);
+	return response;
+}
+async function updateReComment(commentId, recommentId, newReComment) {
+	await checkTokenExp();
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/articles/1/recomment/${commentId}/${recommentId}/`,
+		{
+			method: "PUT",
+			headers: await getHeader(),
+			body: JSON.stringify({
+				recomment: newReComment
+			})
+		}
+	);
+
+	return response;
+}
+
+async function likeReComment(recommentId) {
+	await checkTokenExp();
+	const response = await fetch(
+		`${BACKEND_BASE_URL}/articles/recomment/${recommentId}/like/`,
+		{
+			method: "POST",
+			headers: await getHeader((json = false))
+		}
+	);
+	return response;
 }
