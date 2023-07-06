@@ -140,7 +140,7 @@ async function loadUserBookmarkArticle(currentPage) {
                         <div id="article-content__title" class="article-content__title">${result.title.slice(
 													0,
 													15
-												)}...</div>
+												)}⋯</div>
                         <div id="article-content__user" class="article-content__user">${
 													result.user
 												}</div>
@@ -200,7 +200,7 @@ async function loadUserLikeArticle(currentPage) {
                         <div id="article-content__title" class="article-content__title">${result.title.slice(
 													0,
 													15
-												)}...</div>
+												)}⋯</div>
                         <div id="article-content__user" class="article-content__user">${
 													result.user
 												}</div>
@@ -251,7 +251,7 @@ async function loadUserLikeComment(currentCommentPage) {
                     <div class="comment-text" id="comment-text">내용 : ${result.comment.slice(
 											0,
 											25
-										)}...
+										)}⋯
 					</div>
 					<div class="comment-author" id="comment-author">작성자 : ${result.user}</div>
                     <div class="comment-detail" id="comment-detail">
@@ -494,7 +494,7 @@ async function loadUserArticle(currentPage) {
                         <div id="article-content__title" class="article-content__title">${result.title.slice(
 													0,
 													15
-												)}...</div>
+												)}⋯</div>
                         <div id="article-content__user" class="article-content__user">${
 													result.user
 												}</div>
@@ -550,7 +550,7 @@ async function loadUserComment(currentCommentPage) {
                     <div class="comment-text" id="comment-text">내용 : ${result.comment.slice(
 											0,
 											25
-										)}...
+										)}⋯
 					</div>
                     <div class="comment-detail" id="comment-detail">
                         <div class="comment-article" id="comment-article" onclick="location.href='${FRONT_BASE_URL}/articles/article_detail.html?article_id=${

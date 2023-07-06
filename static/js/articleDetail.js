@@ -169,8 +169,22 @@ async function loadComments(comment_page = 1) {
 	const commentList = document.getElementById("commentbox");
 	commentList.innerHTML = ``;
 
-	response.results.forEach((comment) => {
-		commentList.innerHTML += `
+
+async function loadComments(comment_page=1){
+	if(!isLogin()){
+		document.getElementById("comment-input").disabled=true
+		document.getElementById("submitCommentButton").innerText="로그인필요"
+	}
+    const response = await getComments(articleId,comment_page);
+    if (response == null){
+        return null
+    }
+    const commentList = document.getElementById("commentbox")
+    commentList.innerHTML = ``
+
+    response.results.forEach(comment => {
+        commentList.innerHTML += `
+
         <div class="card-text">
         <small><a href="${FRONT_BASE_URL}/mypage.html?user_id=${
 			comment.author
@@ -244,9 +258,9 @@ async function loadReComments(commentId, recomment_page = 1) {
 			.slice(0, -3)}</small>
 		</div>
 		<div class="card-text">${recomment.recomment}</div>`;
-
 		const btnContainer = document.createElement("div");
 		btnContainer.className = "btn-container";
+
 
 		const payload = localStorage.getItem("payload");
 		if (payload) {
@@ -284,16 +298,19 @@ async function loadReComments(commentId, recomment_page = 1) {
 		recommentList.append(pagination);
 	}
 }
-async function submitComment() {
-	const commentElement = document.getElementById("comment-input");
-	const newComment = commentElement.value;
-	const response = await postComment(articleId, newComment);
-	commentElement.value = "";
-	const response_json = await response.json();
-	if (response.status == 200) {
-		await loadComments();
-	} else {
-		alert(response.status);
+async function submitComment(){
+    const commentElement = document.getElementById("comment-input")
+    const newComment = commentElement.value
+	checkNotLogin()
+    const response = await postComment(articleId, newComment)
+    commentElement.value = ""
+    const response_json = await response.json()
+    if(response.status == 200) {
+        loadComments()
+    } else if (response.status == 400){
+        alert("빈 내용이거나 올바르지 않은 내용입니다!")
+	}else{
+		alert("오류. 다시 시도하거나 로그아웃 후 재로그인 해주세요!")
 	}
 }
 
@@ -349,13 +366,13 @@ async function commentLikeBtn(commentId) {
 		alert(response.status);
 	}
 }
-async function deleteArticleBtn(articleId) {
-	const response = await deleteArticle(articleId);
-	if (response.status == 204) {
-		location.href = `${FRONT_BASE_URL}/`;
-	} else {
-		alert(response.status);
-	}
+async function deleteArticleBtn(articleId){
+    const response = await deleteArticle(articleId)
+    if (response.status==204){
+        location.href=`${FRONT_BASE_URL}/`
+    }else{
+        alert("오류. 다시 시도하시거나 로그아웃 후 재로그인해주세요!")
+    }
 }
 async function recommentLikeBtn(commentId, recommentId) {
 	const response = await likeReComment(recommentId);
@@ -513,10 +530,8 @@ function loadReCommentsToggle(commentId) {
 async function loaderFunction() {
 	const urlParams = new URLSearchParams(window.location.search);
 	articleId = urlParams.get("article_id");
-
-	const token = localStorage.getItem("access");
-	fetchMissingIngredients(articleId, token);
-
 	await loadArticle();
 	await loadComments(1);
+	await fetchMissingIngredients(articleId);
+
 }
