@@ -306,7 +306,7 @@ async function submitComment() {
 async function updateCommentButton(commentId) {
 	const comment_content = document.getElementById(
 		`comment-btn${commentId}`
-	).innerText;
+	).previousElementSibling.previousElementSibling.innerText;
 	const commentElement = document.getElementById("comment-input");
 	commentElement.value = comment_content;
 
