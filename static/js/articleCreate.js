@@ -111,14 +111,27 @@ const handleAddIngredient = () => {
 	div.setAttribute("id", `ingredient-${ingredientNumber}`);
 	div.classList.add("mb-3");
 	div.innerHTML = `
-	<label for="ingredient-title-${ingredientNumber}" class="form-label">재료 제목</label>
+	<div class="d-flex justify-content-between align-items-center">
+	재료 제목<button class="btn btn-danger" id="delete-ingredient-${ingredientNumber}" onclick="deleteIngredientDiv(${ingredientNumber},event)">재료 삭제하기</button></div>
 	<input type="text" class="form-control" id="ingredient-title-${ingredientNumber}" name="ingredient-title" placeholder="재료 제목을 입력하세요">
 	<label for="ingredient-amount-${ingredientNumber}" class="form-label">수량</label>
 	<input type="number" class="form-control" id="ingredient-amount-${ingredientNumber}" name="ingredient-amount" placeholder="수량을 입력하세요">
 	<label for="ingredient-unit-${ingredientNumber}" class="form-label">단위</label>
-	<input type="text" class="form-control" id="ingredient-unit-${ingredientNumber}" name="ingredient-unit" placeholder="단위를 입력하세요">
-	<button class="btn btn-primary" id="delete-ingredient-div" onclick="deleteIngredientDiv(${ingredientNumber},event)">재료 삭제하기</button>
 	`;
+	const unitSelect=document.createElement("select")
+	unitSelect.setAttribute("class"," form-select")
+	unitSelect.innerHTML+=`<option value="">사용자 지정</option><option value="개">개</option><option value="알">알</option><option value="약간">약간</option><option value="꼬집">꼬집</option><option value="큰술">큰술</option><option value="작은술">작은술</option><option value="ml">ml</option><option value="l">l</option><option value="g">g</option><option value="kg">kg</option><option value="cc">cc</option><option value="oz">oz</option><option value="컵(200ml)">컵</option>`
+	unitSelect.setAttribute("id",`select${ingredientNumber}`)
+	unitSelect.setAttribute("onchange",`valuePropagate(${ingredientNumber})`)
+	const unitBox = document.createElement("div")
+	unitBox.setAttribute("class","input-group")
+	unitBox.appendChild(unitSelect)
+	unitBox.innerHTML+=`
+	<input type="text" class="form-control" id="ingredient-unit-${ingredientNumber}" name="ingredient-unit" placeholder="단위를 입력하세요">`
+	div.appendChild(unitBox)
+	div.innerHTML+=``
+	
+
 
 	ingredientContainer.appendChild(div);
 	ingredientNumber++;
@@ -258,6 +271,10 @@ const deleteIngredientDiv = (id, event) => {
 	ingredientDiv.remove();
 	event.preventDefault();
 };
+async function valuePropagate(ingredientNum){
+	const selectValue=document.getElementById(`select${ingredientNum}`).value
+	document.getElementById(`ingredient-unit-${ingredientNum}`).value=selectValue
+}
 async function loaderFunction() {
 	checkNotLogin();
 	// forceLogout();
