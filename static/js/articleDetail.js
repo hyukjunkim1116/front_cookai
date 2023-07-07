@@ -270,7 +270,7 @@ async function loadReComments(commentId, recomment_page = 1) {
 			}
 		}
 		btnContainer.innerHTML += `
-		<button class="bi bi-hand-thumbs-up btn btn-sm btn-outline-dark ${Boolean(payload)&&comment.like.includes(JSON.parse(payload).user_id)?"active":""}" id="recomment-like" ${Boolean(payload)?"":"disabled"} onclick="recommentLikeBtn(${recomment.comment},${recomment.id})"> ${recomment.likes_count}</button>`;
+		<button class="bi bi-hand-thumbs-up btn btn-sm btn-outline-dark ${Boolean(payload)&&recomment.like.includes(JSON.parse(payload).user_id)?"active":""}" id="recomment-like" ${Boolean(payload)?"":"disabled"} onclick="recommentLikeBtn(${recomment.comment},${recomment.id})"> ${recomment.likes_count}</button>`;
 		const likeBtn = document.querySelector(
 			`.comment-like-${recomment.comment}`
 		);
