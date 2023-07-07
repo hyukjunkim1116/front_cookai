@@ -113,6 +113,13 @@ async function loadArticle() {
 			buttonArea1.append(deleteBtn);
 		} else {
 			if (user_json == null) {
+				let likeBtn = document.createElement("button");
+			likeBtn.setAttribute("type", "button");
+			likeBtn.setAttribute("class", "btn btn-outline-warning");
+			likeBtn.setAttribute("onclick", `likeArticle(${articleId})`);
+			likeBtn.innerHTML = `좋아요 👍${response_json.likes_count}<br><small style="font-size:0.6rem">로그인 후 좋아요를 표시할 수 있습니다.</small>`;
+			likeBtn.disabled=true
+			buttonArea1.append(likeBtn);
 				return;
 			}
 			let followToggleBtn = document.createElement("button");
@@ -195,10 +202,11 @@ async function loadComments(comment_page = 1) {
                     <button class="comment-btn btn btn-sm btn-secondary" id="comment-btn${comment.id}" onclick="updateCommentButton(${comment.id})">수정</button>
                     <button class="comment-btn btn btn-sm btn-danger" id="comment-btn${comment.id}" onclick="deleteCommentButton(${comment.id})">삭제</button>`;
 			}
-			commentList.innerHTML += `
-                <button class="bi bi-hand-thumbs-up btn btn-sm btn-outline-dark comment-like-${comment.id}" id="comment-like" onclick="commentLikeBtn(${comment.id})"> ${comment.likes_count}</button>
-            </div>`;
+			
 		}
+		commentList.innerHTML += `
+                <button class="bi bi-hand-thumbs-up btn btn-sm btn-outline-dark comment-like-${comment.id}" id="comment-like" onclick="commentLikeBtn(${comment.id})"${Boolean(payload)?"":"disabled"}> ${comment.likes_count}</button>
+            </div>`;
 		commentList.innerHTML += `<button class="comment-btn btn btn-sm btn-success" id="recomment-btn${comment.id}" onclick="loadReCommentsToggle(${comment.id})">답글보기</button>
 		<button class="comment-btn btn-sm btn btn-warning" id="post-recomment-btn${comment.id}" onclick="postReCommentsToggle(${comment.id})">답글작성</button>`;
 		// commentList.innerHTML +=` ${comment.likes_count}👍</div><hr>`
