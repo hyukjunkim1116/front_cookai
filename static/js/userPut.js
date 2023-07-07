@@ -1,7 +1,7 @@
 // 회원정보 미리 로드하는 함수
 async function loadUserData() {
 	const response = await getLoginUser();
-
+	console.log(response);
 	const usernameText = document.getElementById("username");
 	const genderSelect = document.getElementById("gender");
 	for (var i = 0; i < genderSelect.options.length; i++) {
@@ -10,7 +10,10 @@ async function loadUserData() {
 		}
 	}
 	let img = document.createElement("img");
-	img.setAttribute("src", response.avatar);
+	img.setAttribute(
+		"src",
+		response.avatar ? response.avatar : "/static/img/no_avatar.png"
+	);
 
 	// 썸네일 크기 조절
 	img.setAttribute("style", "max-height: 300px;");
@@ -130,9 +133,5 @@ const passwordToggle = () => {
 };
 async function loaderFunction() {
 	checkNotLogin();
-	const preview = document.getElementById("file");
-	preview.addEventListener("change", (event) => {
-		setThumbnail(event);
-	});
 	await loadUserData();
 }

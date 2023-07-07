@@ -3,7 +3,6 @@ const BACKEND_BASE_URL = "https://www.backend.cookai.today";
 // const FRONT_BASE_URL = "http://localhost:5500";
 // const BACKEND_BASE_URL = "http://localhost:8000";
 
-
 // 로그인
 async function handleLogin() {
 	const email = document.getElementById("email").value;
@@ -117,7 +116,6 @@ async function getLoginUser() {
 			`${BACKEND_BASE_URL}/users/${payload_parse.user_id}/`,
 			{
 				headers: await getHeader((json = false)),
-
 				method: "GET"
 			}
 		);
@@ -355,7 +353,6 @@ async function getCategory() {
 	return await response.json();
 }
 
-
 async function getArticleList(querystring, page = 1) {
 	if (querystring == ``) {
 		var pageQuery = `?page=${page}`;
@@ -449,7 +446,7 @@ async function likeArticle(articleId) {
 		const response_json = await response.json();
 		alert(response_json);
 		location.reload();
-	}else{
+	} else {
 		alert("좋아요 기능이 실패했습니다. 재시도해시거나, 다시 로그인해주세요.");
 	}
 }
@@ -505,7 +502,6 @@ async function deleteArticle(articleId) {
 	});
 	return response;
 }
-
 
 async function getArticle(articleId) {
 	const response = await fetch(`${BACKEND_BASE_URL}/articles/${articleId}/`);
