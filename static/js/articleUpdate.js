@@ -26,6 +26,7 @@ async function generateUpdateFormFields(articleData) {
     recipeContainer.outerHTML = recipeHTML;
 	var count = (recipeHTML.match(/recipe-element/g) || []).length;
 	recipeNumber +=count
+	
 
     // 태그 처리
     const tagInput = document.getElementById("article_tag");
@@ -56,12 +57,15 @@ async function loaderFunction_() {
 		  break; // Exit the loop if a match is found
 		}
 	}
+	
 
 
     // 레시피와 재료를 다루기 위한 코드
     const ingredientsContainer = document.getElementById("ingredient_wrapper");
-    // const recipeContainer = document.getElementById("recipe");
-
+    const recipeContainer = document.getElementById("recipe_container");
+	recipeContainer.querySelectorAll("textarea").forEach((element) => {
+		element.innerHTML = `${element.value.replace(/<br>/g,"\n")}`
+	});
     // // 레시피를 처리하기 위한 코드
     // recipeContainer.outerHTML = exist_post.recipe;
 
