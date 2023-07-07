@@ -176,12 +176,12 @@ async function loadComments(comment_page = 1) {
 		commentList.innerHTML += `
 
         <div class="card-text">
-        <small><a href="${FRONT_BASE_URL}/mypage.html?user_id=${
+        <small><a name="comment-author" href="${FRONT_BASE_URL}/mypage.html?user_id=${
 			comment.author
 		}">${comment.user}</a>, ${comment.updated_at
 			.split(".")[0]
 			.replace("T", " ")
-			.slice(0, -3)}</small></div><div class="card-text">${
+			.slice(0, -3)}</small></div><div name="comment-str" class="card-text">${
 			comment.comment
 		}</div>`;
 		const payload = localStorage.getItem("payload");
@@ -240,14 +240,14 @@ async function loadReComments(commentId, recomment_page = 1) {
 		recommentList.className = `recomment-wrapper-${recomment.comment}`;
 		recommentList.innerHTML += `
 		<div class="card-text">
-			<small><a href="${FRONT_BASE_URL}/mypage.html?user_id=${recomment.author}">${
+			<small><a name="comment-author" href="${FRONT_BASE_URL}/mypage.html?user_id=${recomment.author}">${
 			recomment.user
 		}</a>, ${recomment.updated_at
 			.split(".")[0]
 			.replace("T", " ")
 			.slice(0, -3)}</small>
 		</div>
-		<div class="card-text">${recomment.recomment}</div>`;
+		<div class="card-text" name="comment-str">${recomment.recomment}</div>`;
 		const btnContainer = document.createElement("div");
 		btnContainer.className = "btn-container";
 
@@ -385,6 +385,7 @@ async function recommentLikeBtn(commentId, recommentId) {
 async function submitUpdateReComment(commentId, recommentId) {
 	const recommentBtn = document.getElementById(`recomment-btn${commentId}`);
 	const recommentElement = document.getElementById("recomment-input");
+	recommentElement.value=recommentBtn.previousElementSibling.previousElementSibling.innerText
 	const newReComment = recommentElement.value;
 	const recommentWrapper = document.querySelectorAll(
 		`.recomment-wrapper-${commentId}`
@@ -522,4 +523,12 @@ async function loaderFunction() {
 	await loadArticle();
 	await loadComments(1);
 	await fetchMissingIngredients(articleId);
+	const commentAuthors =document.getElementsByName("comment-author")
+	for (const commentAuthor of commentAuthors){
+		commentAuthor.innerText=commentAuthor.innerHTML
+	}
+	const commentStrs =document.getElementsByName("comment-str")
+	for (const commentStr of commentStrs){
+		commentStr.innerText=commentStr.innerHTML
+	}
 }
