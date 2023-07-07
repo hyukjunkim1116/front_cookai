@@ -159,7 +159,7 @@ const handleAddRecipe = () => {
 };
 async function postArticle() {
 	const uploadBtn = document.getElementById("submit-article");
-	uploadBtn.innerText = "";
+	uploadBtn.disabled=true
 	const span = document.createElement("span");
 	span.setAttribute("id", "spinner-span");
 	span.setAttribute("class", "spinner-border spinner-border-sm");
@@ -179,6 +179,7 @@ async function postArticle() {
 		alert(alertMsg)
 		uploadBtn.innerHTML = "";
 		uploadBtn.innerText = "게시글 작성하기"
+		uploadBtn.disabled=false
 		return 0
 	}
 	await arrangeRecipeAndUpload()
