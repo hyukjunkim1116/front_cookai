@@ -4,17 +4,26 @@
 }
 
 .navbar-top {
-    display: flex; /* 네비게이션 바 안쪽 요소들 가로 배치 */
-    justify-content: space-between; /* 네비게이션 바 안쪽 요소들 가로 정렬 */
-    align-items: center; /* 네비게이션 바 안쪽 요소들 세로 정렬 */
+    display: flex;
+    /* 네비게이션 바 안쪽 요소들 가로 배치 */
+    justify-content: space-between;
+    /* 네비게이션 바 안쪽 요소들 가로 정렬 */
+    align-items: center;
+    /* 네비게이션 바 안쪽 요소들 세로 정렬 */
     min-width: 375px;
     max-width: 550px;
-    width: 50%; /* 네비게이션 바 가로 길이 설정 */
-    height: 86px; /* 네비게이션 바 세로 길이 설정 */
-    padding: 56px 20px 26px 20px; /* 네비게이션 바 안쪽 여백 설정 */
-    background-color: #fff; /* 배경색 설정 */
-    border-bottom: 1px solid #eee; /* 네비게이션 바 하단 테두리 설정 */
-    margin: 0 auto; /* 네비게이션 바 가운데 정렬 */
+    width: 50%;
+    /* 네비게이션 바 가로 길이 설정 */
+    height: 86px;
+    /* 네비게이션 바 세로 길이 설정 */
+    padding: 56px 20px 26px 20px;
+    /* 네비게이션 바 안쪽 여백 설정 */
+    background-color: #fff;
+    /* 배경색 설정 */
+    border-bottom: 1px solid #eee;
+    /* 네비게이션 바 하단 테두리 설정 */
+    margin: 0 auto;
+    /* 네비게이션 바 가운데 정렬 */
 }
 
 .navbar-top a {
@@ -23,66 +32,135 @@
 }
 
 .navbar-top-brand {
-    color: #FE6B38; /* 글자색 설정 */
-    font-size: 24px; /* 글자크기 설정 */
-    font-family: 'Fredoka', sans-serif; /* 글꼴 설정 */
-    line-height: 34px; /* 줄 높이 설정 */
+    color: #FE6B38;
+    /* 글자색 설정 */
+    font-size: 24px;
+    /* 글자크기 설정 */
+    font-family: 'Fredoka', sans-serif;
+    /* 글꼴 설정 */
+    line-height: 34px;
+    /* 줄 높이 설정 */
 }
 
 .navbar-toggler {
-    border: none; /* 테두리 제거 */
+    border: none;
+    /* 테두리 제거 */
 }
+
 .nav-login {
     display: inline-flex;
-padding: 0.4rem 0.6rem;
-justify-content: center;
-align-items: center;
-border-radius: 1.25rem;
-background: #FE6B38;
-color: #FFF;
-text-align: right;
-/* B-03-Medium */
-font-size: 0.625rem;
-font-style: normal;
-font-weight: 500;
-line-height: 0.9375rem;
+    padding: 0.4rem 0.6rem;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1.25rem;
+    background: #FE6B38;
+    color: #FFF;
+    text-align: right;
+    /* B-03-Medium */
+    font-size: 0.625rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 0.9375rem;
 }
+
 /* 하단 네비게이션 바 */
 .navbar-bottom {
-    display: flex; /* 가로 항목 배치 */
-    justify-content: space-between; /* 가로로 가운데정렬 */
-    align-items: center; /* 세로로 가운데정렬 */
-    width: 50%; /* 네비게이션 바 너비 설정 */
+    display: flex;
+    /* 가로 항목 배치 */
+    justify-content: space-between;
+    /* 가로로 가운데정렬 */
+    align-items: center;
+    /* 세로로 가운데정렬 */
+    width: 50%;
+    /* 네비게이션 바 너비 설정 */
     min-width: 375px;
     max-width: 550px;
-    height: 60px; /* 네비게이션 바 높이 설정 */
-    padding: 0 20px; /* 네비게이션 바 안쪽 여백 설정 */
-    margin: 0 auto; /* 네비게이션 바 바깥 여백 설정 */
-    background-color: #fff; /* 네비게이션 바 배경색 설정 */
-    border-top: 1px solid #eee; /* 네비게이션 바 윗쪽 테두리 설정 */
+    height: 60px;
+    /* 네비게이션 바 높이 설정 */
+    padding: 0 20px;
+    /* 네비게이션 바 안쪽 여백 설정 */
+    margin: 0 auto;
+    /* 네비게이션 바 바깥 여백 설정 */
+    background-color: #fff;
+    /* 네비게이션 바 배경색 설정 */
+    border-top: 1px solid #eee;
+    /* 네비게이션 바 윗쪽 테두리 설정 */
 }
 
 .navbar-bottom a {
-    text-decoration: none; /* 밑줄 제거 */
+    text-decoration: none;
+    /* 밑줄 제거 */
 }
 
 .navbar-bottom-icon {
-    width: 20px; /* 아이콘 크기 설정 */
-    height: 20px; /* 아이콘 크기 설정 */
-    margin-bottom: 5px; /* 아이콘과 글자 사이 간격 설정 */
+    width: 20px;
+    /* 아이콘 크기 설정 */
+    height: 20px;
+    /* 아이콘 크기 설정 */
+    margin-bottom: 5px;
+    /* 아이콘과 글자 사이 간격 설정 */
 }
 
 .navbar-bottom-item {
-    display: flex; /* 가로 항목 배치 */
-    flex-direction: column; /* 세로 항목 배치 */
-    align-items: center; /* 세로로 가운데정렬 */
-    justify-content: center; /* 가로로 가운데정렬 */
+    display: flex;
+    /* 가로 항목 배치 */
+    flex-direction: column;
+    /* 세로 항목 배치 */
+    align-items: center;
+    /* 세로로 가운데정렬 */
+    justify-content: center;
+    /* 가로로 가운데정렬 */
 }
 
 .navbar-bottom span {
-    color: #999; /* 글자색 설정 */
-    font-size: 9px; /* 글자크기 설정 */
-    font-family: Pretendard, sans-serif; /* 글꼴 설정 */
-    font-weight: 500; /* 글자 굵기 설정 */
-    letter-spacing: -0.45px; /* 자간 설정 */
+    color: #999;
+    /* 글자색 설정 */
+    font-size: 9px;
+    /* 글자크기 설정 */
+    font-family: Pretendard, sans-serif;
+    /* 글꼴 설정 */
+    font-weight: 500;
+    /* 글자 굵기 설정 */
+    letter-spacing: -0.45px;
+    /* 자간 설정 */
+}
+
+/* backtotop btn */
+.floating-top-btn,
+.floating-back-btn {
+    display: none;
+    position: fixed;
+    offset-anchor: center;
+    bottom: 10%;
+    right: 20%;
+    z-index: 99;
+    background-image: url("/static/img/top-button.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border: none;
+    outline: none;
+    overflow: hidden;
+    cursor: pointer;
+    width: 40px;
+    /* 이미지 크기 */
+    height: 40px;
+    /* 이미지 크기 */
+    border-radius: 50%;
+}
+
+.floating-top-btn:hover,
+.floating-back-btn:hover {
+    background-color: #b5b5b5;
+}
+
+.floating-back-btn {
+    display: block;
+    bottom: 10%;
+    right: 80%;
+    width: 39px;
+    /* 이미지 크기 */
+    height: 39px;
+    /* 이미지 크기 */
+    background-image: url("/static/img/back.png");
 }

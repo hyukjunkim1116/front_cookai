@@ -252,4 +252,5 @@ async function loaderFunction(){
 	allUser.forEach((e) => {
 		e.innerText=e.innerHTML
 	});
+	
 }

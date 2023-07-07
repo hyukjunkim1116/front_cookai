@@ -26,6 +26,7 @@ async function generateUpdateFormFields(articleData) {
     recipeContainer.outerHTML = recipeHTML;
 	var count = (recipeHTML.match(/recipe-element/g) || []).length;
 	recipeNumber +=count
+	
 
     // 태그 처리
     const tagInput = document.getElementById("article_tag");
@@ -56,12 +57,15 @@ async function loaderFunction_() {
 		  break; // Exit the loop if a match is found
 		}
 	}
+	
 
 
     // 레시피와 재료를 다루기 위한 코드
     const ingredientsContainer = document.getElementById("ingredient_wrapper");
-    // const recipeContainer = document.getElementById("recipe");
-
+    const recipeContainer = document.getElementById("recipe_container");
+	recipeContainer.querySelectorAll("textarea").forEach((element) => {
+		element.innerHTML = `${element.value.replace(/<br>/g,"\n")}`
+	});
     // // 레시피를 처리하기 위한 코드
     // recipeContainer.outerHTML = exist_post.recipe;
 
@@ -120,7 +124,7 @@ async function loaderFunction_() {
 
 async function articleUpdate() {
 	const uploadBtn = document.getElementById("update_article");
-	uploadBtn.innerText = "";
+	uploadBtn.disabled=true
 	const span = document.createElement("span");
 	span.setAttribute("id", "spinner-span");
 	span.setAttribute("class", "spinner-border spinner-border-sm");
@@ -132,6 +136,7 @@ async function articleUpdate() {
 		alert(alertMsg)
 		uploadBtn.innerHTML = "";
 		uploadBtn.innerText = "게시글 수정하기"
+		uploadBtn.disabled=false
 		return 0
 	}
 	await arrangeRecipeAndUpload()
@@ -182,6 +187,12 @@ async function articleUpdate() {
 					method:"DELETE"
 				},
 			)
+			if(ingredientPutResponse.status !=204){
+				alert("에러 발생! 다시 시도하시거나 재로그인 해주세요.")
+				uploadBtn.innerHTML = "";
+				uploadBtn.innerText = "게시글 수정하기"
+				uploadBtn.disabled=false
+			}
 		}else{
 			//수정 절차
 			let index = idToIndex[kv[0]]
@@ -200,7 +211,10 @@ async function articleUpdate() {
 			if (ingredientPutResponse.status==200){
 
 			}else{
-
+				alert("에러 발생! 다시 시도하시거나 재로그인 해주세요.")
+				uploadBtn.innerHTML = "";
+				uploadBtn.innerText = "게시글 수정하기"
+				uploadBtn.disabled=false
 			}
 			
 		}
@@ -233,7 +247,10 @@ async function articleUpdate() {
 			if(ingredientResponse.status ==200){
 
 			}else{
-
+				alert("에러 발생! 다시 시도하시거나 재로그인 해주세요.")
+				uploadBtn.innerHTML = "";
+				uploadBtn.innerText = "게시글 수정하기"
+				uploadBtn.disabled=false
 			}
 		}
 	}
@@ -284,12 +301,12 @@ async function articleUpdate() {
 		}
 	);
 		if (response.status == 200) {
-			alert("글 수정 완료!");
 			location.href=`${FRONT_BASE_URL}/articles/article_detail.html?article_id=${articleId}`;
 		} else {
 			alert("글 수정 실패!");
 			uploadBtn.innerHTML = "";
 			uploadBtn.innerText = "게시글 수정하기"
+			uploadBtn.disabled=false
 		}
 	}
 

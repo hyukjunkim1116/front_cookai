@@ -59,9 +59,11 @@ async function arrangeRecipeAndUpload(post=true){
 		recipeImageContainer.setAttribute("id",`recipe-image-${i+1}-container`)
 		recipeImageContainer.setAttribute("class",`recipe-image-${i+1}-container recipe-image-container`)
 		if(post){
-			if(recipeImageContainer) recipeImageContainer.innerHTML=``
+			
 			let recipeImage = imageInput.files[0];
+			console.log(recipeImage)
 			if(recipeImage){
+				if(recipeImageContainer) recipeImageContainer.innerHTML=``
 				let responseURL = await fetch(`${BACKEND_BASE_URL}/articles/get-url/`, {
 					method: "POST"
 				});
@@ -157,7 +159,7 @@ const handleAddRecipe = () => {
 };
 async function postArticle() {
 	const uploadBtn = document.getElementById("submit-article");
-	uploadBtn.innerText = "";
+	uploadBtn.disabled=true
 	const span = document.createElement("span");
 	span.setAttribute("id", "spinner-span");
 	span.setAttribute("class", "spinner-border spinner-border-sm");
@@ -177,6 +179,7 @@ async function postArticle() {
 		alert(alertMsg)
 		uploadBtn.innerHTML = "";
 		uploadBtn.innerText = "게시글 작성하기"
+		uploadBtn.disabled=false
 		return 0
 	}
 	await arrangeRecipeAndUpload()
