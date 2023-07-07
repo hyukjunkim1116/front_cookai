@@ -205,7 +205,7 @@ async function loadComments(comment_page = 1) {
 			
 		}
 		commentList.innerHTML += `
-                <button class="bi bi-hand-thumbs-up btn btn-sm btn-outline-dark comment-like-${comment.id}" id="comment-like" onclick="commentLikeBtn(${comment.id})"${Boolean(payload)?"":"disabled"}> ${comment.likes_count}</button>
+                <button class="bi bi-hand-thumbs-up btn btn-sm btn-outline-dark comment-like-${comment.id} ${Boolean(payload)&&comment.like.includes(JSON.parse(payload).user_id)?"active":""}" id="comment-like" onclick="commentLikeBtn(${comment.id})"${Boolean(payload)?"":"disabled"}> ${comment.likes_count}</button>
             </div>`;
 		commentList.innerHTML += `<button class="comment-btn btn btn-sm btn-success" id="recomment-btn${comment.id}" onclick="loadReCommentsToggle(${comment.id})">답글보기</button>
 		<button class="comment-btn btn-sm btn btn-warning" id="post-recomment-btn${comment.id}" onclick="postReCommentsToggle(${comment.id})">답글작성</button>`;
@@ -268,9 +268,9 @@ async function loadReComments(commentId, recomment_page = 1) {
 				<button class="comment-btn btn btn-sm btn-secondary recomment-put-btn${recomment.id}" id="comment-btn${recomment.id}" onclick="updateReCommentButton(${recomment.comment},${recomment.id})">수정</button>
 				<button class="comment-btn btn btn-sm btn-danger recomment-put-btn${recomment.id}" id="comment-btn${recomment.id}" onclick="deleteReCommentButton(${recomment.comment},${recomment.id})">삭제</button>`;
 			}
-			btnContainer.innerHTML += `
-			<button class="bi bi-hand-thumbs-up btn btn-sm btn-outline-dark" id="recomment-like" onclick="recommentLikeBtn(${recomment.comment},${recomment.id})"> ${recomment.likes_count}</button>`;
 		}
+		btnContainer.innerHTML += `
+		<button class="bi bi-hand-thumbs-up btn btn-sm btn-outline-dark ${Boolean(payload)&&comment.like.includes(JSON.parse(payload).user_id)?"active":""}" id="recomment-like" ${Boolean(payload)?"":"disabled"} onclick="recommentLikeBtn(${recomment.comment},${recomment.id})"> ${recomment.likes_count}</button>`;
 		const likeBtn = document.querySelector(
 			`.comment-like-${recomment.comment}`
 		);
