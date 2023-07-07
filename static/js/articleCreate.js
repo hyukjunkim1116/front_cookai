@@ -59,9 +59,11 @@ async function arrangeRecipeAndUpload(post=true){
 		recipeImageContainer.setAttribute("id",`recipe-image-${i+1}-container`)
 		recipeImageContainer.setAttribute("class",`recipe-image-${i+1}-container recipe-image-container`)
 		if(post){
-			if(recipeImageContainer) recipeImageContainer.innerHTML=``
+			
 			let recipeImage = imageInput.files[0];
+			console.log(recipeImage)
 			if(recipeImage){
+				if(recipeImageContainer) recipeImageContainer.innerHTML=``
 				let responseURL = await fetch(`${BACKEND_BASE_URL}/articles/get-url/`, {
 					method: "POST"
 				});
