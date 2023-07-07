@@ -32,18 +32,25 @@
         <img src="/static/img/main.png" class="rounded-bottom main-img">
         <div class="main-title">
             <h1>오늘 뭐 먹지?</h1>
+            <h6>Cookai와 함께라면 고민은 끝!</h6>
         </div>
 
         <div class="main-search">
-            <form action="/articles/article_list.html" method="get">
-                <input type="text" name="search" value="1" hidden>
-                <input type="text" name="selector" id="search" placeholder="제목과 내용으로 검색">
-                <button type="submit" class="search-btn" title="검색">
-                    <img src="/static/img/search_black.png" alt="search" class="search-icon1 zindex-popover">
-                </button>
-                <img src="/static/img/camera.png" alt="이미지로 재료검색" title="이미지로 검색하기"
-                    onclick="location.href='/image_upload.html'" class="search-icon2">
+            <form action="/articles/article_list.html" method="get" class="d-flex align-items-center">
+                <div class="input-group">
+                    <input type="text" name="search" value="1" hidden>
+                    <input type="text" name="selector" id="search" placeholder="제목과 내용으로 검색">
+                    <button type="submit" class="search-btn" title="검색">
+                        <img src="/static/img/search_black.png" alt="search" class="search-icon1">
+                    </button>
+
+                </div>
+                <button type="button" onclick="location.href='/image_upload.html'"
+                    class="btn btn-outline-dark imagesearch"><img src="/static/img/camera.png" alt="이미지로 재료검색"
+                        title="이미지로 검색하기" class="mb-1">이미지검색</button>
+
             </form>
+
         </div>
 
         <div class="main-info">

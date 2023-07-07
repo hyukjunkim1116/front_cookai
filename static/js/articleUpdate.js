@@ -14,7 +14,8 @@ async function generateUpdateFormFields(articleData) {
         document.getElementById(`ingredient-title-${lastIndex}`).value = ingredientData.ingredient_id;
         document.getElementById(`ingredient-amount-${lastIndex}`).value = ingredientData.ingredient_quantity;
         document.getElementById(`ingredient-unit-${lastIndex}`).value = ingredientData.ingredient_unit;
-		document.getElementById(`ingredient-unit-${lastIndex}`).nextElementSibling.setAttribute("onclick",`deleteOnUpdate(${lastIndex},${ingredientData.id},event)`)
+		document.getElementById(`select${lastIndex}`).value = ingredientData.ingredient_unit;
+		document.getElementById(`delete-ingredient-${lastIndex}`).setAttribute("onclick",`deleteOnUpdate(${lastIndex},${ingredientData.id},event)`)
 		updateOrDelete[ingredientData.id]=false
 		idToIndex[ingredientData.id]=lastIndex
 		originTargets +=[lastIndex]

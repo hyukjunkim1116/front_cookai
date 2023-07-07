@@ -1,14 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@700&display=swap');
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css");
+
 @font-face {
     font-family: 'Pretendard-Regular';
     src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
     font-weight: 400;
     font-style: normal;
 }
+
 html {
     font-family: 'Pretendard-Regular', sans-serif;
 }
+
 body {
     /* font-family: 'Pretendard-Regular', sans-serif; */
     min-width: 375px;
@@ -31,10 +34,12 @@ body {
     width: 100%;
     margin: 0 auto;
     position: relative;
-    display:contents;
+    display: contents;
     justify-content: center;
     min-height: auto;
 }
+
+
 
 .main-img {
     width: 100%;
@@ -47,23 +52,35 @@ body {
 }
 
 .main-title {
+    color: var(--black, #ffffff);
     position: absolute;
-    top: 15%;
+    top: 10%;
     left: 40%;
     transform: translate(-50%, -50%);
     text-align: center;
-    width: 60%;
-    height: 100px;
-    background-color: transparent;
+    width: 65%;
+    height: 110px;
+    background-color: rgba(0, 0, 0, 0.328);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3%;
 }
 
 .main-title h1 {
-    color: var(--black, #000);
-    font-size: 30px;
+    font-size: 40px;
     font-family: 'Pretendard-Regular', sans-serif;
     font-weight: 700;
     line-height: 34px;
+    width: 90%;
     text-align: left;
+}
+
+.main-title h6 {
+    color: var(--black, #cfcfcf);
+    text-align: left;
+    width: 90%;
 }
 
 .main-title p {
@@ -79,60 +96,95 @@ body {
 /* 검색창 필드 */
 .main-search {
     position: absolute;
-    position: relative; /* 아이콘 이미지를 검색창에 정렬하기 위한 기준 설정 */
-    position: sticky; /* 검색창 고정 */
-    top: 140px; /* 검색창 고정위치 */
+    position: relative;
+    /* 아이콘 이미지를 검색창에 정렬하기 위한 기준 설정 */
+    position: sticky;
+    /* 검색창 고정 */
+    top: 140px;
+    /* 검색창 고정위치 */
     transform: translate(0%, -50%);
-    margin: auto; /* 검색창 가운데 정렬 */
+    margin: auto;
+    /* 검색창 가운데 정렬 */
     width: 375px;
 }
 
 .search-icon1 {
-    position: absolute; /* 아이콘의 위치를 절대적으로 설정 */
-    top: 50%; /* 아이콘 세로 위치를 검색창 가운데로 설정 */
-    right: 80px; /* 아이콘 좌측 여백 설정 */
-    transform: translateY(-50%); /* 아이콘 세로 위치를 완벽하게 가운데로 조정 */
+    position: absolute;
+    /* 아이콘의 위치를 절대적으로 설정 */
+    top: 50%;
+    /* 아이콘 세로 위치를 검색창 가운데로 설정 */
+    right: 40px;
+    /* 아이콘 좌측 여백 설정 */
+    transform: translateY(-50%);
+    /* 아이콘 세로 위치를 완벽하게 가운데로 조정 */
     /*pointer-events: none; 아이콘 클릭 방지 (터치, 클릭 등 이벤트 동작 제한) */
 }
 
 .search-icon2 {
-    position: absolute; /* 아이콘의 위치를 절대적으로 설정 */
-    top: 50%; /* 아이콘 세로 위치를 검색창 가운데로 설정 */
-    right: 40px; /* 아이콘 좌측 여백 설정 */
-    transform: translateY(-50%); /* 아이콘 세로 위치를 완벽하게 가운데로 조정 */
-    cursor:pointer;/* 아이콘 클릭 방지 (터치, 클릭 등 이벤트 동작 제한) */
+    position: absolute;
+    /* 아이콘의 위치를 절대적으로 설정 */
+    top: 50%;
+    /* 아이콘 세로 위치를 검색창 가운데로 설정 */
+    right: 40px;
+    /* 아이콘 좌측 여백 설정 */
+    transform: translateY(-50%);
+    /* 아이콘 세로 위치를 완벽하게 가운데로 조정 */
+    cursor: pointer;
+    /* 아이콘 클릭 방지 (터치, 클릭 등 이벤트 동작 제한) */
 }
-  
+
 #search {
-    border: none; /* 검색창의 테두리 제거 */
-    padding-left: 20px; /* 아이콘 이미지를 검색창 내부에 포함시키기 위해 좌측 패딩 설정 */
-    border-radius: 10px; /* 검색창 모서리 둥글게 */
-    width: 90%; /* 검색창 가로 길이 */
-    height: 70px; /* 검색창 세로 길이 */
-    flex-shrink: 0; /* 검색창 내용이 길어져도 검색창 크기 유지 */
-    font-size: 15px; /* 검색창 글자 크기 */
-    font-family: 'Pretendard-Regular', sans-serif; /* 검색창 글자 폰트 */
-    box-shadow: 0 4px 40px 0 rgba(0, 0, 0, 0.1); /* 검색창 그림자 효과 */
-    margin: 0 auto; /* 검색창 가운데 정렬 */
-    display: block; /* 검색창을 블록 레벨 요소로 설정 */
+    border: none;
+    /* 검색창의 테두리 제거 */
+    padding-left: 20px;
+    /* 아이콘 이미지를 검색창 내부에 포함시키기 위해 좌측 패딩 설정 */
+    border-radius: 10px;
+    /* 검색창 모서리 둥글게 */
+    width: 90%;
+    /* 검색창 가로 길이 */
+    height: 70px;
+    /* 검색창 세로 길이 */
+    flex-shrink: 0;
+    /* 검색창 내용이 길어져도 검색창 크기 유지 */
+    font-size: 15px;
+    /* 검색창 글자 크기 */
+    font-family: 'Pretendard-Regular', sans-serif;
+    /* 검색창 글자 폰트 */
+    box-shadow: 0 4px 40px 0 rgba(0, 0, 0, 0.1);
+    /* 검색창 그림자 효과 */
+    margin: 0 auto;
+    /* 검색창 가운데 정렬 */
+    display: block;
+    /* 검색창을 블록 레벨 요소로 설정 */
 }
-  
+
 .search-btn {
-    background: none; /* 기본 버튼 배경 제거 */
-    border: none; /* 기본 버튼 보더 제거 */
-    cursor: pointer; /* 마우스 커서 모양을 포인터로 변경 */
-    padding: 0; /* 버튼 패딩 제거 */
-    display: flex; /* 버튼 내부 아이콘 정렬을 위해 display 설정 */
-    align-items: center; /* 버튼 내부 아이콘 세로 정렬 */
-    justify-content: center; /* 버튼 내부 아이콘 가로 정렬 */
+    background: none;
+    /* 기본 버튼 배경 제거 */
+    border: none;
+    /* 기본 버튼 보더 제거 */
+    cursor: pointer;
+    /* 마우스 커서 모양을 포인터로 변경 */
+    padding: 0;
+    /* 버튼 패딩 제거 */
+    display: flex;
+    /* 버튼 내부 아이콘 정렬을 위해 display 설정 */
+    align-items: center;
+    /* 버튼 내부 아이콘 세로 정렬 */
+    justify-content: center;
+    /* 버튼 내부 아이콘 가로 정렬 */
 }
+
 .search-btn:focus {
-    outline: none; /* 버튼 클릭 시 발생하는 기본 외곽선 제거 */
+    outline: none;
+    /* 버튼 클릭 시 발생하는 기본 외곽선 제거 */
 }
 
 .search-btn img {
-    width: 25px; /* 아이콘 크기 설정 */
-    height: auto; /* 아이콘 자동 높이 설정 */
+    width: 25px;
+    /* 아이콘 크기 설정 */
+    height: auto;
+    /* 아이콘 자동 높이 설정 */
 }
 
 /* 소개글 필드 */
@@ -147,15 +199,24 @@ body {
 }
 
 .main-info-contents1 {
-    display: flex; /* 가로 정렬 */
-    flex-direction: column; /* 세로 정렬 */
-    justify-content: center; /* 세로 가운데 정렬 */
-    padding: 0 5%; /* 좌우 여백 */
-    width: 90%; /* 가로 */
-    height: 50%; /* 세로 */
-    margin: 5% auto; /* 상하 여백 */
-    background-color: white; /* 배경색 */
-    border-radius: 10px; /* 모서리 둥글게 */
+    display: flex;
+    /* 가로 정렬 */
+    flex-direction: column;
+    /* 세로 정렬 */
+    justify-content: center;
+    /* 세로 가운데 정렬 */
+    padding: 0 5%;
+    /* 좌우 여백 */
+    width: 90%;
+    /* 가로 */
+    height: 50%;
+    /* 세로 */
+    margin: 5% auto;
+    /* 상하 여백 */
+    background-color: white;
+    /* 배경색 */
+    border-radius: 10px;
+    /* 모서리 둥글게 */
 }
 
 .main-info-contents1 h1 {
@@ -173,22 +234,22 @@ body {
     line-height: 22px;
 }
 
-.scrolling-wrapper{
-	overflow-x: auto;
+.scrolling-wrapper {
+    overflow-x: auto;
 }
 
 
 a {
     text-decoration-line: none;
     color: rgb(43, 43, 43);
-  /*   text-decoration-line: underline; */
-  /*   text-decoration-line: overline; */
-  /*   text-decoration-line: line-through; */
-  /*   text-decoration-line: underline line-through overline; */
+    /*   text-decoration-line: underline; */
+    /*   text-decoration-line: overline; */
+    /*   text-decoration-line: line-through; */
+    /*   text-decoration-line: underline line-through overline; */
 }
 
 a:hover {
-    color:black;
+    color: black;
     font-weight: bold;
 }
 
@@ -202,10 +263,14 @@ a:hover {
 .image-upload-header {
     margin-top: 15px;
 }
+
 #user-update-button {
     margin-top: 15px;
 }
 
+.imagesearch {
+    background-color: #ff8400;
+}
 
 .sparkle {
     color: rgb(255, 138, 0);
@@ -219,6 +284,7 @@ a:hover {
         text-shadow: 0 0 3px rgba(255, 120, 0, 1), 0 0 10px rgba(255, 110, 0, 0.5),
             0 0 15px rgba(255, 100, 0, 0.3);
     }
+
     50% {
         text-shadow: 0 0 5px rgba(255, 140, 0, 1), 0 0 15px rgba(255, 130, 0, 0.5),
             0 0 20px rgba(255, 120, 0, 0.3);
