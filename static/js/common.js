@@ -9,16 +9,16 @@ function checkLogin() {
 function checkNotLogin() {
 	const payload = localStorage.getItem("payload");
 	if (payload == null) {
-		alert("로그인해주세요!")
+		alert("로그인해주세요!");
 		window.location.replace(`${FRONT_BASE_URL}/login.html`);
 	}
 }
-function isLogin(){
+function isLogin() {
 	const payload = localStorage.getItem("payload");
 	if (payload == null) {
-		return false
+		return false;
 	}
-	return true
+	return true;
 }
 // 로그아웃
 function handleLogout() {
@@ -161,11 +161,15 @@ async function injectNavbar() {
 			const avatar = document.getElementById("avatar");
 			avatar.setAttribute("src", `${loginUser.avatar}`);
 			avatar.style.visibility = "visible";
+			avatar.setAttribute("style", "height:auto;");
+			avatar.setAttribute("style", "max-height:2em;");
 			avatar.setAttribute("onclick", "goMypage()");
 			avatar.style.cursor = "pointer";
 		} else {
 			const avatar = document.getElementById("avatar");
 			avatar.setAttribute("src", "/static/img/no_avatar.png");
+			avatar.setAttribute("style", "height:auto;");
+			avatar.setAttribute("style", "max-height:1em;");
 			avatar.setAttribute("onclick", "goMypage()");
 			avatar.style.cursor = "pointer";
 			avatar.style.visibility = "visible";
@@ -193,5 +197,4 @@ async function injectfooter() {
 	let footer = await fetch("/footer.html");
 	let data = await footer.text();
 	document.querySelector("footer").innerHTML = data;
-
 }
