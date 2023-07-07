@@ -337,9 +337,7 @@ async function userFollowing() {
 		}
 	);
 	if (response.status == 200) {
-		alert("follow!");
 	} else if (response.status == 204) {
-		alert("unfollow!");
 	} else {
 		alert("올바르지 않은 요청이거나 존재하지 않는 회원입니다!");
 	}
@@ -357,7 +355,6 @@ async function otherUserFollowing(userId) {
 	);
 	const response_json = await response.json();
 	if (response.status == 200) {
-		alert(response_json.message);
 		window.location.reload();
 	} else {
 		alert("올바르지 않은 요청이거나 존재하지 않는 회원입니다!");
@@ -463,7 +460,6 @@ async function likeArticle(articleId) {
 
 	if (response.status == 200 || response.status == 204) {
 		const response_json = await response.json();
-		alert(response_json);
 		location.reload();
 	} else {
 		alert("좋아요 기능이 실패했습니다. 재시도해시거나, 다시 로그인해주세요.");
