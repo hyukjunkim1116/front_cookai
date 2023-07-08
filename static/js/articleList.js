@@ -138,8 +138,6 @@ async function loadArticleList(page = 1) {
 }
 async function loadTagList(selector) {
 	const response = await getTagList(selector);
-
-	const articleListTitle = document.getElementById("articleList-title");
 	const tagBox = document.getElementById("tagBox");
 	tagBox.hidden = false;
 	tagBox.querySelector("h4").innerText = `태그 선택`;
