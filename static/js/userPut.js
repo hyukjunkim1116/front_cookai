@@ -32,8 +32,8 @@ async function loadUserData() {
 // 회원정보 수정하는 함수
 async function putUserDetail() {
 	await checkTokenExp();
-
-	let token = localStorage.getItem("access");
+	const putUserBtn = document.getElementById("user-update-button");
+	putUserBtn.disabled = true;
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const username = document.getElementById("username").value;
 	const gender = document.getElementById("gender").value;
@@ -64,6 +64,7 @@ async function putUserDetail() {
 		const response_json = await response.json();
 		if (response.status == 400) {
 			alert(response_json.error);
+			putUserBtn.disabled = false;
 		} else {
 			alert("변경 완료!");
 			window.location.reload();
@@ -79,6 +80,7 @@ async function putUserDetail() {
 		});
 		if (response.status == 400) {
 			alert(response_json.error);
+			putUserBtn.disabled = false;
 		} else {
 			alert("변경 완료!");
 			window.location.reload();
@@ -88,7 +90,8 @@ async function putUserDetail() {
 
 async function handleUpdatePassword() {
 	await checkTokenExp();
-
+	const changePasswordBtn = document.getElementById("user-password-update-btn");
+	changePasswordBtn.disabled = true;
 	const token = localStorage.getItem("access");
 	const oldPassword = document.getElementById("old_password").value;
 	const newPassword = document.getElementById("new_password").value;
@@ -110,6 +113,7 @@ async function handleUpdatePassword() {
 		return response;
 	} else {
 		alert(response_json.error);
+		changePasswordBtn.disabled = false;
 	}
 }
 const passwordToggle = () => {
