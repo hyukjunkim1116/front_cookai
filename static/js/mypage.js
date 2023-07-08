@@ -615,10 +615,11 @@ const userFollowToggle = (userId) => {
 	}
 };
 async function loaderFunction() {
+	const userId = new URLSearchParams(window.location.search).get("user_id");
 	await loadUserArticle();
 	await loadUserComment();
 	await loadUserDetail();
-	if (isLogin()) {
+	if (isLogin() && isYOU(userId)) {
 		await loadUserFridge();
 	}
 }
