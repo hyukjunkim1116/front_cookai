@@ -162,7 +162,14 @@ async function getUserDetail() {
 	return await response.json();
 }
 async function deleteUser() {
-	document.getElementById("delete-user-btn").disabled = true;
+	const deleteUserBtn = document.getElementById("delete-user-btn");
+	deleteUserBtn.disabled = true;
+	const span = document.createElement("span");
+	span.setAttribute("id", "spinner-span");
+	span.setAttribute("class", "spinner-border spinner-border-sm");
+	span.setAttribute("role", "status");
+	span.setAttribute("aria-hidden", "true");
+	deleteUserBtn.appendChild(span);
 	await checkTokenExp();
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	try {
@@ -178,15 +185,21 @@ async function deleteUser() {
 			});
 			response_json = await response.json();
 			if (response.status == 200) {
+				deleteUserBtn.innerHTML = "";
+				deleteUserBtn.innerText = "회원 탈퇴하기";
 				alert("탈퇴 완료!");
 				handleLogout();
 			} else {
+				deleteUserBtn.innerHTML = "";
+				deleteUserBtn.innerText = "회원 탈퇴하기";
 				alert(response_json.error);
-				document.getElementById("delete-user-btn").disabled = false;
+				deleteUserBtn.disabled = false;
 			}
 		} else {
 			alert("비밀번호가 일치하지 않습니다!");
-			document.getElementById("delete-user-btn").disabled = false;
+			deleteUserBtn.innerHTML = "";
+			deleteUserBtn.innerText = "회원 탈퇴하기";
+			deleteUserBtn.disabled = false;
 		}
 	} catch {
 		const response = await fetch(`${BACKEND_BASE_URL}/users/${userId}/`, {
@@ -195,11 +208,16 @@ async function deleteUser() {
 		});
 		response_json = await response.json();
 		if (response.status == 200) {
+			deleteUserBtn.innerHTML = "";
+			deleteUserBtn.innerText = "회원 탈퇴하기";
+			deleteUserBtn.disabled = false;
 			alert("탈퇴 완료!");
 			handleLogout();
 		} else {
+			deleteUserBtn.innerHTML = "";
+			deleteUserBtn.innerText = "회원 탈퇴하기";
+			deleteUserBtn.disabled = false;
 			alert(response_json.error);
-			document.getElementById("delete-user-btn").disabled = false;
 		}
 	}
 }
@@ -256,7 +274,14 @@ async function getUserFridge() {
 }
 async function postUserFridge() {
 	await checkTokenExp();
-	let token = localStorage.getItem("access");
+	const postFridgeBtn = document.getElementById("post-fridge");
+	const span = document.createElement("span");
+	span.setAttribute("id", "spinner-span");
+	span.setAttribute("class", "spinner-border spinner-border-sm");
+	span.setAttribute("role", "status");
+	span.setAttribute("aria-hidden", "true");
+	postFridgeBtn.appendChild(span);
+	postFridgeBtn.disabled = true;
 	const ingredient = document.getElementById("ingredient").value;
 	const response = await fetch(`${BACKEND_BASE_URL}/users/fridge/`, {
 		headers: await getHeader(),
@@ -265,12 +290,14 @@ async function postUserFridge() {
 		}),
 		method: "POST"
 	});
+	postFridgeBtn.innerHTML = "";
+	postFridgeBtn.innerText = "추가하기";
+	postFridgeBtn.disabled = false;
 	window.location.reload();
 	return response;
 }
 async function deleteUserFridge(fridgeId) {
 	await checkTokenExp();
-	let token = localStorage.getItem("access");
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/users/fridge/${fridgeId}/`,
 		{
@@ -285,7 +312,6 @@ async function deleteUserFridge(fridgeId) {
 // 다른 유저의 팔로우리스트 보기
 async function getOtherUserFollowing() {
 	await checkTokenExp();
-	let token = localStorage.getItem("access");
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/users/${userId}/following/`,
