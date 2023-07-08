@@ -10,7 +10,6 @@ async function loadArticleList(page = 1) {
 	const searchInput = query
 		.split("&")
 		[query.split("&").length - 1].split("=")[1];
-	console.log("셀렉터", searchInput);
 	// const value = document.getElementById("selector").value;
 	const articleListTitle = document.getElementById("articleList-title");
 	if (searchInput == undefined || searchInput == "") {
@@ -143,8 +142,7 @@ async function loadTagList(selector) {
 	tagBox.hidden = false;
 	tagBox.querySelector("h4").innerText = `태그 선택`;
 	const response = await getTagList(selector);
-	const response_json = await response.json();
-	if (response.status == 400) {
+	if (response === null) {
 		document.getElementById("categoryArticleBox").hidden = true;
 		const tagList = document.getElementById("tagList");
 		tagList.innerHTML += `<div class="scrolling-wrapper row flex-row flex-nowrap mt-4 pb-4 pt-2"><div id="tags" class="btn-group" role="group" aria-label="Basic radio toggle button group"></div></div>`;
@@ -152,6 +150,7 @@ async function loadTagList(selector) {
 		tags.innerHTML = ``;
 		tags.innerText = "해당 검색어가 포함된 태그가 없습니다!";
 	} else {
+		const response_json = await response.json();
 		document.getElementById("categoryArticleBox").hidden = true;
 		const tagList = document.getElementById("tagList");
 		tagList.innerHTML += `<div class="scrolling-wrapper row flex-row flex-nowrap mt-4 pb-4 pt-2"><div id="tags" class="btn-group" role="group" aria-label="Basic radio toggle button group"></div></div>`;
