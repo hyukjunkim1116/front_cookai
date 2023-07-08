@@ -13,7 +13,6 @@ async function loadUserData() {
 		"src",
 		response.avatar ? response.avatar : "/static/img/no_avatar.png"
 	);
-
 	// 썸네일 크기 조절
 	img.setAttribute("style", "max-height: 300px;");
 	img.setAttribute("style", "object-fit:cover;");
@@ -23,25 +22,28 @@ async function loadUserData() {
 	// 썸네일 리셋 후 미리보기 보여주기
 	document.getElementById("image_container").innerHTML = "";
 	document.getElementById("image_container").appendChild(img);
-	const changePasswordForm = document.getElementById("change-password-form");
+	const changePasswordBtn = document.getElementById("user-password-update-btn");
+	console.log(changePasswordBtn);
 	usernameText.value = `${response.username}`;
-
-	if (response.login_type != "normal") {
-		changePasswordForm.style.display = "none";
-	} else {
-		changePasswordForm.style.display = "block";
+	if (response.login_type !== "normal") {
+		document.getElementById("flexSwitchCheckDefault").disabled = true;
+		document.getElementById("old_password").disabled = true;
+		document.getElementById("new_password").disabled = true;
+		document.getElementById("new_password_check").disabled = true;
+		changePasswordBtn.disabled = true;
+		changePasswordBtn.innerText = "변경 불가";
 	}
 }
 // 회원정보 수정하는 함수
 async function putUserDetail() {
 	await checkTokenExp();
-
-	let token = localStorage.getItem("access");
+	const putUserBtn = document.getElementById("user-update-button");
+	putUserBtn.disabled = true;
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const username = document.getElementById("username").value;
 	const gender = document.getElementById("gender").value;
 	const file = document.getElementById("file").files[0];
-	if (file) {
+	if (file && username) {
 		const responseURL = await fetch(`${BACKEND_BASE_URL}/users/get-url/`, {
 			method: "POST"
 		});
@@ -67,11 +69,12 @@ async function putUserDetail() {
 		const response_json = await response.json();
 		if (response.status == 400) {
 			alert(response_json.error);
+			putUserBtn.disabled = false;
 		} else {
 			alert("변경 완료!");
 			window.location.reload();
 		}
-	} else {
+	} else if (username) {
 		const response = await fetch(`${BACKEND_BASE_URL}/users/${userId}/`, {
 			headers: await getHeader(),
 			method: "PUT",
@@ -82,16 +85,20 @@ async function putUserDetail() {
 		});
 		if (response.status == 400) {
 			alert(response_json.error);
+			putUserBtn.disabled = false;
 		} else {
 			alert("변경 완료!");
 			window.location.reload();
 		}
+	} else {
+		alert("닉네임을 적어주세요!");
 	}
 }
 
 async function handleUpdatePassword() {
 	await checkTokenExp();
-
+	const changePasswordBtn = document.getElementById("user-password-update-btn");
+	changePasswordBtn.disabled = true;
 	const token = localStorage.getItem("access");
 	const oldPassword = document.getElementById("old_password").value;
 	const newPassword = document.getElementById("new_password").value;
@@ -113,6 +120,7 @@ async function handleUpdatePassword() {
 		return response;
 	} else {
 		alert(response_json.error);
+		changePasswordBtn.disabled = false;
 	}
 }
 const passwordToggle = () => {
@@ -134,9 +142,8 @@ async function loaderFunction() {
 	checkNotLogin();
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	if (isYOU(userId)) {
-		return;
+		await loadUserData();
 	} else {
 		window.location.href = `${FRONT_BASE_URL}/`;
 	}
-	await loadUserData();
 }

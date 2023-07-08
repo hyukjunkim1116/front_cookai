@@ -120,6 +120,13 @@ async function handleChangePasswordConfirm() {
 		btn.disabled = false;
 	}
 }
+async function getNotLoginedUser(userId) {
+	const response = await fetch(`${BACKEND_BASE_URL}/users/${userId}/`, {
+		method: "GET"
+	});
+	const responseJson = await response.json();
+	return responseJson;
+}
 //로그인 한 유저 정보 조회
 async function getLoginUser() {
 	await checkTokenExp();

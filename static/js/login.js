@@ -1,5 +1,7 @@
 // 로그인 폼 다 쓰고 로그인 눌렀을 때 실행되는 함수
 async function handleLoginBtn() {
+	const loginBtn = document.getElementById("login-btn");
+	loginBtn.disabled = true;
 	const response = await handleLogin();
 
 	if (response.status == 200) {
@@ -20,11 +22,10 @@ async function handleLoginBtn() {
 		);
 		localStorage.setItem("payload", jsonPayload);
 		alert("환영합니다!");
-		// window.history.back();
-		// location.href=window.history.state.prevUrl
 		window.location.replace(`${FRONT_BASE_URL}/users/feed.html`);
 	} else {
 		alert("회원정보가 일치하지 않습니다!");
+		loginBtn.disabled = false;
 	}
 }
 const passwordToggle = () => {

@@ -20,6 +20,7 @@ function isLogin() {
 	}
 	return true;
 }
+
 // 로그아웃
 function handleLogout() {
 	localStorage.removeItem("access");
@@ -148,8 +149,11 @@ async function handleNavbarMode(loginUser) {
 async function injectNavbar() {
 	let navbarHtml = await fetch("/navbar.html");
 	let data = await navbarHtml.text();
-	if(window.location.href.includes("index")){
-		data=data.replace('<button id="floatingBackBtn" class="floating-back-btn" onclick="window.history.back()"></button>',"")
+	if (window.location.href.includes("index")) {
+		data = data.replace(
+			'<button id="floatingBackBtn" class="floating-back-btn" onclick="window.history.back()"></button>',
+			""
+		);
 	}
 	const original = document.querySelector("body").innerHTML;
 	document.querySelector("body").innerHTML = original + data;
