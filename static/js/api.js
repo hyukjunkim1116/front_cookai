@@ -589,7 +589,6 @@ async function fetchMissingIngredients(articleId) {
 			document.getElementById("coupang_ingredient").remove();
 		}
 	} else {
-		console.error("API 요청 실패:", response.statusText);
 		document.getElementById("coupang_ingredient").remove();
 	}
 }
@@ -601,7 +600,11 @@ async function getTagList(selector) {
 		var query = ``;
 	}
 	const response = await fetch(`${BACKEND_BASE_URL}/articles/tags/${query}`);
-	return response;
+	if (response.status == 400) {
+		return null;
+	} else {
+		return response;
+	}
 }
 
 // token 만료되면 access토큰 이용하여 재로그인

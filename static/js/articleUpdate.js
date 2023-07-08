@@ -68,7 +68,6 @@ async function loaderFunction_() {
 	// 레시피와 재료를 다루기 위한 코드
 	const ingredientsContainer = document.getElementById("ingredient_wrapper");
 	const recipeContainer = document.getElementById("recipe_container");
-	console.log(recipeContainer);
 	recipeContainer.querySelectorAll("textarea").forEach((element) => {
 		element.innerHTML = `${element.value.replace(/<br>/g, "\n")}`;
 	});
