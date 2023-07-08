@@ -1,7 +1,7 @@
-const FRONT_BASE_URL = "https://cookai.today";
-const BACKEND_BASE_URL = "https://www.backend.cookai.today";
-// const FRONT_BASE_URL = "http://localhost:5500";
-// const BACKEND_BASE_URL = "http://localhost:8000";
+// const FRONT_BASE_URL = "https://cookai.today";
+// const BACKEND_BASE_URL = "https://www.backend.cookai.today";
+const FRONT_BASE_URL = "http://localhost:5500";
+const BACKEND_BASE_URL = "http://localhost:8000";
 
 // 로그인
 async function handleLogin() {
@@ -57,14 +57,14 @@ const naverLogin = async () => {
 // 비밀번호 리셋 - 이메일 확인
 async function handleEmailConfirm() {
 	const email = document.getElementById("email").value;
-	const btn =document.getElementById("submit-email-btn")
-	btn.disabled=true
+	const btn = document.getElementById("submit-email-btn");
+	btn.disabled = true;
 	const span = document.createElement("span");
 	span.setAttribute("id", "spinner-span");
 	span.setAttribute("class", "spinner-border spinner-border-sm");
 	span.setAttribute("role", "status");
 	span.setAttribute("aria-hidden", "true");
-	btn.appendChild(span)
+	btn.appendChild(span);
 
 	const response = await fetch(`${BACKEND_BASE_URL}/users/reset-password/`, {
 		headers: {
@@ -81,17 +81,16 @@ async function handleEmailConfirm() {
 		window.location.replace(`${FRONT_BASE_URL}/`);
 	} else {
 		alert(response_json.error);
-		btn.firstElementChild.remove()
-		btn.disabled=false
-
+		btn.firstElementChild.remove();
+		btn.disabled = false;
 	}
 	return response;
 }
 
 // 비밀번호 리셋 - 새로운 비밀번호 설정
 async function handleChangePasswordConfirm() {
-	const btn=document.getElementById("change-password-btn")
-	btn.disabled=true
+	const btn = document.getElementById("change-password-btn");
+	btn.disabled = true;
 	const userId = new URLSearchParams(window.location.search).get("uid");
 	const uidb64 = new URLSearchParams(window.location.search).get("uidb64");
 	const token = new URLSearchParams(window.location.search).get("token");
@@ -118,7 +117,7 @@ async function handleChangePasswordConfirm() {
 		window.location.replace(`${FRONT_BASE_URL}/login.html`);
 	} else {
 		alert(response_json.error);
-		btn.disabled=true
+		btn.disabled = true;
 	}
 }
 //로그인 한 유저 정보 조회
@@ -156,7 +155,7 @@ async function getUserDetail() {
 	return await response.json();
 }
 async function deleteUser() {
-	document.getElementById("delete-user-btn").disabled=true
+	document.getElementById("delete-user-btn").disabled = true;
 	await checkTokenExp();
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	try {
@@ -176,11 +175,11 @@ async function deleteUser() {
 				handleLogout();
 			} else {
 				alert(response_json.error);
-				document.getElementById("delete-user-btn").disabled=false
+				document.getElementById("delete-user-btn").disabled = false;
 			}
 		} else {
 			alert("비밀번호가 일치하지 않습니다!");
-			document.getElementById("delete-user-btn").disabled=false
+			document.getElementById("delete-user-btn").disabled = false;
 		}
 	} catch {
 		const response = await fetch(`${BACKEND_BASE_URL}/users/${userId}/`, {
@@ -193,7 +192,7 @@ async function deleteUser() {
 			handleLogout();
 		} else {
 			alert(response_json.error);
-			document.getElementById("delete-user-btn").disabled=false
+			document.getElementById("delete-user-btn").disabled = false;
 		}
 	}
 }
