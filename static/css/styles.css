@@ -290,3 +290,6 @@ a:hover {
             0 0 20px rgba(255, 120, 0, 0.3);
     }
 }
+#spinner-span {
+    margin-left: 2px;
+}

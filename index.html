@@ -36,21 +36,18 @@
         </div>
 
         <div class="main-search">
-            <form action="/articles/article_list.html" method="get" class="d-flex align-items-center">
+            <form action="/articles/article_list.html" method="get" class="d-flex justify-content-between align-items-center">
                 <div class="input-group">
                     <input type="text" name="search" value="1" hidden>
                     <input type="text" name="selector" id="search" placeholder="제목과 내용으로 검색">
                     <button type="submit" class="search-btn" title="검색">
                         <img src="/static/img/search_black.png" alt="search" class="search-icon1">
                     </button>
-
                 </div>
                 <button type="button" onclick="location.href='/image_upload.html'"
-                    class="btn btn-outline-dark imagesearch"><img src="/static/img/camera.png" alt="이미지로 재료검색"
-                        title="이미지로 검색하기" class="mb-1">이미지검색</button>
-
+                    class="btn imagesearch d-flex flex-nowrap flex-column justify-content-center align-items-center" style="margin-right: 0.9em;"><img src="/static/img/camera.png" alt="이미지로 재료검색"
+                        title="이미지로 검색하기" class="mb-1"><span style="color:white; font-size:x-small;">이미지검색</span></button>
             </form>
-
         </div>
 
         <div class="main-info">
@@ -58,22 +55,21 @@
                 <h3>추천</h3>
                 <small id="recomm-description"></small>
                 <div class="container">
-                    <div id="recomm" class="card-box scrolling-wrapper row flex-row flex-nowrap mt-4 pb-2 pt-2">
-
+                    <div id="recomm" class="card-box scrolling-wrapper row flex-row flex-nowrap mt-1 pb-2 pt-2">
                     </div>
                 </div>
-                <h3>Today's 베스트</h3>
+                <hr>
+                <h3 class="mt-2">Today's 베스트</h3>
                 <small>오늘 올라온 레시피중 좋아요🧡가 가장 많은 게시글들을 보여줍니다.</small>
                 <div class="container">
-                    <div id="best6" class="card-box scrolling-wrapper row flex-row flex-nowrap mt-4 pb-2 pt-2">
-
+                    <div id="best6" class="card-box scrolling-wrapper row flex-row flex-nowrap mt-1 pb-2 pt-2">
                     </div>
                 </div>
                 <hr>
                 <h3>주간 베스트</h3>
                 <small>이번주의 레시피중 좋아요🧡가 가장 많은 게시글들을 보여줍니다.</small>
                 <div class="container">
-                    <div id="best5" class="card-box scrolling-wrapper row flex-row flex-nowrap mt-4 pb-2 pt-2">
+                    <div id="best5" class="card-box scrolling-wrapper row flex-row flex-nowrap mt-1 pb-2 pt-2">
                     </div>
                 </div>
 

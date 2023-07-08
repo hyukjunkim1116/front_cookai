@@ -21,8 +21,6 @@
     <!-- 페이지네이션에 쓰이는 icon 모듈 -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-
-
     <title>Cookai | 게시글 목록</title>
 </head>
 
@@ -31,39 +29,31 @@
 
     <div class="container card mt-4">
         <div class="card-body">
-            <h1>피드 페이지</h1>
+            <h1 class="text-center">피드 페이지</h1>
             <hr>
-            <div id="tabs" class="btn-group mb-3" role="group" aria-label="Basic radio toggle button group">
+            <div id="tabs" class="btn-group d-flex mt-3" role="group" aria-label="Basic radio toggle button group">
                 <input type="radio" class="btn-check" name="tab" id="tab2" autocomplete="off" checked>
                 <label class="btn btn-outline-dark" for="tab2" onclick="tabs(0)">추천게시글</label>
                 <input type="radio" class="btn-check" name="tab" id="tab0" autocomplete="off">
                 <label class="btn btn-outline-dark" for="tab0" onclick="tabs(1)">구독</label>
                 <input type="radio" class="btn-check" name="tab" id="tab1" autocomplete="off">
                 <label class="btn btn-outline-dark" for="tab1" onclick="tabs(2)">북마크</label>
-
             </div>
         </div>
         <div class="card-body">
-
         </div>
         <div class="card-body" id="feedBox0">
-            <h3>당신을 위한 추천 피드</h3>
-
-
+            <h3 class="text-center">당신을 위한 추천 피드</h3>
             <hr>
-            <h5>당신이 좋아할만한 게시글</h5>
-            <small>추천알고리즘 기반으로 좋아할만한 글을 보여줍니다.</small>
+            <h5 class="text-center">당신이 좋아할만한 게시글</h5>
+            <p>추천알고리즘 기반으로 좋아할만한 글을 보여줍니다.</p>
             <div class="container">
                 <div id="list_0" class="card-box scrolling-wrapper row flex-row flex-nowrap mt-4 pb-2 pt-2">
-
                 </div>
             </div>
-
-
             <hr>
-
-            <h5 class="mt-5">지금 시도해 볼만한 레시피들</h5>
-            <small>냉장고에 등록된 재료 기준으로 레시피를 추천합니다.</small>
+            <h5 class="mt-4 text-center">지금 시도해 볼만한 레시피들</h5>
+            <p>냉장고에 등록된 재료 기준으로 레시피를 추천합니다.</p>
             <div class="container">
                 <div id="list_1" class="card-box scrolling-wrapper row flex-row flex-nowrap mt-4 pb-2 pt-2">
 
@@ -71,21 +61,19 @@
             </div>
         </div>
         <div class="card-body" id="feedBox1">
-            <h3>구독</h3>
+            <h3 class="text-center">구독</h3>
             <hr>
-            <small>당신이 구독한 사람들의 게시글을 보여줍니다.</small>
+            <p class="text-center">당신이 구독한 사람들의 게시글을 보여줍니다.</p>
             <div class="container">
                 <div id="list_3">
 
                 </div>
             </div>
-
-
         </div>
         <div class="card-body" id="feedBox2">
-            <h3>북마크</h3>
+            <h3 class="text-center">북마크</h3>
             <hr>
-            <small>당신이 북마크 해둔 글들의 목록입니다.</small>
+            <p class="text-center">당신이 북마크 해둔 글들의 목록입니다.</p>
             <div class="container">
                 <div id="list_2">
                 </div>
