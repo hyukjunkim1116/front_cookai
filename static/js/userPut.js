@@ -25,8 +25,8 @@ async function loadUserData() {
 	document.getElementById("image_container").appendChild(img);
 	const changePasswordForm = document.getElementById("change-password-form");
 	usernameText.value = `${response.username}`;
-	if (response.login_type == "normal") {
-		changePasswordForm.style.display = "block";
+	if (response.login_type !== "normal") {
+		changePasswordForm.style.display = "none";
 	}
 }
 // 회원정보 수정하는 함수
