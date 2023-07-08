@@ -182,29 +182,32 @@ async function loadComments(comment_page = 1) {
 	response.results.forEach((comment) => {
 		commentList.innerHTML += `
 
-        <div class="card-text">
+        <div class="card-text mt-3">
         <small><a name="comment-author" href="${FRONT_BASE_URL}/mypage.html?user_id=${
 			comment.author
 		}">${comment.user}</a>, ${comment.updated_at
 			.split(".")[0]
 			.replace("T", " ")
-			.slice(0, -3)}</small></div><div name="comment-str" class="card-text">${
+			.slice(
+				0,
+				-3
+			)}</small></div><div name="comment-str" class="card-text mt-3">${
 			comment.comment
 		}</div>`;
 		const payload = localStorage.getItem("payload");
 		if (payload) {
 			const payload_parse = JSON.parse(payload);
 
-			commentList.innerHTML += `<div class="btn-container">`;
+			commentList.innerHTML += `<div class="btn-container mt-2">`;
 
 			if (payload_parse.user_id == comment.author) {
 				commentList.innerHTML += `
-                    <button class="comment-btn btn btn-sm btn-secondary" id="comment-btn${comment.id}" onclick="updateCommentButton(${comment.id})">수정</button>
-                    <button class="comment-btn btn btn-sm btn-danger" id="comment-btn${comment.id}" onclick="deleteCommentButton(${comment.id})">삭제</button>`;
+                    <button class="comment-btn mt-2 btn btn-sm btn-secondary" id="comment-btn${comment.id}" onclick="updateCommentButton(${comment.id})">수정</button>
+                    <button class="comment-btn mt-2 btn btn-sm btn-danger" id="comment-btn${comment.id}" onclick="deleteCommentButton(${comment.id})">삭제</button>`;
 			}
 		}
 		commentList.innerHTML += `
-                <button class="bi bi-hand-thumbs-up btn btn-sm btn-outline-dark comment-like-${
+                <button class="bi bi-hand-thumbs-up mt-2 btn btn-sm btn-outline-dark comment-like-${
 									comment.id
 								} ${
 			Boolean(payload) && comment.like.includes(JSON.parse(payload).user_id)
@@ -214,12 +217,14 @@ async function loadComments(comment_page = 1) {
 			Boolean(payload) ? "" : "disabled"
 		}> ${comment.likes_count}</button>
             </div>`;
-		commentList.innerHTML += `<button class="comment-btn btn btn-sm btn-success" id="recomment-btn${comment.id}" onclick="loadReCommentsToggle(${comment.id})">답글보기</button>
-		<button class="comment-btn btn-sm btn btn-warning" id="post-recomment-btn${comment.id}" onclick="postReCommentsToggle(${comment.id})">답글작성</button>`;
+		commentList.innerHTML += `
+		<button class="comment-btn btn btn-sm btn-success mt-2" id="recomment-btn${comment.id}" onclick="loadReCommentsToggle(${comment.id})">답글보기</button>
+		<button class="comment-btn btn-sm mt-2 btn btn-warning" id="post-recomment-btn${comment.id}" onclick="postReCommentsToggle(${comment.id})">답글작성</button>
+		`;
 	});
 
 	const pagination = document.createElement("ul");
-	pagination.setAttribute("class", "pagination");
+	pagination.setAttribute("class", "pagination mt-2");
 	pagination.innerHTML = "";
 	const pagecount = response.count / 50 + 1;
 	if (pagecount >= 2) {
@@ -254,9 +259,9 @@ async function loadReComments(commentId, recomment_page = 1) {
 			);
 			prevRecommentList.remove();
 		}
-		recommentList.className = `recomment-wrapper-${recomment.comment}`;
+		recommentList.className = `recomment-wrapper-${recomment.comment} mt-2 d-flex flex-column align-items-center`;
 		recommentList.innerHTML += `
-		<div class="card-text">
+		<div class="card-text mt-2">
 			<small><a name="comment-author" href="${FRONT_BASE_URL}/mypage.html?user_id=${
 			recomment.author
 		}">${recomment.user}</a>, ${recomment.updated_at
@@ -264,9 +269,9 @@ async function loadReComments(commentId, recomment_page = 1) {
 			.replace("T", " ")
 			.slice(0, -3)}</small>
 		</div>
-		<div class="card-text" name="comment-str">${recomment.recomment}</div>`;
+		<div class="card-text mt-2" name="comment-str">${recomment.recomment}</div>`;
 		const btnContainer = document.createElement("div");
-		btnContainer.className = "btn-container";
+		btnContainer.className = "btn-container mt-2 mb-2";
 
 		const payload = localStorage.getItem("payload");
 		if (payload) {
@@ -274,6 +279,7 @@ async function loadReComments(commentId, recomment_page = 1) {
 
 			if (payload_parse.user_id == recomment.author) {
 				btnContainer.innerHTML += `
+				
 				<button class="comment-btn btn btn-sm btn-secondary recomment-put-btn${recomment.id}" id="comment-btn${recomment.id}" onclick="updateReCommentButton(${recomment.comment},${recomment.id})">수정</button>
 				<button class="comment-btn btn btn-sm btn-danger recomment-put-btn${recomment.id}" id="comment-btn${recomment.id}" onclick="deleteReCommentButton(${recomment.comment},${recomment.id})">삭제</button>`;
 			}
@@ -295,7 +301,7 @@ async function loadReComments(commentId, recomment_page = 1) {
 		likeBtn.after(recommentList);
 	});
 	const pagination = document.createElement("ul");
-	pagination.setAttribute("class", "pagination");
+	pagination.setAttribute("class", "pagination mt-2");
 	pagination.innerHTML = "";
 	const pagecount = response.count / 5 + 1;
 	if (pagecount >= 2) {
@@ -493,7 +499,7 @@ async function submitReComment(commentId) {
 		}
 		loadReCommentsToggle(commentId);
 	} else {
-		alert(response.status);
+		alert(response_json.error);
 	}
 }
 function postReCommentsToggle(commentId) {
@@ -503,7 +509,7 @@ function postReCommentsToggle(commentId) {
 	const postRecommentInput = document.createElement("div");
 	postRecommentInput.setAttribute(
 		"class",
-		`container mt-1 recomment-input-div-${commentId}`
+		`container mt-3 recomment-input-div-${commentId}`
 	);
 	postRecommentInput.innerHTML = `
 	<div class="input-group mb-3">
@@ -528,6 +534,9 @@ function postReCommentsToggle(commentId) {
 }
 function loadReCommentsToggle(commentId) {
 	const recommentBtn = document.getElementById(`recomment-btn${commentId}`);
+	const postRecommentBtn = document.getElementById(
+		`post-recomment-btn${commentId}`
+	);
 	const recommentWrapper = document.querySelectorAll(
 		`.recomment-wrapper-${commentId}`
 	);
@@ -557,4 +566,8 @@ async function loaderFunction() {
 	for (const commentStr of commentStrs) {
 		commentStr.innerText = commentStr.innerHTML;
 	}
+}
+{
+	/* <div class="col text-center">
+</div> */
 }
