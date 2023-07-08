@@ -13,7 +13,6 @@ async function loadUserData() {
 		"src",
 		response.avatar ? response.avatar : "/static/img/no_avatar.png"
 	);
-
 	// 썸네일 크기 조절
 	img.setAttribute("style", "max-height: 300px;");
 	img.setAttribute("style", "object-fit:cover;");
@@ -23,10 +22,16 @@ async function loadUserData() {
 	// 썸네일 리셋 후 미리보기 보여주기
 	document.getElementById("image_container").innerHTML = "";
 	document.getElementById("image_container").appendChild(img);
-	const changePasswordForm = document.getElementById("change-password-form");
+	const changePasswordBtn = document.getElementById("user-password-update-btn");
+	console.log(changePasswordBtn);
 	usernameText.value = `${response.username}`;
 	if (response.login_type !== "normal") {
-		changePasswordForm.style.display = "none";
+		document.getElementById("flexSwitchCheckDefault").disabled = true;
+		document.getElementById("old_password").disabled = true;
+		document.getElementById("new_password").disabled = true;
+		document.getElementById("new_password_check").disabled = true;
+		changePasswordBtn.disabled = true;
+		changePasswordBtn.innerText = "변경 불가";
 	}
 }
 // 회원정보 수정하는 함수
@@ -137,9 +142,8 @@ async function loaderFunction() {
 	checkNotLogin();
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	if (isYOU(userId)) {
-		return;
+		await loadUserData();
 	} else {
 		window.location.href = `${FRONT_BASE_URL}/`;
 	}
-	await loadUserData();
 }
