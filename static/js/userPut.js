@@ -23,7 +23,6 @@ async function loadUserData() {
 	document.getElementById("image_container").innerHTML = "";
 	document.getElementById("image_container").appendChild(img);
 	const changePasswordBtn = document.getElementById("user-password-update-btn");
-	console.log(changePasswordBtn);
 	usernameText.value = `${response.username}`;
 	if (response.login_type !== "normal") {
 		document.getElementById("flexSwitchCheckDefault").disabled = true;

@@ -142,7 +142,7 @@ async function loadTagList(selector) {
 	tagBox.hidden = false;
 	tagBox.querySelector("h4").innerText = `태그 선택`;
 	const response = await getTagList(selector);
-	if (response === null) {
+	if (response === null || (await response.json()) == "") {
 		document.getElementById("categoryArticleBox").hidden = true;
 		const tagList = document.getElementById("tagList");
 		tagList.innerHTML += `<div class="scrolling-wrapper row flex-row flex-nowrap mt-4 pb-4 pt-2"><div id="tags" class="btn-group" role="group" aria-label="Basic radio toggle button group"></div></div>`;
