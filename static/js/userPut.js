@@ -38,7 +38,7 @@ async function putUserDetail() {
 	const username = document.getElementById("username").value;
 	const gender = document.getElementById("gender").value;
 	const file = document.getElementById("file").files[0];
-	if (file) {
+	if (file && username) {
 		const responseURL = await fetch(`${BACKEND_BASE_URL}/users/get-url/`, {
 			method: "POST"
 		});
@@ -69,7 +69,7 @@ async function putUserDetail() {
 			alert("변경 완료!");
 			window.location.reload();
 		}
-	} else {
+	} else if (username) {
 		const response = await fetch(`${BACKEND_BASE_URL}/users/${userId}/`, {
 			headers: await getHeader(),
 			method: "PUT",
@@ -85,6 +85,8 @@ async function putUserDetail() {
 			alert("변경 완료!");
 			window.location.reload();
 		}
+	} else {
+		alert("닉네임을 적어주세요!");
 	}
 }
 

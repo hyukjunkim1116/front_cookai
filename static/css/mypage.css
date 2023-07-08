@@ -25,10 +25,11 @@
 }
 
 .mypage-avatar {
-    width: 20%;
-    height: 20%;
+    width: 4em;
+    height:4em;
     object-fit: cover;
     background-repeat: no-repeat;
+    background-position:center;
     border-radius: 50%;
     margin-right: 5px;
 }
