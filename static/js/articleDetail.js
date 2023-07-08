@@ -237,6 +237,10 @@ async function loadComments(comment_page = 1) {
 	}
 }
 async function loadReComments(commentId, recomment_page = 1) {
+	if (!isLogin()) {
+		document.getElementById("recomment-input").disabled = true;
+		document.getElementById("submitReCommentButton").innerText = "로그인필요";
+	}
 	const response = await getReComments(articleId, commentId, recomment_page);
 	if (response == null) {
 		return null;
@@ -471,6 +475,7 @@ async function deleteReCommentButton(commentId, recommentId) {
 	}
 }
 async function submitReComment(commentId) {
+	checkNotLogin();
 	const recommentBtn = document.getElementById(`recomment-btn${commentId}`);
 	const clickedClass = "clicked";
 	const recommentElement = document.getElementById("recomment-input");

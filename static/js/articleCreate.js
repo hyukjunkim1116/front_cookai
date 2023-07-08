@@ -138,6 +138,7 @@ const handleAddIngredient = () => {
 };
 const handleAddRecipe = () => {
 	const recipeContainer = document.getElementById("recipe_container");
+	console.log(recipeContainer);
 
 	const div = document.createElement("div");
 	div.classList.add("mb-3");

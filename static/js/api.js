@@ -1,7 +1,7 @@
 const FRONT_BASE_URL = "https://cookai.today";
 const BACKEND_BASE_URL = "https://www.backend.cookai.today";
-// const FRONT_BASE_URL = "http://localhost:5500";
-// const BACKEND_BASE_URL = "http://localhost:8000";
+// const FRONT_BASE_URL = "http://127.0.0.1:5500";
+// const BACKEND_BASE_URL = "http://127.0.0.1:8000";
 
 // 로그인
 async function handleLogin() {
@@ -117,7 +117,7 @@ async function handleChangePasswordConfirm() {
 		window.location.replace(`${FRONT_BASE_URL}/login.html`);
 	} else {
 		alert(response_json.error);
-		btn.disabled = true;
+		btn.disabled = false;
 	}
 }
 //로그인 한 유저 정보 조회

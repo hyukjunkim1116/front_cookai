@@ -7,9 +7,18 @@ async function loadArticleList(page = 1) {
 	document.getElementById("categoryArticleBox").hidden = false;
 	const newCardBox = document.getElementById("card-box");
 	const response = await getArticleList(query + category + order, page);
-
+	const searchInput = query
+		.split("&")
+		[query.split("&").length - 1].split("=")[1];
+	console.log("셀렉터", searchInput);
+	// const value = document.getElementById("selector").value;
+	const articleListTitle = document.getElementById("articleList-title");
+	if (searchInput == undefined || searchInput == "") {
+		articleListTitle.innerText = "검색 내용이 아래 표시됩니다";
+	} else {
+		articleListTitle.innerText = `${searchInput}으로 검색한 결과입니다`;
+	}
 	const response_json = await response.json();
-
 	for (const article of response_json.results) {
 		// 새로운 div 요소를 생성하고, class 속성을 "card"로 설정합니다.
 		// 또한, 클릭 이벤트 핸들러와 id 속성을 게시물의 고유 식별자(pk)로 설정합니다.
@@ -17,30 +26,30 @@ async function loadArticleList(page = 1) {
 		const tempHtml = `<div id="article-container" class="article-container" onclick="location.href='${FRONT_BASE_URL}/articles/article_detail.html?article_id=${
 			article.id
 		}'" style="cursor:pointer">
-		<div id="article-image" class="article-image_wide" style="background-image: url('${
-			[null, undefined].includes(article.image)
-				? "https://cdn11.bigcommerce.com/s-1812kprzl2/images/stencil/original/products/426/5082/no-image__12882.1665668288.jpg?c=2/"
-				: article.image
-		}');"></div>
-		<div id="article-content${article.id}" class="article-content">
-			<div id="article-content__title" class="article-content__title_wide">${
-				article.title.length <= 22
-					? article.title
-					: article.title.substr(0, 21) + "⋯"
-			}</div>
-			<div id="article-content__user" class="article-content__user text-truncate">${
-				article.user
-			}</div>
-			<div id="article-content-count" class="article-content-count">
-				<div id="article-content__likes_count" class="article-content__likes_count"><i class="bi bi-heart-fill"></i> ${
-					article.likes_count
+			<div id="article-image" class="article-image_wide" style="background-image: url('${
+				[null, undefined].includes(article.image)
+					? "https://cdn11.bigcommerce.com/s-1812kprzl2/images/stencil/original/products/426/5082/no-image__12882.1665668288.jpg?c=2/"
+					: article.image
+			}');"></div>
+			<div id="article-content${article.id}" class="article-content">
+				<div id="article-content__title" class="article-content__title_wide">${
+					article.title.length <= 22
+						? article.title
+						: article.title.substr(0, 21) + "⋯"
 				}</div>
-				<div id="article-content__comments_count" class="article-content__comments_count">댓글 수: ${
-					article.comments_count
+				<div id="article-content__user" class="article-content__user text-truncate">${
+					article.user
 				}</div>
-			</div>			
-		</div>
-		</div>`;
+				<div id="article-content-count" class="article-content-count">
+					<div id="article-content__likes_count" class="article-content__likes_count"><i class="bi bi-heart-fill"></i> ${
+						article.likes_count
+					}</div>
+					<div id="article-content__comments_count" class="article-content__comments_count">댓글 수: ${
+						article.comments_count
+					}</div>
+				</div>			
+			</div>
+			</div>`;
 		newCardBox.innerHTML += tempHtml;
 		const newCardtime = document.createElement("small");
 		newCardtime.setAttribute("class", "article-content__comments_count");
@@ -129,24 +138,34 @@ async function loadArticleList(page = 1) {
 	});
 }
 async function loadTagList(selector) {
+	const articleListTitle = document.getElementById("articleList-title");
 	const tagBox = document.getElementById("tagBox");
 	tagBox.hidden = false;
 	tagBox.querySelector("h4").innerText = `태그 선택`;
 	const response = await getTagList(selector);
 	const response_json = await response.json();
-	document.getElementById("categoryArticleBox").hidden = true;
-	const tagList = document.getElementById("tagList");
-	tagList.innerHTML += `<div class="scrolling-wrapper row flex-row flex-nowrap mt-4 pb-4 pt-2"><div id="tags" class="btn-group" role="group" aria-label="Basic radio toggle button group"></div></div>`;
-	const tags = document.getElementById("tags");
-	tags.innerHTML = ``;
-	var name_list = [];
-	response_json.forEach((tag) => {
-		if (!name_list.includes(tag.name)) {
-			tags.innerHTML += `<input type="radio" class="btn-check" name="tag" id="tag_${tag.id}" autocomplete="off">
-		<label class="btn btn-outline-primary text-nowrap" for="tag_${tag.id}" onclick="searchByTag('${tag.name}')">${tag.name}</label>`;
-			name_list += [tag.name];
-		}
-	});
+	if (response.status == 400) {
+		document.getElementById("categoryArticleBox").hidden = true;
+		const tagList = document.getElementById("tagList");
+		tagList.innerHTML += `<div class="scrolling-wrapper row flex-row flex-nowrap mt-4 pb-4 pt-2"><div id="tags" class="btn-group" role="group" aria-label="Basic radio toggle button group"></div></div>`;
+		const tags = document.getElementById("tags");
+		tags.innerHTML = ``;
+		tags.innerText = "해당 검색어가 포함된 태그가 없습니다!";
+	} else {
+		document.getElementById("categoryArticleBox").hidden = true;
+		const tagList = document.getElementById("tagList");
+		tagList.innerHTML += `<div class="scrolling-wrapper row flex-row flex-nowrap mt-4 pb-4 pt-2"><div id="tags" class="btn-group" role="group" aria-label="Basic radio toggle button group"></div></div>`;
+		const tags = document.getElementById("tags");
+		tags.innerHTML = ``;
+		var name_list = [];
+		response_json.forEach((tag) => {
+			if (!name_list.includes(tag.name)) {
+				tags.innerHTML += `<input type="radio" class="btn-check" name="tag" id="tag_${tag.id}" autocomplete="off">
+			<label class="btn btn-outline-primary text-nowrap" for="tag_${tag.id}" onclick="searchByTag('${tag.name}')">${tag.name}</label>`;
+				name_list += [tag.name];
+			}
+		});
+	}
 }
 async function loadFrame() {
 	const list_div = document.getElementById("articleList");
