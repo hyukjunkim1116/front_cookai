@@ -1,7 +1,7 @@
-const FRONT_BASE_URL = "https://cookai.today";
-const BACKEND_BASE_URL = "https://www.backend.cookai.today";
-// const FRONT_BASE_URL = "http://127.0.0.1:5500";
-// const BACKEND_BASE_URL = "http://127.0.0.1:8000";
+// const FRONT_BASE_URL = "https://cookai.today";
+// const BACKEND_BASE_URL = "https://www.backend.cookai.today";
+const FRONT_BASE_URL = "http://127.0.0.1:5500";
+const BACKEND_BASE_URL = "http://127.0.0.1:8000";
 
 // 로그인
 async function handleLogin() {
@@ -119,6 +119,13 @@ async function handleChangePasswordConfirm() {
 		alert(response_json.error);
 		btn.disabled = false;
 	}
+}
+async function getNotLoginedUser(userId) {
+	const response = await fetch(`${BACKEND_BASE_URL}/users/${userId}/`, {
+		method: "GET"
+	});
+	const responseJson = await response.json();
+	return responseJson;
 }
 //로그인 한 유저 정보 조회
 async function getLoginUser() {
