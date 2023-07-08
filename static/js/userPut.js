@@ -1,7 +1,6 @@
 // 회원정보 미리 로드하는 함수
 async function loadUserData() {
 	const response = await getLoginUser();
-	console.log(response);
 	const usernameText = document.getElementById("username");
 	const genderSelect = document.getElementById("gender");
 	for (var i = 0; i < genderSelect.options.length; i++) {
@@ -133,5 +132,11 @@ const passwordToggle = () => {
 };
 async function loaderFunction() {
 	checkNotLogin();
+	const userId = new URLSearchParams(window.location.search).get("user_id");
+	if (isYOU(userId)) {
+		return;
+	} else {
+		window.location.href = `${FRONT_BASE_URL}/`;
+	}
 	await loadUserData();
 }

@@ -226,7 +226,7 @@ async function loadUserLikeArticle(currentPage) {
 	for (i = 1; i < pageCount; i++) {
 		const newPageLink = document.createElement("div");
 		newPageLink.setAttribute("class", "page-link");
-		newPageLink.setAttribute("onclick", `loadUserBookmarkArticle(${i})`);
+		newPageLink.setAttribute("onclick", `loadUserLikeArticle(${i})`);
 		newPageLink.innerText = i;
 		pagination.append(newPageLink);
 		articleContainer.appendChild(pagination);
@@ -279,7 +279,7 @@ async function loadUserLikeComment(currentCommentPage) {
 	for (i = 1; i < pageCount; i++) {
 		const newPageLink = document.createElement("div");
 		newPageLink.setAttribute("class", "page-link");
-		newPageLink.setAttribute("onclick", `loadUserComment(${i})`);
+		newPageLink.setAttribute("onclick", `loadUserLikeComment(${i})`);
 		newPageLink.innerText = i;
 		commentPagination.append(newPageLink);
 		commentContainer.appendChild(commentPagination);
@@ -289,7 +289,8 @@ async function loadUserLikeComment(currentCommentPage) {
 async function loadUserDetail() {
 	const response = await getUserDetail();
 	const followingsList = await getUserFollowing();
-
+	const userDetailFollowBtn = document.getElementById("mypage-following-btn");
+	const userUpdateProfileBtn = document.getElementById("update-user");
 	if (followingsList != null) {
 		const followingIdList = followingsList.map((following) => following.id);
 		const avatar = document.getElementById("mypage-avatar");
@@ -301,8 +302,7 @@ async function loadUserDetail() {
 		);
 		const username = document.getElementById("username");
 		username.innerText = `${response.username}`;
-		const userDetailFollowBtn = document.getElementById("mypage-following-btn");
-		const userUpdateProfileBtn = document.getElementById("update-user");
+
 		if (isYOU(response.id)) {
 			const mypage = document.querySelector(".mypage");
 			userDetailFollowBtn.remove();
@@ -315,6 +315,7 @@ async function loadUserDetail() {
 				? "언팔로우"
 				: "팔로우";
 		}
+
 		userDetailFollowBtn.setAttribute(
 			"onclick",
 			`loadedUserFollowToggle(${response.id})`
@@ -373,7 +374,7 @@ async function loadUserDetail() {
 		const username = document.getElementById("username");
 		username.innerText = `${response.username}`;
 		const userDetailFollowBtn = document.getElementById("mypage-following-btn");
-
+		userUpdateProfileBtn.remove();
 		userDetailFollowBtn.remove();
 		const following = document.getElementById("following");
 		following.remove();
@@ -614,8 +615,11 @@ const userFollowToggle = (userId) => {
 	}
 };
 async function loaderFunction() {
-	await loadUserFridge();
+	const userId = new URLSearchParams(window.location.search).get("user_id");
 	await loadUserArticle();
 	await loadUserComment();
 	await loadUserDetail();
+	if (isLogin() && isYOU(userId)) {
+		await loadUserFridge();
+	}
 }

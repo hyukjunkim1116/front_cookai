@@ -114,12 +114,12 @@ async function loadArticle() {
 		} else {
 			if (user_json == null) {
 				let likeBtn = document.createElement("button");
-			likeBtn.setAttribute("type", "button");
-			likeBtn.setAttribute("class", "btn btn-outline-warning");
-			likeBtn.setAttribute("onclick", `likeArticle(${articleId})`);
-			likeBtn.innerHTML = `좋아요 👍${response_json.likes_count}<br><small style="font-size:0.6rem">로그인 후 좋아요를 표시할 수 있습니다.</small>`;
-			likeBtn.disabled=true
-			buttonArea1.append(likeBtn);
+				likeBtn.setAttribute("type", "button");
+				likeBtn.setAttribute("class", "btn btn-outline-warning");
+				likeBtn.setAttribute("onclick", `likeArticle(${articleId})`);
+				likeBtn.innerHTML = `좋아요 👍${response_json.likes_count}<br><small style="font-size:0.6rem">로그인 후 좋아요를 표시할 수 있습니다.</small>`;
+				likeBtn.disabled = true;
+				buttonArea1.append(likeBtn);
 				return;
 			}
 			let followToggleBtn = document.createElement("button");
@@ -202,14 +202,20 @@ async function loadComments(comment_page = 1) {
                     <button class="comment-btn btn btn-sm btn-secondary" id="comment-btn${comment.id}" onclick="updateCommentButton(${comment.id})">수정</button>
                     <button class="comment-btn btn btn-sm btn-danger" id="comment-btn${comment.id}" onclick="deleteCommentButton(${comment.id})">삭제</button>`;
 			}
-			
 		}
 		commentList.innerHTML += `
-                <button class="bi bi-hand-thumbs-up btn btn-sm btn-outline-dark comment-like-${comment.id} ${Boolean(payload)&&comment.like.includes(JSON.parse(payload).user_id)?"active":""}" id="comment-like" onclick="commentLikeBtn(${comment.id})"${Boolean(payload)?"":"disabled"}> ${comment.likes_count}</button>
+                <button class="bi bi-hand-thumbs-up btn btn-sm btn-outline-dark comment-like-${
+									comment.id
+								} ${
+			Boolean(payload) && comment.like.includes(JSON.parse(payload).user_id)
+				? "active"
+				: ""
+		}" id="comment-like" onclick="commentLikeBtn(${comment.id})"${
+			Boolean(payload) ? "" : "disabled"
+		}> ${comment.likes_count}</button>
             </div>`;
 		commentList.innerHTML += `<button class="comment-btn btn btn-sm btn-success" id="recomment-btn${comment.id}" onclick="loadReCommentsToggle(${comment.id})">답글보기</button>
 		<button class="comment-btn btn-sm btn btn-warning" id="post-recomment-btn${comment.id}" onclick="postReCommentsToggle(${comment.id})">답글작성</button>`;
-		// commentList.innerHTML +=` ${comment.likes_count}👍</div><hr>`
 	});
 
 	const pagination = document.createElement("ul");
@@ -231,8 +237,11 @@ async function loadComments(comment_page = 1) {
 	}
 }
 async function loadReComments(commentId, recomment_page = 1) {
+	if (!isLogin()) {
+		document.getElementById("recomment-input").disabled = true;
+		document.getElementById("submitReCommentButton").innerText = "로그인필요";
+	}
 	const response = await getReComments(articleId, commentId, recomment_page);
-	console.log(response);
 	if (response == null) {
 		return null;
 	}
@@ -248,9 +257,9 @@ async function loadReComments(commentId, recomment_page = 1) {
 		recommentList.className = `recomment-wrapper-${recomment.comment}`;
 		recommentList.innerHTML += `
 		<div class="card-text">
-			<small><a name="comment-author" href="${FRONT_BASE_URL}/mypage.html?user_id=${recomment.author}">${
-			recomment.user
-		}</a>, ${recomment.updated_at
+			<small><a name="comment-author" href="${FRONT_BASE_URL}/mypage.html?user_id=${
+			recomment.author
+		}">${recomment.user}</a>, ${recomment.updated_at
 			.split(".")[0]
 			.replace("T", " ")
 			.slice(0, -3)}</small>
@@ -270,7 +279,15 @@ async function loadReComments(commentId, recomment_page = 1) {
 			}
 		}
 		btnContainer.innerHTML += `
-		<button class="bi bi-hand-thumbs-up btn btn-sm btn-outline-dark ${Boolean(payload)&&recomment.like.includes(JSON.parse(payload).user_id)?"active":""}" id="recomment-like" ${Boolean(payload)?"":"disabled"} onclick="recommentLikeBtn(${recomment.comment},${recomment.id})"> ${recomment.likes_count}</button>`;
+		<button class="bi bi-hand-thumbs-up btn btn-sm btn-outline-dark ${
+			Boolean(payload) && recomment.like.includes(JSON.parse(payload).user_id)
+				? "active"
+				: ""
+		}" id="recomment-like" ${
+			Boolean(payload) ? "" : "disabled"
+		} onclick="recommentLikeBtn(${recomment.comment},${recomment.id})"> ${
+			recomment.likes_count
+		}</button>`;
 		const likeBtn = document.querySelector(
 			`.comment-like-${recomment.comment}`
 		);
@@ -312,9 +329,8 @@ async function submitComment() {
 }
 
 async function updateCommentButton(commentId) {
-	const comment_content = document.getElementById(
-		`comment-btn${commentId}`
-	).previousElementSibling.previousElementSibling.innerText;
+	const comment_content = document.getElementById(`comment-btn${commentId}`)
+		.previousElementSibling.previousElementSibling.innerText;
 	const commentElement = document.getElementById("comment-input");
 	commentElement.value = comment_content;
 
@@ -393,7 +409,8 @@ async function recommentLikeBtn(commentId, recommentId) {
 async function submitUpdateReComment(commentId, recommentId) {
 	const recommentBtn = document.getElementById(`recomment-btn${commentId}`);
 	const recommentElement = document.getElementById("recomment-input");
-	recommentElement.value=recommentBtn.previousElementSibling.previousElementSibling.innerText
+	recommentElement.value =
+		recommentBtn.previousElementSibling.previousElementSibling.innerText;
 	const newReComment = recommentElement.value;
 	const recommentWrapper = document.querySelectorAll(
 		`.recomment-wrapper-${commentId}`
@@ -458,6 +475,7 @@ async function deleteReCommentButton(commentId, recommentId) {
 	}
 }
 async function submitReComment(commentId) {
+	checkNotLogin();
 	const recommentBtn = document.getElementById(`recomment-btn${commentId}`);
 	const clickedClass = "clicked";
 	const recommentElement = document.getElementById("recomment-input");
@@ -531,12 +549,12 @@ async function loaderFunction() {
 	await loadArticle();
 	await loadComments(1);
 	await fetchMissingIngredients(articleId);
-	const commentAuthors =document.getElementsByName("comment-author")
-	for (const commentAuthor of commentAuthors){
-		commentAuthor.innerText=commentAuthor.innerHTML
+	const commentAuthors = document.getElementsByName("comment-author");
+	for (const commentAuthor of commentAuthors) {
+		commentAuthor.innerText = commentAuthor.innerHTML;
 	}
-	const commentStrs =document.getElementsByName("comment-str")
-	for (const commentStr of commentStrs){
-		commentStr.innerText=commentStr.innerHTML
+	const commentStrs = document.getElementsByName("comment-str");
+	for (const commentStr of commentStrs) {
+		commentStr.innerText = commentStr.innerHTML;
 	}
 }
