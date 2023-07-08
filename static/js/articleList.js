@@ -9,7 +9,7 @@ async function loadArticleList(page = 1) {
 	const response = await getArticleList(query + category + order, page);
 
 	const response_json = await response.json();
-	
+
 	for (const article of response_json.results) {
 		// 새로운 div 요소를 생성하고, class 속성을 "card"로 설정합니다.
 		// 또한, 클릭 이벤트 핸들러와 id 속성을 게시물의 고유 식별자(pk)로 설정합니다.
@@ -24,7 +24,9 @@ async function loadArticleList(page = 1) {
 		}');"></div>
 		<div id="article-content${article.id}" class="article-content">
 			<div id="article-content__title" class="article-content__title_wide">${
-				article.title.length<=22?article.title:article.title.substr(0,21)+"⋯"
+				article.title.length <= 22
+					? article.title
+					: article.title.substr(0, 21) + "⋯"
 			}</div>
 			<div id="article-content__user" class="article-content__user text-truncate">${
 				article.user
@@ -42,8 +44,12 @@ async function loadArticleList(page = 1) {
 		newCardBox.innerHTML += tempHtml;
 		const newCardtime = document.createElement("small");
 		newCardtime.setAttribute("class", "article-content__comments_count");
-		newCardtime.innerText = "작성일 "+article.created_at.split(".")[0].slice(2,-3).replace("T"," ");
-		document.getElementById(`article-content${article.id}`).appendChild(newCardtime);
+		newCardtime.innerText =
+			"작성일 " +
+			article.created_at.split(".")[0].slice(2, -3).replace("T", " ");
+		document
+			.getElementById(`article-content${article.id}`)
+			.appendChild(newCardtime);
 		// const newCard = document.createElement("div");
 		// newCard.setAttribute("class", "card");
 		// newCard.setAttribute("onclick", `location.href="${FRONT_BASE_URL}/articles/article_detail.html?article_id=${article.id}"`);
@@ -113,13 +119,13 @@ async function loadArticleList(page = 1) {
 		nextPageBtn.innerText = "더이상 결과가 없습니다.";
 	}
 	newCardBox.appendChild(nextPageBtn);
-	const allTitle = document.querySelectorAll(".article-content__title_wide")
+	const allTitle = document.querySelectorAll(".article-content__title_wide");
 	allTitle.forEach((e) => {
-		e.innerText=e.innerHTML
+		e.innerText = e.innerHTML;
 	});
-	const allUser = document.querySelectorAll(".article-content__user")
+	const allUser = document.querySelectorAll(".article-content__user");
 	allUser.forEach((e) => {
-		e.innerText=e.innerHTML
+		e.innerText = e.innerHTML;
 	});
 }
 async function loadTagList(selector) {
@@ -279,7 +285,6 @@ async function loaderFunction() {
 	document.getElementById("selectorder").appendChild(SelectOrderBtn);
 	if (window.location.search.includes("category")) {
 		const parameters = new URLSearchParams(window.location.search);
-		console.log(parameters.get("category"));
 		document.getElementById(`btnradio0`).checked = false;
 		const button = document.getElementById(
 			`btnradio${parameters.get("category")}`

@@ -238,7 +238,6 @@ async function loadComments(comment_page = 1) {
 }
 async function loadReComments(commentId, recomment_page = 1) {
 	const response = await getReComments(articleId, commentId, recomment_page);
-	console.log(response);
 	if (response == null) {
 		return null;
 	}
