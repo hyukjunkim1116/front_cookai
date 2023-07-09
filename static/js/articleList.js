@@ -137,19 +137,11 @@ async function loadArticleList(page = 1) {
 	});
 }
 async function loadTagList(selector) {
-	const articleListTitle = document.getElementById("articleList-title");
+	const response = await getTagList(selector);
 	const tagBox = document.getElementById("tagBox");
 	tagBox.hidden = false;
 	tagBox.querySelector("h4").innerText = `태그 선택`;
-	const response = await getTagList(selector);
-	if (response === null) {
-		document.getElementById("categoryArticleBox").hidden = true;
-		const tagList = document.getElementById("tagList");
-		tagList.innerHTML += `<div class="scrolling-wrapper row flex-row flex-nowrap mt-4 pb-4 pt-2"><div id="tags" class="btn-group" role="group" aria-label="Basic radio toggle button group"></div></div>`;
-		const tags = document.getElementById("tags");
-		tags.innerHTML = ``;
-		tags.innerText = "해당 검색어가 포함된 태그가 없습니다!";
-	} else {
+	try {
 		const response_json = await response.json();
 		document.getElementById("categoryArticleBox").hidden = true;
 		const tagList = document.getElementById("tagList");
@@ -157,13 +149,29 @@ async function loadTagList(selector) {
 		const tags = document.getElementById("tags");
 		tags.innerHTML = ``;
 		var name_list = [];
-		response_json.forEach((tag) => {
-			if (!name_list.includes(tag.name)) {
-				tags.innerHTML += `<input type="radio" class="btn-check" name="tag" id="tag_${tag.id}" autocomplete="off">
-			<label class="btn btn-outline-primary text-nowrap" for="tag_${tag.id}" onclick="searchByTag('${tag.name}')">${tag.name}</label>`;
-				name_list += [tag.name];
-			}
-		});
+		if (response_json == "") {
+			document.getElementById("categoryArticleBox").hidden = true;
+			const tagList = document.getElementById("tagList");
+			tagList.innerHTML += `<div class="scrolling-wrapper row flex-row flex-nowrap mt-4 pb-4 pt-2"><div id="tags" class="btn-group" role="group" aria-label="Basic radio toggle button group"></div></div>`;
+			const tags = document.getElementById("tags");
+			tags.innerHTML = ``;
+			tags.innerText = "해당 검색어가 포함된 태그가 없습니다!";
+		} else {
+			response_json.forEach((tag) => {
+				if (!name_list.includes(tag.name)) {
+					tags.innerHTML += `<input type="radio" class="btn-check" name="tag" id="tag_${tag.id}" autocomplete="off">
+				<label class="btn btn-outline-primary text-nowrap" for="tag_${tag.id}" onclick="searchByTag('${tag.name}')">${tag.name}</label>`;
+					name_list += [tag.name];
+				}
+			});
+		}
+	} catch {
+		document.getElementById("categoryArticleBox").hidden = true;
+		const tagList = document.getElementById("tagList");
+		tagList.innerHTML += `<div class="scrolling-wrapper row flex-row flex-nowrap mt-4 pb-4 pt-2"><div id="tags" class="btn-group" role="group" aria-label="Basic radio toggle button group"></div></div>`;
+		const tags = document.getElementById("tags");
+		tags.innerHTML = ``;
+		tags.innerText = "해당 검색어가 포함된 태그가 없습니다!";
 	}
 }
 async function loadFrame() {

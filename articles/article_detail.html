@@ -27,15 +27,14 @@
     <header></header>
 
     <div class="container mt-4">
-
         <div class="card">
             <div class="card-body">
-                <p class="card-text">
-
-                    <small id="category">카테고리: <a href="article_list.html?category=1"></a></small>
+                <p class="card-text d-flex align-items-center">
+                    <small id="category">카테고리 : </small>
+                    <a href="article_list.html?category=1"></a>
                 </p>
                 <h3 id="title" class="fs-2">게시글 제목</h3>
-                <h5 class="text-end mb-3">작성자:<a id="author" class="badge bg-primary" href="#">사용자이름</a></h5>
+                <h5 class="text-end mb-3 align-items-center">작성자 : <a id="author" class="badge bg-primary" href="#">사용자이름</a></h5>
                 <p class="card-text">
                     <small id="created_at" class="text-muted" style="font-size: smaller;"></small><br>
                     <small id="updated_at" class="text-muted" style="font-size: smaller;"></small>
@@ -97,24 +96,20 @@
                 </p>
             </div>
         </div>
-        <div class="container">
-            <div id="buttons1" class="btn-group text-nowrap w-100" role="group" aria-label="Basic mixed styles example">
-
+        <div class="container border-0 d-flex justify-content-center">
+            <div id="buttons1" class="btn-group d-flex border-0 mt-1 mb-1 w-100" role="group" aria-label="Basic mixed styles example">
             </div>
-
         </div>
-
         <div id="commnets_list" class="card">
             <div class="card-body">
                 <p class="card-text">
-
                 <h5 class="card-title">댓글</h5>
-                <div class="card-text" id="commentbox">
+                <div class="card-text mt-3" id="commentbox">
                     <div class="card-text comment-item" id="commentbox">
                     </div>
                 </div>
                 </p>
-                <div class="container mt-1">
+                <div class="container mt-5">
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" id="comment-input" />
                         <button class="btn btn-outline-primary" type="button" onclick="submitComment()"

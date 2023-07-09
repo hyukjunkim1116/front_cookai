@@ -79,3 +79,6 @@ line-height: 1.375rem;
 .article-content__likes_count i {
     color: #FE6B38;
 }
+.container {
+    margin-top: 1px;
+}
