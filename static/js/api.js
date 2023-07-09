@@ -377,7 +377,6 @@ async function userFollowing() {
 }
 async function otherUserFollowing(userId) {
 	await checkTokenExp();
-	let token = localStorage.getItem("access");
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/users/${userId}/following/`,
 		{
@@ -385,10 +384,7 @@ async function otherUserFollowing(userId) {
 			method: "POST"
 		}
 	);
-	const response_json = await response.json();
-	if (response.status == 200) {
-		window.location.reload();
-	} else {
+	if (response.status != 200) {
 		alert("올바르지 않은 요청이거나 존재하지 않는 회원입니다!");
 	}
 	return response;
@@ -472,7 +468,14 @@ async function bookmarkArticle(articleId) {
 
 	if (response.status == 200 || response.status == 204) {
 		const response_json = await response.json();
-		location.reload();
+		const bookmarkBtn = document.getElementById("articleBookmarkBtn")
+		if(response_json=="bookmark"){
+			bookmarkBtn.setAttribute("class", "btn btn-outline-dark");
+			bookmarkBtn.innerHTML = `북마크 취소`;
+		}else{
+			bookmarkBtn.setAttribute("class", "btn btn-outline-success");
+			bookmarkBtn.innerHTML = `북마크 하기`;
+		}
 	} else {
 		alert("북마크 기능이 실패했습니다. 재시도해시거나, 다시 로그인해주세요.");
 	}
@@ -480,7 +483,6 @@ async function bookmarkArticle(articleId) {
 
 async function likeArticle(articleId) {
 	await checkTokenExp();
-	const token = localStorage.getItem("access");
 
 	const response = await fetch(
 		`${BACKEND_BASE_URL}/articles/${articleId}/like/`,
@@ -489,13 +491,7 @@ async function likeArticle(articleId) {
 			headers: await getHeader((json = false))
 		}
 	);
-
-	if (response.status == 200 || response.status == 204) {
-		const response_json = await response.json();
-		location.reload();
-	} else {
-		alert("좋아요 기능이 실패했습니다. 재시도해시거나, 다시 로그인해주세요.");
-	}
+	return response
 }
 
 async function deleteComment(commentId) {

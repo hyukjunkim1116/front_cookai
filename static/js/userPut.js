@@ -73,9 +73,9 @@ async function putUserDetail() {
 		});
 		const response_json = await response.json();
 		if (response.status == 400) {
+			alert(Object.values(response_json));
 			putUserBtn.innerHTML = "";
 			putUserBtn.innerText = "변경하기";
-			alert(response_json.error);
 			putUserBtn.disabled = false;
 		} else {
 			putUserBtn.innerHTML = "";
@@ -92,10 +92,10 @@ async function putUserDetail() {
 				gender: gender
 			})
 		});
+		const response_json = await response.json();
 		if (response.status == 400) {
 			putUserBtn.innerHTML = "";
 			putUserBtn.innerText = "변경하기";
-			alert(response_json.error);
 			putUserBtn.disabled = false;
 		} else {
 			alert("변경 완료!");
