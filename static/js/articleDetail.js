@@ -126,8 +126,9 @@ async function loadArticle() {
 			followToggleBtn.setAttribute("type", "button");
 			followToggleBtn.setAttribute(
 				"onclick",
-				`otherUserFollowing(${response_json.author})`
+				`loadFollow(${response_json.author})`
 			);
+			followToggleBtn.setAttribute("id","followBtn")
 			if (user_json.followings.includes(response_json.author)) {
 				followToggleBtn.innerText = "팔로우 취소";
 				followToggleBtn.setAttribute("class", "btn btn-outline-danger");
@@ -139,17 +140,19 @@ async function loadArticle() {
 		}
 		let likeBtn = document.createElement("button");
 		likeBtn.setAttribute("type", "button");
+		likeBtn.setAttribute("id","articleLikeBtn");
+		likeBtn.setAttribute("onclick", `loadLikeArticle(${articleId})`);
 		if (response_json.like.includes(user_json.id)) {
 			likeBtn.setAttribute("class", "btn btn-outline-danger");
-			likeBtn.setAttribute("onclick", `likeArticle(${articleId})`);
 			likeBtn.innerHTML = `좋아요 취소 👍${response_json.likes_count}`;
 		} else {
 			likeBtn.setAttribute("class", "btn btn-outline-warning");
-			likeBtn.setAttribute("onclick", `likeArticle(${articleId})`);
+			
 			likeBtn.innerHTML = `좋아요 표시 👍${response_json.likes_count}`;
 		}
 		let bookmarkBtn = document.createElement("button");
 		bookmarkBtn.setAttribute("type", "button");
+		bookmarkBtn.setAttribute("id","articleBookmarkBtn");
 		if (response_json.bookmark.includes(user_json.id)) {
 			bookmarkBtn.setAttribute("class", "btn btn-outline-dark");
 			bookmarkBtn.setAttribute("onclick", `bookmarkArticle(${articleId})`);
@@ -166,7 +169,41 @@ async function loadArticle() {
 		alert(response.status);
 	}
 }
+async function loadLikeArticle(articleId){
+	const response = await likeArticle(articleId)
+	
+	const likeBtn= document.getElementById("articleLikeBtn")
+	const response_json= await response.json()
+	if (response.status==200 && response_json.flag) {
+		likeBtn.setAttribute("class", "btn btn-outline-danger");
+		likeBtn.innerHTML = `좋아요 취소 👍${response_json.result.likes_count}`;
+	} 
+	else if(response.status==200 && !response_json.flag){
+		likeBtn.setAttribute("class", "btn btn-outline-warning");
+		likeBtn.innerHTML = `좋아요 표시 👍${response_json.result.likes_count}`;
+	}
+	else {
+		alert("좋아요 기능이 실패했습니다. 재시도해시거나, 다시 로그인해주세요.");
+	}
+	return null
 
+}
+async function loadFollow(author){
+	const response = await otherUserFollowing(author);
+	const response_json = await response.json();
+	const followBtn = document.getElementById("followBtn")
+	if (response.status == 200) {
+		if(response_json.message =="follow"){
+			followBtn.innerText = "팔로우 취소";
+			followBtn.setAttribute("class", "btn btn-outline-danger");
+		}else{
+			followBtn.innerText = "팔로우 하기";
+			followBtn.setAttribute("class", "btn btn-outline-success");
+		}
+	} else {
+		alert("올바르지 않은 요청이거나 존재하지 않는 회원입니다!");
+	}
+}
 async function loadComments(comment_page = 1) {
 	if (!isLogin()) {
 		document.getElementById("comment-input").disabled = true;

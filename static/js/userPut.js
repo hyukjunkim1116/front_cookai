@@ -68,7 +68,7 @@ async function putUserDetail() {
 		});
 		const response_json = await response.json();
 		if (response.status == 400) {
-			alert(response_json.error);
+			alert(Object.values(response_json));
 			putUserBtn.disabled = false;
 		} else {
 			alert("변경 완료!");
@@ -83,8 +83,9 @@ async function putUserDetail() {
 				gender: gender
 			})
 		});
+		const response_json = await response.json();
 		if (response.status == 400) {
-			alert(response_json.error);
+			alert(Object.entries(response_json));
 			putUserBtn.disabled = false;
 		} else {
 			alert("변경 완료!");
