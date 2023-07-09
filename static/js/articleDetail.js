@@ -96,7 +96,7 @@ async function loadArticle() {
 		const buttonArea1 = document.getElementById("buttons1");
 		if (response_json.is_author) {
 			let updateBtn = document.createElement("a");
-			updateBtn.setAttribute("class", "btn btn-outline-secondary");
+			updateBtn.setAttribute("class", "btn btn-outline-secondary flex-fill");
 			updateBtn.setAttribute(
 				"href",
 				`${FRONT_BASE_URL}/articles/article_update.html?article_id=${articleId}`
@@ -105,7 +105,7 @@ async function loadArticle() {
 
 			let deleteBtn = document.createElement("button");
 			deleteBtn.setAttribute("type", "button");
-			deleteBtn.setAttribute("class", "btn btn-outline-danger");
+			deleteBtn.setAttribute("class", "btn btn-outline-danger flex-fill");
 			deleteBtn.setAttribute("onclick", `deleteArticleBtn(${articleId})`);
 			deleteBtn.innerText = "삭제";
 
@@ -140,22 +140,22 @@ async function loadArticle() {
 		let likeBtn = document.createElement("button");
 		likeBtn.setAttribute("type", "button");
 		if (response_json.like.includes(user_json.id)) {
-			likeBtn.setAttribute("class", "btn btn-outline-danger");
+			likeBtn.setAttribute("class", "btn btn-outline-danger flex-fill");
 			likeBtn.setAttribute("onclick", `likeArticle(${articleId})`);
 			likeBtn.innerHTML = `좋아요 취소 👍${response_json.likes_count}`;
 		} else {
-			likeBtn.setAttribute("class", "btn btn-outline-warning");
+			likeBtn.setAttribute("class", "btn btn-outline-warning flex-fill");
 			likeBtn.setAttribute("onclick", `likeArticle(${articleId})`);
 			likeBtn.innerHTML = `좋아요 표시 👍${response_json.likes_count}`;
 		}
 		let bookmarkBtn = document.createElement("button");
 		bookmarkBtn.setAttribute("type", "button");
 		if (response_json.bookmark.includes(user_json.id)) {
-			bookmarkBtn.setAttribute("class", "btn btn-outline-dark");
+			bookmarkBtn.setAttribute("class", "btn btn-outline-dark flex-fill");
 			bookmarkBtn.setAttribute("onclick", `bookmarkArticle(${articleId})`);
 			bookmarkBtn.innerHTML = `북마크 취소`;
 		} else {
-			bookmarkBtn.setAttribute("class", "btn btn-outline-success");
+			bookmarkBtn.setAttribute("class", "btn btn-outline-success flex-fill");
 			bookmarkBtn.setAttribute("onclick", `bookmarkArticle(${articleId})`);
 			bookmarkBtn.innerHTML = `북마크 하기`;
 		}
@@ -243,7 +243,6 @@ async function loadComments(comment_page = 1) {
 }
 async function loadReComments(commentId, recomment_page = 1) {
 	const response = await getReComments(articleId, commentId, recomment_page);
-	console.log(response);
 
 	const recommentList = document.createElement("div");
 	response.results.forEach((recomment) => {
@@ -253,7 +252,7 @@ async function loadReComments(commentId, recomment_page = 1) {
 			);
 			prevRecommentList.remove();
 		}
-		recommentList.className = `recomment-wrapper-${recomment.comment} mt-2 d-flex flex-column align-items-center`;
+		recommentList.className = `recomment-wrapper-${recomment.comment} mt-2 d-flex flex-column align-items-start ms-4`;
 		recommentList.innerHTML += `
 		<div class="card-text mt-2">
 		<i class="bi bi-arrow-return-right"></i>
@@ -413,7 +412,6 @@ async function submitUpdateReComment(commentId, recommentId) {
 	const recommentBtn = document.getElementById(`recomment-btn${commentId}`);
 	const recommentElement = document.getElementById("recomment-input");
 	const newReComment = recommentElement.value;
-	console.log(recommentBtn, recommentElement, newReComment);
 	const recommentWrapper = document.querySelectorAll(
 		`.recomment-wrapper-${commentId}`
 	);

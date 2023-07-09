@@ -15,7 +15,6 @@
     <!-- 폰트 임포트 -->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@700&display=swap');
-        
     </style>
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
@@ -27,13 +26,14 @@
 
 <body>
     <div class="container mt-4">
-        <h1>게시글 작성 페이지</h1>
-        <form>
+        <h1 class="text-center">게시글 작성 페이지</h1>
+        <form class="d-flex flex-column">
             <div class="mb-3">
                 <label for="article_title" class="form-label">제목</label>
                 <input type="text" class="form-control" id="article_title" placeholder="제목을 입력하세요">
             </div>
-            <select class="category" name="category" id="category">
+            <label for="category" class="form-label">카테고리</label>
+            <select class="category mb-3 mt-2" name="category" id="category">
                 <option value="" disabled selected>카테고리를 선택하세요</option>
             </select>
             <div class="mb-3">
@@ -49,24 +49,23 @@
             <div class="mb-3" id="ingredient_wrapper">
                 <div id="ingredient_container">
                 </div>
-                <button type="button" class="btn btn-primary" id="add-ingredient">재료 추가하기</button>
             </div>
+            <button type="button" class="btn btn-primary" id="add-ingredient">재료 추가하기</button>
             <div class="mb-3" id="recipe_wrapper"></div>
             <div id="recipe_container"></div>
             <button type="button" id="add-recipe" class="btn btn-secondary mb-3">레시피 추가하기</button>
-    </div>
-    <div class="mb-3" id="tag">
-        <label for="article_tag" class="form-label">태그</label>
-        <input type="text" class="form-control" id="article_tag" placeholder="태그를 입력하세요. 콤마(,)로 구분해야합니다.">
-    </div>
-    <button type="submit" class="btn btn-primary" id="submit-article">게시글 작성하기</button>
-    <br>
-    <br>
-    </form>
+            <div class="mb-3" id="tag">
+                <label for="article_tag" class="form-label">태그</label>
+                <input type="text" class="form-control" id="article_tag" placeholder="태그를 입력하세요. 콤마(,)로 구분해야합니다.">
+            </div>
+            <button type="submit" class="btn btn-primary " id="submit-article">게시글 작성하기</button>
+            <br>
+            <br>
+        </form>
     </div>
     <script defer="defer" src="/static/js/api.js"></script>
-    <script defer="defer" src="/static/js/articleCreate.js"></script>
     <script defer="defer" src="/static/js/common.js"></script>
+    <script defer="defer" src="/static/js/articleCreate.js"></script>
     <script defer="defer" src="/static/js/windowOnLoad.js"></script>
     <footer></footer>
 </body>
