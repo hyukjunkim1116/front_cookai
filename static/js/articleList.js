@@ -223,15 +223,20 @@ async function categoryQueryString(categoryId, name) {
 		} else {
 			category = `&category=`;
 		}
+		var checkedAtleastOne=false
 		for(var i=1;i<btns.length;i++){
 			if(btns[i].checked){
 				category += `${btns[i].getAttribute("id").slice(8)},`
 				categotyTitle.innerText += btns[i].nextElementSibling.innerText + ", "
-				
+				checkedAtleastOne=true
 			}
 			
 		}
-
+		if(!checkedAtleastOne){
+			console.log("1")
+			category+="notselected,"
+			categotyTitle.innerText+="없음"
+		}
 		category=category.slice(0,-1)
 	}
 	await loadFrame();
