@@ -242,14 +242,8 @@ async function loadComments(comment_page = 1) {
 	}
 }
 async function loadReComments(commentId, recomment_page = 1) {
-	if (!isLogin()) {
-		document.getElementById("recomment-input").disabled = true;
-		document.getElementById("submitReCommentButton").innerText = "로그인필요";
-	}
 	const response = await getReComments(articleId, commentId, recomment_page);
-	if (response == null) {
-		return null;
-	}
+	console.log(response);
 
 	const recommentList = document.createElement("div");
 	response.results.forEach((recomment) => {
@@ -262,14 +256,17 @@ async function loadReComments(commentId, recomment_page = 1) {
 		recommentList.className = `recomment-wrapper-${recomment.comment} mt-2 d-flex flex-column align-items-center`;
 		recommentList.innerHTML += `
 		<div class="card-text mt-2">
-			<small><a name="comment-author" href="${FRONT_BASE_URL}/mypage.html?user_id=${
+		<i class="bi bi-arrow-return-right"></i>
+				<small style="margin-left:5px;"><a name="comment-author" href="${FRONT_BASE_URL}/mypage.html?user_id=${
 			recomment.author
 		}">${recomment.user}</a>, ${recomment.updated_at
 			.split(".")[0]
 			.replace("T", " ")
 			.slice(0, -3)}</small>
-		</div>
-		<div class="card-text mt-2" name="comment-str">${recomment.recomment}</div>`;
+			</div>
+			<div class="card-text mt-2" name="comment-str" id="recomment-content-${
+				recomment.id
+			}">${recomment.recomment}</div>`;
 		const btnContainer = document.createElement("div");
 		btnContainer.className = "btn-container mt-2 mb-2";
 
@@ -279,17 +276,17 @@ async function loadReComments(commentId, recomment_page = 1) {
 
 			if (payload_parse.user_id == recomment.author) {
 				btnContainer.innerHTML += `
-				
-				<button class="comment-btn btn btn-sm btn-secondary recomment-put-btn${recomment.id}" id="comment-btn${recomment.id}" onclick="updateReCommentButton(${recomment.comment},${recomment.id})">수정</button>
-				<button class="comment-btn btn btn-sm btn-danger recomment-put-btn${recomment.id}" id="comment-btn${recomment.id}" onclick="deleteReCommentButton(${recomment.comment},${recomment.id})">삭제</button>`;
+					
+					<button class="comment-btn btn btn-sm btn-secondary recomment-put-btn${recomment.id}" id="comment-btn${recomment.id}" onclick="updateReCommentButton(${recomment.comment},${recomment.id})">수정</button>
+					<button class="comment-btn btn btn-sm btn-danger recomment-put-btn${recomment.id}" id="comment-btn${recomment.id}" onclick="deleteReCommentButton(${recomment.comment},${recomment.id})">삭제</button>`;
 			}
 		}
 		btnContainer.innerHTML += `
-		<button class="bi bi-hand-thumbs-up btn btn-sm btn-outline-dark ${
-			Boolean(payload) && recomment.like.includes(JSON.parse(payload).user_id)
-				? "active"
-				: ""
-		}" id="recomment-like" ${
+			<button class="bi bi-hand-thumbs-up btn btn-sm btn-outline-dark ${
+				Boolean(payload) && recomment.like.includes(JSON.parse(payload).user_id)
+					? "active"
+					: ""
+			}" id="recomment-like" ${
 			Boolean(payload) ? "" : "disabled"
 		} onclick="recommentLikeBtn(${recomment.comment},${recomment.id})"> ${
 			recomment.likes_count
@@ -415,9 +412,8 @@ async function recommentLikeBtn(commentId, recommentId) {
 async function submitUpdateReComment(commentId, recommentId) {
 	const recommentBtn = document.getElementById(`recomment-btn${commentId}`);
 	const recommentElement = document.getElementById("recomment-input");
-	recommentElement.value =
-		recommentBtn.previousElementSibling.previousElementSibling.innerText;
 	const newReComment = recommentElement.value;
+	console.log(recommentBtn, recommentElement, newReComment);
 	const recommentWrapper = document.querySelectorAll(
 		`.recomment-wrapper-${commentId}`
 	);
@@ -433,7 +429,7 @@ async function submitUpdateReComment(commentId, recommentId) {
 		}
 		loadReCommentsToggle(commentId);
 	} else {
-		alert(response.status);
+		alert(response_json.error);
 	}
 
 	const submitCommentButton = document.getElementById("submitCommentButton");
@@ -442,7 +438,7 @@ async function submitUpdateReComment(commentId, recommentId) {
 }
 async function updateReCommentButton(commentId, recommentId) {
 	const recommentContent = document.getElementById(
-		`comment-btn${recommentId}`
+		`recomment-content-${recommentId}`
 	).innerText;
 	const recommentElement = document.getElementById("recomment-input");
 	if (!recommentElement) {
@@ -481,25 +477,28 @@ async function deleteReCommentButton(commentId, recommentId) {
 	}
 }
 async function submitReComment(commentId) {
-	checkNotLogin();
-	const recommentBtn = document.getElementById(`recomment-btn${commentId}`);
-	const clickedClass = "clicked";
-	const recommentElement = document.getElementById("recomment-input");
-	const newRecomment = recommentElement.value;
-	const response = await postReComment(articleId, commentId, newRecomment);
-	const recommentWrapper = document.querySelectorAll(
-		`.recomment-wrapper-${commentId}`
-	);
-	recommentElement.value = "";
-	const response_json = await response.json();
-	if (response.status == 200) {
-		recommentWrapper.forEach((elem) => elem.remove());
-		if (recommentBtn.classList.contains(clickedClass)) {
-			recommentBtn.classList.remove(clickedClass);
+	const payload = localStorage.getItem("payload");
+	await checkNotLogin();
+	if (payload !== null) {
+		const recommentBtn = document.getElementById(`recomment-btn${commentId}`);
+		const clickedClass = "clicked";
+		const recommentElement = document.getElementById("recomment-input");
+		const newRecomment = recommentElement.value;
+		const response = await postReComment(articleId, commentId, newRecomment);
+		const recommentWrapper = document.querySelectorAll(
+			`.recomment-wrapper-${commentId}`
+		);
+		recommentElement.value = "";
+		const response_json = await response.json();
+		if (response.status == 200) {
+			recommentWrapper.forEach((elem) => elem.remove());
+			if (recommentBtn.classList.contains(clickedClass)) {
+				recommentBtn.classList.remove(clickedClass);
+			}
+			loadReCommentsToggle(commentId);
+		} else {
+			alert(response_json.error);
 		}
-		loadReCommentsToggle(commentId);
-	} else {
-		alert(response_json.error);
 	}
 }
 function postReCommentsToggle(commentId) {
@@ -566,8 +565,4 @@ async function loaderFunction() {
 	for (const commentStr of commentStrs) {
 		commentStr.innerText = commentStr.innerHTML;
 	}
-}
-{
-	/* <div class="col text-center">
-</div> */
 }

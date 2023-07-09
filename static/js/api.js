@@ -2,7 +2,6 @@ const FRONT_BASE_URL = "https://cookai.today";
 const BACKEND_BASE_URL = "https://www.backend.cookai.today";
 // const FRONT_BASE_URL = "http://127.0.0.1:5500";
 // const BACKEND_BASE_URL = "http://127.0.0.1:8000";
-//0709
 
 // 로그인
 async function handleLogin() {
@@ -803,8 +802,9 @@ async function updateReComment(commentId, recommentId, newReComment) {
 			})
 		}
 	);
-
-	return response;
+	if (response.status == 200) {
+		return response;
+	}
 }
 
 async function likeReComment(recommentId) {

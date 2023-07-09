@@ -6,7 +6,7 @@ function checkLogin() {
 	}
 }
 // 비로그인 상태에서 페이지 접속 시 로그인페이지로 이동하는 함수
-function checkNotLogin() {
+async function checkNotLogin() {
 	const payload = localStorage.getItem("payload");
 	if (payload == null) {
 		alert("로그인해주세요!");
