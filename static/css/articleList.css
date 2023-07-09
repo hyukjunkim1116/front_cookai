@@ -1,3 +1,6 @@
 .article-list-container {
     width: 100%;
 }
+#nextpage {
+    margin-top: 1em;
+}

@@ -36,8 +36,8 @@
     <div class="article-list-container">
         <div class="card">
             <div class="card-body">
-                <h3>전체보기</h3>
-                <p>-레시피의 바다를 누비세요</p>
+                <h3 class="text-center">전체보기</h3>
+                <p class="text-center mt-2 mb-3">-레시피의 바다를 누비세요</p>
                 <div class="mt-10 input-group" id="search_input">
 
                     <select class="form-select" id="search_type" name="search">
@@ -66,17 +66,17 @@
             </div>
 
             <div class="card-body" id="categoryArticleBox">
-                <div class="container">
-                    <h4 class="mt-4" id="category_title">카테고리: 전체</h1>
-                        <div class="scrolling-wrapper row flex-row flex-nowrap mt-4 pb-4 pt-2">
-                            <div id="category" class="btn-group" role="group"
-                                aria-label="Basic radio toggle button group">
+                <div class="container d-flex flex-column">
+                    <h4 class="mt-3 align-self-center" id="category_title">카테고리: 전체</h1>
+                    <div class="scrolling-wrapper row flex-row flex-nowrap mt-3 pb-4 pt-2">
+                        <div id="category" class="btn-group" role="group"
+                            aria-label="Basic radio toggle button group">
 
-                            </div>
                         </div>
+                    </div>
                 </div>
                 <hr>
-                <div id="selectorder"></div>
+                <div id="selectorder" class="d-flex justify-content-center align-items-center mt-4"></div>
                 <div class="mt-1 mb-3" id="articleList-title" style="display:flex; justify-content: center; font-size:large;">검색 내용이 아래 표시됩니다.</div>
                 <div id="articleList"></div>
             </div>

@@ -1,12 +1,12 @@
 async function handleSignUp() {
-	const btn = document.getElementById("button")
-	btn.disabled=true
+	const btn = document.getElementById("button");
+	btn.disabled = true;
 	const span = document.createElement("span");
-    span.setAttribute("id", "spinner-span");
-    span.setAttribute("class", "spinner-border spinner-border-sm");
-    span.setAttribute("role", "status");
-    span.setAttribute("aria-hidden", "true");
-    btn.appendChild(span);
+	span.setAttribute("id", "spinner-span");
+	span.setAttribute("class", "spinner-border spinner-border-sm");
+	span.setAttribute("role", "status");
+	span.setAttribute("aria-hidden", "true");
+	btn.appendChild(span);
 	const email = document.getElementById("email").value;
 	const firstPassword = document.getElementById("first_password").value;
 	const secondPassword = document.getElementById("second_password").value;
@@ -37,9 +37,11 @@ async function handleSignUp() {
 				}
 			});
 			alert(alertMsg);
-			btn.disabled=false
-			btn.firstElementChild.remove()
+			btn.disabled = false;
+			btn.firstElementChild.remove();
 		} else {
+			btn.innerHTML = "";
+			btn.innerText = "가입하기";
 			alert(
 				"입력하신 이메일을 확인하여 인증을 진행하고 회원가입을 완료해주세요!"
 			);
@@ -48,8 +50,8 @@ async function handleSignUp() {
 		}
 	} else {
 		alert("비밀번호가 일치하지 않습니다.");
-		btn.disabled=false
-		btn.firstElementChild.remove()
+		btn.disabled = false;
+		btn.firstElementChild.remove();
 	}
 }
 const passwordToggle = () => {

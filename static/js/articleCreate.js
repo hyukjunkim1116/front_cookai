@@ -113,12 +113,12 @@ const handleAddIngredient = () => {
 	div.setAttribute("id", `ingredient-${ingredientNumber}`);
 	div.classList.add("mb-3");
 	div.innerHTML = `
-	<div class="d-flex justify-content-between align-items-center">
+	<div class="d-flex justify-content-between align-items-center mb-3">
 	재료 제목<button class="btn btn-danger" id="delete-ingredient-${ingredientNumber}" onclick="deleteIngredientDiv(${ingredientNumber},event)">재료 삭제하기</button></div>
 	<input type="text" class="form-control" id="ingredient-title-${ingredientNumber}" name="ingredient-title" placeholder="재료 제목을 입력하세요">
-	<label for="ingredient-amount-${ingredientNumber}" class="form-label">수량</label>
+	<label for="ingredient-amount-${ingredientNumber}" class="form-label mt-2">수량</label>
 	<input type="number" class="form-control" id="ingredient-amount-${ingredientNumber}" name="ingredient-amount" placeholder="수량을 입력하세요">
-	<label for="ingredient-unit-${ingredientNumber}" class="form-label">단위</label>
+	<label for="ingredient-unit-${ingredientNumber}" class="form-label mt-2">단위</label>
 	`;
 	const unitSelect = document.createElement("select");
 	unitSelect.setAttribute("class", " form-select");
@@ -146,10 +146,10 @@ const handleAddRecipe = () => {
 	div.innerHTML = `
 	<label for="recipe-${recipeNumber}-textarea" class="form-label">레시피 ${recipeNumber}</label>
 	<textarea class="form-control recipe-textarea" id="recipe-${recipeNumber}-textarea" name="recipe-${recipeNumber}-textarea" rows="3"></textarea>
-	<label for="recipe-image-${recipeNumber}" class="form-label">이미지</label>
+	<label for="recipe-image-${recipeNumber}" class="form-label mt-2">이미지</label>
 	<input type="file" onchange="setRecipeThumbnail(${recipeNumber},event);" class="form-control recipe-file" id="recipe-image-${recipeNumber}" name="recipe-image-${recipeNumber}" accept="image/*">
 	<div id="recipe-image-${recipeNumber}-container" class="recipe-image-${recipeNumber}-container recipe-image-container"></div>
-	<button class="btn btn-primary" id="delete-recipe-div" onclick="deleteRecipeDiv(${recipeNumber},event)">레시피 삭제하기</button>
+	<button class="btn btn-primary mt-3" id="delete-recipe-div" onclick="deleteRecipeDiv(${recipeNumber},event)">레시피 삭제하기</button>
 	`;
 	recipeContainer.appendChild(div);
 	recipeNumber++;

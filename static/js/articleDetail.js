@@ -96,7 +96,7 @@ async function loadArticle() {
 		const buttonArea1 = document.getElementById("buttons1");
 		if (response_json.is_author) {
 			let updateBtn = document.createElement("a");
-			updateBtn.setAttribute("class", "btn btn-outline-secondary");
+			updateBtn.setAttribute("class", "btn btn-outline-secondary flex-fill");
 			updateBtn.setAttribute(
 				"href",
 				`${FRONT_BASE_URL}/articles/article_update.html?article_id=${articleId}`
@@ -105,7 +105,7 @@ async function loadArticle() {
 
 			let deleteBtn = document.createElement("button");
 			deleteBtn.setAttribute("type", "button");
-			deleteBtn.setAttribute("class", "btn btn-outline-danger");
+			deleteBtn.setAttribute("class", "btn btn-outline-danger flex-fill");
 			deleteBtn.setAttribute("onclick", `deleteArticleBtn(${articleId})`);
 			deleteBtn.innerText = "삭제";
 
@@ -143,22 +143,23 @@ async function loadArticle() {
 		likeBtn.setAttribute("id","articleLikeBtn");
 		likeBtn.setAttribute("onclick", `loadLikeArticle(${articleId})`);
 		if (response_json.like.includes(user_json.id)) {
-			likeBtn.setAttribute("class", "btn btn-outline-danger");
+			likeBtn.setAttribute("class", "btn btn-outline-danger flex-fill");
+			likeBtn.setAttribute("onclick", `likeArticle(${articleId})`);
 			likeBtn.innerHTML = `좋아요 취소 👍${response_json.likes_count}`;
 		} else {
-			likeBtn.setAttribute("class", "btn btn-outline-warning");
-			
+			likeBtn.setAttribute("class", "btn btn-outline-warning flex-fill");
+			likeBtn.setAttribute("onclick", `likeArticle(${articleId})`);
 			likeBtn.innerHTML = `좋아요 표시 👍${response_json.likes_count}`;
 		}
 		let bookmarkBtn = document.createElement("button");
 		bookmarkBtn.setAttribute("type", "button");
 		bookmarkBtn.setAttribute("id","articleBookmarkBtn");
 		if (response_json.bookmark.includes(user_json.id)) {
-			bookmarkBtn.setAttribute("class", "btn btn-outline-dark");
+			bookmarkBtn.setAttribute("class", "btn btn-outline-dark flex-fill");
 			bookmarkBtn.setAttribute("onclick", `bookmarkArticle(${articleId})`);
 			bookmarkBtn.innerHTML = `북마크 취소`;
 		} else {
-			bookmarkBtn.setAttribute("class", "btn btn-outline-success");
+			bookmarkBtn.setAttribute("class", "btn btn-outline-success flex-fill");
 			bookmarkBtn.setAttribute("onclick", `bookmarkArticle(${articleId})`);
 			bookmarkBtn.innerHTML = `북마크 하기`;
 		}
@@ -219,29 +220,32 @@ async function loadComments(comment_page = 1) {
 	response.results.forEach((comment) => {
 		commentList.innerHTML += `
 
-        <div class="card-text">
+        <div class="card-text mt-3">
         <small><a name="comment-author" href="${FRONT_BASE_URL}/mypage.html?user_id=${
 			comment.author
 		}">${comment.user}</a>, ${comment.updated_at
 			.split(".")[0]
 			.replace("T", " ")
-			.slice(0, -3)}</small></div><div name="comment-str" class="card-text">${
+			.slice(
+				0,
+				-3
+			)}</small></div><div name="comment-str" class="card-text mt-3">${
 			comment.comment
 		}</div>`;
 		const payload = localStorage.getItem("payload");
 		if (payload) {
 			const payload_parse = JSON.parse(payload);
 
-			commentList.innerHTML += `<div class="btn-container">`;
+			commentList.innerHTML += `<div class="btn-container mt-2">`;
 
 			if (payload_parse.user_id == comment.author) {
 				commentList.innerHTML += `
-                    <button class="comment-btn btn btn-sm btn-secondary" id="comment-btn${comment.id}" onclick="updateCommentButton(${comment.id})">수정</button>
-                    <button class="comment-btn btn btn-sm btn-danger" id="comment-btn${comment.id}" onclick="deleteCommentButton(${comment.id})">삭제</button>`;
+                    <button class="comment-btn mt-2 btn btn-sm btn-secondary" id="comment-btn${comment.id}" onclick="updateCommentButton(${comment.id})">수정</button>
+                    <button class="comment-btn mt-2 btn btn-sm btn-danger" id="comment-btn${comment.id}" onclick="deleteCommentButton(${comment.id})">삭제</button>`;
 			}
 		}
 		commentList.innerHTML += `
-                <button class="bi bi-hand-thumbs-up btn btn-sm btn-outline-dark comment-like-${
+                <button class="bi bi-hand-thumbs-up mt-2 btn btn-sm btn-outline-dark comment-like-${
 									comment.id
 								} ${
 			Boolean(payload) && comment.like.includes(JSON.parse(payload).user_id)
@@ -251,12 +255,14 @@ async function loadComments(comment_page = 1) {
 			Boolean(payload) ? "" : "disabled"
 		}> ${comment.likes_count}</button>
             </div>`;
-		commentList.innerHTML += `<button class="comment-btn btn btn-sm btn-success" id="recomment-btn${comment.id}" onclick="loadReCommentsToggle(${comment.id})">답글보기</button>
-		<button class="comment-btn btn-sm btn btn-warning" id="post-recomment-btn${comment.id}" onclick="postReCommentsToggle(${comment.id})">답글작성</button>`;
+		commentList.innerHTML += `
+		<button class="comment-btn btn btn-sm btn-success mt-2" id="recomment-btn${comment.id}" onclick="loadReCommentsToggle(${comment.id})">답글보기</button>
+		<button class="comment-btn btn-sm mt-2 btn btn-warning" id="post-recomment-btn${comment.id}" onclick="postReCommentsToggle(${comment.id})">답글작성</button>
+		`;
 	});
 
 	const pagination = document.createElement("ul");
-	pagination.setAttribute("class", "pagination");
+	pagination.setAttribute("class", "pagination mt-2");
 	pagination.innerHTML = "";
 	const pagecount = response.count / 50 + 1;
 	if (pagecount >= 2) {
@@ -274,14 +280,7 @@ async function loadComments(comment_page = 1) {
 	}
 }
 async function loadReComments(commentId, recomment_page = 1) {
-	if (!isLogin()) {
-		document.getElementById("recomment-input").disabled = true;
-		document.getElementById("submitReCommentButton").innerText = "로그인필요";
-	}
 	const response = await getReComments(articleId, commentId, recomment_page);
-	if (response == null) {
-		return null;
-	}
 
 	const recommentList = document.createElement("div");
 	response.results.forEach((recomment) => {
@@ -291,19 +290,22 @@ async function loadReComments(commentId, recomment_page = 1) {
 			);
 			prevRecommentList.remove();
 		}
-		recommentList.className = `recomment-wrapper-${recomment.comment}`;
+		recommentList.className = `recomment-wrapper-${recomment.comment} mt-2 d-flex flex-column align-items-start ms-4`;
 		recommentList.innerHTML += `
-		<div class="card-text">
-			<small><a name="comment-author" href="${FRONT_BASE_URL}/mypage.html?user_id=${
+		<div class="card-text mt-2">
+		<i class="bi bi-arrow-return-right"></i>
+				<small style="margin-left:5px;"><a name="comment-author" href="${FRONT_BASE_URL}/mypage.html?user_id=${
 			recomment.author
 		}">${recomment.user}</a>, ${recomment.updated_at
 			.split(".")[0]
 			.replace("T", " ")
 			.slice(0, -3)}</small>
-		</div>
-		<div class="card-text" name="comment-str">${recomment.recomment}</div>`;
+			</div>
+			<div class="card-text mt-2" name="comment-str" id="recomment-content-${
+				recomment.id
+			}">${recomment.recomment}</div>`;
 		const btnContainer = document.createElement("div");
-		btnContainer.className = "btn-container";
+		btnContainer.className = "btn-container mt-2 mb-2";
 
 		const payload = localStorage.getItem("payload");
 		if (payload) {
@@ -311,16 +313,17 @@ async function loadReComments(commentId, recomment_page = 1) {
 
 			if (payload_parse.user_id == recomment.author) {
 				btnContainer.innerHTML += `
-				<button class="comment-btn btn btn-sm btn-secondary recomment-put-btn${recomment.id}" id="comment-btn${recomment.id}" onclick="updateReCommentButton(${recomment.comment},${recomment.id})">수정</button>
-				<button class="comment-btn btn btn-sm btn-danger recomment-put-btn${recomment.id}" id="comment-btn${recomment.id}" onclick="deleteReCommentButton(${recomment.comment},${recomment.id})">삭제</button>`;
+					
+					<button class="comment-btn btn btn-sm btn-secondary recomment-put-btn${recomment.id}" id="comment-btn${recomment.id}" onclick="updateReCommentButton(${recomment.comment},${recomment.id})">수정</button>
+					<button class="comment-btn btn btn-sm btn-danger recomment-put-btn${recomment.id}" id="comment-btn${recomment.id}" onclick="deleteReCommentButton(${recomment.comment},${recomment.id})">삭제</button>`;
 			}
 		}
 		btnContainer.innerHTML += `
-		<button class="bi bi-hand-thumbs-up btn btn-sm btn-outline-dark ${
-			Boolean(payload) && recomment.like.includes(JSON.parse(payload).user_id)
-				? "active"
-				: ""
-		}" id="recomment-like" ${
+			<button class="bi bi-hand-thumbs-up btn btn-sm btn-outline-dark ${
+				Boolean(payload) && recomment.like.includes(JSON.parse(payload).user_id)
+					? "active"
+					: ""
+			}" id="recomment-like" ${
 			Boolean(payload) ? "" : "disabled"
 		} onclick="recommentLikeBtn(${recomment.comment},${recomment.id})"> ${
 			recomment.likes_count
@@ -332,7 +335,7 @@ async function loadReComments(commentId, recomment_page = 1) {
 		likeBtn.after(recommentList);
 	});
 	const pagination = document.createElement("ul");
-	pagination.setAttribute("class", "pagination");
+	pagination.setAttribute("class", "pagination mt-2");
 	pagination.innerHTML = "";
 	const pagecount = response.count / 5 + 1;
 	if (pagecount >= 2) {
@@ -446,8 +449,6 @@ async function recommentLikeBtn(commentId, recommentId) {
 async function submitUpdateReComment(commentId, recommentId) {
 	const recommentBtn = document.getElementById(`recomment-btn${commentId}`);
 	const recommentElement = document.getElementById("recomment-input");
-	recommentElement.value =
-		recommentBtn.previousElementSibling.previousElementSibling.innerText;
 	const newReComment = recommentElement.value;
 	const recommentWrapper = document.querySelectorAll(
 		`.recomment-wrapper-${commentId}`
@@ -464,7 +465,7 @@ async function submitUpdateReComment(commentId, recommentId) {
 		}
 		loadReCommentsToggle(commentId);
 	} else {
-		alert(response.status);
+		alert(response_json.error);
 	}
 
 	const submitCommentButton = document.getElementById("submitCommentButton");
@@ -473,7 +474,7 @@ async function submitUpdateReComment(commentId, recommentId) {
 }
 async function updateReCommentButton(commentId, recommentId) {
 	const recommentContent = document.getElementById(
-		`comment-btn${recommentId}`
+		`recomment-content-${recommentId}`
 	).innerText;
 	const recommentElement = document.getElementById("recomment-input");
 	if (!recommentElement) {
@@ -512,25 +513,28 @@ async function deleteReCommentButton(commentId, recommentId) {
 	}
 }
 async function submitReComment(commentId) {
-	checkNotLogin();
-	const recommentBtn = document.getElementById(`recomment-btn${commentId}`);
-	const clickedClass = "clicked";
-	const recommentElement = document.getElementById("recomment-input");
-	const newRecomment = recommentElement.value;
-	const response = await postReComment(articleId, commentId, newRecomment);
-	const recommentWrapper = document.querySelectorAll(
-		`.recomment-wrapper-${commentId}`
-	);
-	recommentElement.value = "";
-	const response_json = await response.json();
-	if (response.status == 200) {
-		recommentWrapper.forEach((elem) => elem.remove());
-		if (recommentBtn.classList.contains(clickedClass)) {
-			recommentBtn.classList.remove(clickedClass);
+	const payload = localStorage.getItem("payload");
+	await checkNotLogin();
+	if (payload !== null) {
+		const recommentBtn = document.getElementById(`recomment-btn${commentId}`);
+		const clickedClass = "clicked";
+		const recommentElement = document.getElementById("recomment-input");
+		const newRecomment = recommentElement.value;
+		const response = await postReComment(articleId, commentId, newRecomment);
+		const recommentWrapper = document.querySelectorAll(
+			`.recomment-wrapper-${commentId}`
+		);
+		recommentElement.value = "";
+		const response_json = await response.json();
+		if (response.status == 200) {
+			recommentWrapper.forEach((elem) => elem.remove());
+			if (recommentBtn.classList.contains(clickedClass)) {
+				recommentBtn.classList.remove(clickedClass);
+			}
+			loadReCommentsToggle(commentId);
+		} else {
+			alert(response_json.error);
 		}
-		loadReCommentsToggle(commentId);
-	} else {
-		alert(response.status);
 	}
 }
 function postReCommentsToggle(commentId) {
@@ -540,7 +544,7 @@ function postReCommentsToggle(commentId) {
 	const postRecommentInput = document.createElement("div");
 	postRecommentInput.setAttribute(
 		"class",
-		`container mt-1 recomment-input-div-${commentId}`
+		`container mt-3 recomment-input-div-${commentId}`
 	);
 	postRecommentInput.innerHTML = `
 	<div class="input-group mb-3">
@@ -565,6 +569,9 @@ function postReCommentsToggle(commentId) {
 }
 function loadReCommentsToggle(commentId) {
 	const recommentBtn = document.getElementById(`recomment-btn${commentId}`);
+	const postRecommentBtn = document.getElementById(
+		`post-recomment-btn${commentId}`
+	);
 	const recommentWrapper = document.querySelectorAll(
 		`.recomment-wrapper-${commentId}`
 	);

@@ -2,6 +2,12 @@
 async function handleLoginBtn() {
 	const loginBtn = document.getElementById("login-btn");
 	loginBtn.disabled = true;
+	const span = document.createElement("span");
+	span.setAttribute("id", "spinner-span");
+	span.setAttribute("class", "spinner-border spinner-border-sm");
+	span.setAttribute("role", "status");
+	span.setAttribute("aria-hidden", "true");
+	loginBtn.appendChild(span);
 	const response = await handleLogin();
 
 	if (response.status == 200) {
@@ -21,9 +27,13 @@ async function handleLoginBtn() {
 				.join("")
 		);
 		localStorage.setItem("payload", jsonPayload);
+		loginBtn.innerHTML = "";
+		loginBtn.innerText = "로그인";
 		alert("환영합니다!");
 		window.location.replace(`${FRONT_BASE_URL}/users/feed.html`);
 	} else {
+		loginBtn.innerHTML = "";
+		loginBtn.innerText = "로그인";
 		alert("회원정보가 일치하지 않습니다!");
 		loginBtn.disabled = false;
 	}

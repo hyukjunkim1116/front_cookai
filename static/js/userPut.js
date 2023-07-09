@@ -23,7 +23,6 @@ async function loadUserData() {
 	document.getElementById("image_container").innerHTML = "";
 	document.getElementById("image_container").appendChild(img);
 	const changePasswordBtn = document.getElementById("user-password-update-btn");
-	console.log(changePasswordBtn);
 	usernameText.value = `${response.username}`;
 	if (response.login_type !== "normal") {
 		document.getElementById("flexSwitchCheckDefault").disabled = true;
@@ -38,6 +37,12 @@ async function loadUserData() {
 async function putUserDetail() {
 	await checkTokenExp();
 	const putUserBtn = document.getElementById("user-update-button");
+	const span = document.createElement("span");
+	span.setAttribute("id", "spinner-span");
+	span.setAttribute("class", "spinner-border spinner-border-sm");
+	span.setAttribute("role", "status");
+	span.setAttribute("aria-hidden", "true");
+	putUserBtn.appendChild(span);
 	putUserBtn.disabled = true;
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const username = document.getElementById("username").value;
@@ -69,8 +74,12 @@ async function putUserDetail() {
 		const response_json = await response.json();
 		if (response.status == 400) {
 			alert(Object.values(response_json));
+			putUserBtn.innerHTML = "";
+			putUserBtn.innerText = "변경하기";
 			putUserBtn.disabled = false;
 		} else {
+			putUserBtn.innerHTML = "";
+			putUserBtn.innerText = "변경하기";
 			alert("변경 완료!");
 			window.location.reload();
 		}
@@ -85,13 +94,17 @@ async function putUserDetail() {
 		});
 		const response_json = await response.json();
 		if (response.status == 400) {
-			alert(Object.entries(response_json));
+			putUserBtn.innerHTML = "";
+			putUserBtn.innerText = "변경하기";
 			putUserBtn.disabled = false;
 		} else {
 			alert("변경 완료!");
 			window.location.reload();
 		}
 	} else {
+		putUserBtn.innerHTML = "";
+		putUserBtn.innerText = "변경하기";
+		putUserBtn.disabled = false;
 		alert("닉네임을 적어주세요!");
 	}
 }
@@ -100,7 +113,12 @@ async function handleUpdatePassword() {
 	await checkTokenExp();
 	const changePasswordBtn = document.getElementById("user-password-update-btn");
 	changePasswordBtn.disabled = true;
-	const token = localStorage.getItem("access");
+	const span = document.createElement("span");
+	span.setAttribute("id", "spinner-span");
+	span.setAttribute("class", "spinner-border spinner-border-sm");
+	span.setAttribute("role", "status");
+	span.setAttribute("aria-hidden", "true");
+	changePasswordBtn.appendChild(span);
 	const oldPassword = document.getElementById("old_password").value;
 	const newPassword = document.getElementById("new_password").value;
 	const newPasswordCheck = document.getElementById("new_password_check").value;
@@ -115,11 +133,15 @@ async function handleUpdatePassword() {
 	});
 	const response_json = await response.json();
 	if (response.status == 200) {
+		changePasswordBtn.innerHTML = "";
+		changePasswordBtn.innerText = "비밀번호 변경하기";
 		alert(response_json.message);
 		handleLogout();
 		window.location = `${FRONT_BASE_URL}/login.html`;
 		return response;
 	} else {
+		changePasswordBtn.innerHTML = "";
+		changePasswordBtn.innerText = "비밀번호 변경하기";
 		alert(response_json.error);
 		changePasswordBtn.disabled = false;
 	}

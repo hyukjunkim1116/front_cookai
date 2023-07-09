@@ -143,8 +143,6 @@ async function articleUpdate() {
 	}
 	await arrangeRecipeAndUpload();
 	await checkTokenExp();
-	const token = localStorage.getItem("access");
-
 	// const exist_post = await getArticle(articleId);
 	const category = document.getElementById("category").value;
 	const title = document.getElementById("article_title").value;

@@ -124,7 +124,7 @@
     letter-spacing: -0.45px;
     /* 자간 설정 */
 }
-
+/* #ff6b39 */
 /* backtotop btn */
 .floating-top-btn,
 .floating-back-btn {
@@ -132,7 +132,7 @@
     position: fixed;
     offset-anchor: center;
     bottom: 10%;
-    right: 20%;
+    right: 10%;
     z-index: 99;
     background-image: url("/static/img/top-button.png");
     background-repeat: no-repeat;
