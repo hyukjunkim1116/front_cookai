@@ -70,7 +70,7 @@ async function loadArticle() {
 				'div class="mb-3 row" style="min-height: 120px;"'
 			);
 			p = p.replace(
-				/<label for="recipe-image-[^>]*" class="form-label">이미지<\/label>/g,
+				/<label for="recipe-image-[^>]*" class="form-label mt-2">이미지<\/label>/g,
 				""
 			);
 			p = p.replace(/<input type="file"[^>]*">/g, "");
