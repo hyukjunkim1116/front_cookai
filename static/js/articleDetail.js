@@ -81,7 +81,7 @@ async function loadArticle() {
 			// p= p.replace(/img src/g,'img class="img-thumbnail" style="max-height: 120px;" src')
 			p = p.replace(/<\/textarea>/g, "</p>");
 			p = p.replace(
-				/<button class="btn btn-primary" id="delete-recipe-div" onclick="deleteRecipeDiv([^>]*)">레시피 삭제하기<\/button>/g,
+				/<button class="btn btn-primary mt-3" id="delete-recipe-div" onclick="deleteRecipeDiv([^>]*)">레시피 삭제하기<\/button>/g,
 				""
 			);
 			p = p.replace(/class="form-label">레시피/g, 'class="form-label">과정');
