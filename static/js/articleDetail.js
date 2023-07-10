@@ -70,7 +70,7 @@ async function loadArticle() {
 				'div class="mb-3 row" style="min-height: 120px;"'
 			);
 			p = p.replace(
-				/<label for="recipe-image-[^>]*" class="form-label mt-2">이미지<\/label>/g,
+				/<label for="recipe-image-[^>]*" class="form-label[^>]*">이미지<\/label>/g,
 				""
 			);
 			p = p.replace(/<input type="file"[^>]*">/g, "");
@@ -81,7 +81,7 @@ async function loadArticle() {
 			// p= p.replace(/img src/g,'img class="img-thumbnail" style="max-height: 120px;" src')
 			p = p.replace(/<\/textarea>/g, "</p>");
 			p = p.replace(
-				/<button class="btn btn-primary mt-3" id="delete-recipe-div" onclick="deleteRecipeDiv([^>]*)">레시피 삭제하기<\/button>/g,
+				/<button class="btn btn-primary[^>]*" id="delete-recipe-div" onclick="deleteRecipeDiv([^>]*)">레시피 삭제하기<\/button>/g,
 				""
 			);
 			p = p.replace(/class="form-label">레시피/g, 'class="form-label">과정');
