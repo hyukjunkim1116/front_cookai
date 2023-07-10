@@ -293,7 +293,6 @@ async function postUserFridge() {
 	postFridgeBtn.innerHTML = "";
 	postFridgeBtn.innerText = "추가하기";
 	postFridgeBtn.disabled = false;
-	window.location.reload();
 	return response;
 }
 async function deleteUserFridge(fridgeId) {
@@ -305,7 +304,6 @@ async function deleteUserFridge(fridgeId) {
 			method: "DELETE"
 		}
 	);
-	window.location.reload();
 	return response;
 }
 

@@ -467,15 +467,25 @@ async function loadUserFridge() {
 	const response = await getUserFridge();
 
 	const userFridgeContent = document.getElementById("fridge-content");
+	userFridgeContent.innerHTML=''
 	if (isYOU(userId)) {
 		if (response !== []) {
-			response.forEach((fridge) => {
+			var fridge_dic={}
+			response.forEach(element => {
+				if(element.ingredient in fridge_dic){
+					fridge_dic[element.ingredient].push(element.id)
+				}else{
+					fridge_dic[element.ingredient] = [element.id]
+				}
+			});
+			console.log(fridge_dic)
+			Object.entries(fridge_dic).forEach(k_vs=> {
 				const newUserFridge = document.createElement("div");
 				const deleteUserFridgeBtn = document.createElement("div");
-				deleteUserFridgeBtn.innerHTML = `<div onclick="deleteUserFridge(${fridge.id})"><i style="cursor:pointer;" class="bi bi-x"></i></div>`;
+				deleteUserFridgeBtn.innerHTML = `<div onclick="reloadDeleteUserFridge(${k_vs[1][0]})" class="d-flex align-items-center"><small class="text-muted"style="font-size:0.6rem;">${k_vs[1].length}</small><i style="cursor:pointer;" class="bi bi-dash"></i></div>`;
 				newUserFridge.setAttribute("class", "fridge-ingredient");
-				newUserFridge.setAttribute("id", `fridge-${fridge.id}`);
-				newUserFridge.innerText = `${fridge.ingredient}`;
+				newUserFridge.setAttribute("id", `fridge-${k_vs[1][0]}`);
+				newUserFridge.innerText = `${k_vs[0]}`;
 				newUserFridge.appendChild(deleteUserFridgeBtn);
 				userFridgeContent.appendChild(newUserFridge);
 			});
@@ -483,6 +493,26 @@ async function loadUserFridge() {
 	} else {
 		const fridge_container = document.getElementById("fridge");
 		fridge_container.remove();
+	}
+}
+async function reloadDeleteUserFridge(id){
+	const response=await deleteUserFridge(id)
+	const response_json=await response.json()
+	if(response.status !=200){
+		alert("에러! 다시 로그인후 시도해주세요!")
+		return null
+	}else{
+		loadUserFridge()
+	}
+}
+async function reloadPostUserFridge(id){
+	const response=await postUserFridge(id)
+	const response_json=await response.json()
+	if(response.status !=201){
+		alert("에러! 다시 로그인후 시도해주세요!")
+		return null
+	}else{
+		loadUserFridge()
 	}
 }
 async function loadUserArticle(currentPage) {
