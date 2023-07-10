@@ -116,7 +116,7 @@ async function loadArticle() {
 				let likeBtn = document.createElement("button");
 				likeBtn.setAttribute("type", "button");
 				likeBtn.setAttribute("class", "btn btn-outline-warning");
-				likeBtn.setAttribute("onclick", `likeArticle(${articleId})`);
+				likeBtn.setAttribute("onclick", `loadlikeArticle(${articleId})`);
 				likeBtn.innerHTML = `좋아요 👍${response_json.likes_count}<br><small style="font-size:0.6rem">로그인 후 좋아요를 표시할 수 있습니다.</small>`;
 				likeBtn.disabled = true;
 				buttonArea1.append(likeBtn);
@@ -144,11 +144,9 @@ async function loadArticle() {
 		likeBtn.setAttribute("onclick", `loadLikeArticle(${articleId})`);
 		if (response_json.like.includes(user_json.id)) {
 			likeBtn.setAttribute("class", "btn btn-outline-danger flex-fill");
-			likeBtn.setAttribute("onclick", `likeArticle(${articleId})`);
 			likeBtn.innerHTML = `좋아요 취소 👍${response_json.likes_count}`;
 		} else {
 			likeBtn.setAttribute("class", "btn btn-outline-warning flex-fill");
-			likeBtn.setAttribute("onclick", `likeArticle(${articleId})`);
 			likeBtn.innerHTML = `좋아요 표시 👍${response_json.likes_count}`;
 		}
 		let bookmarkBtn = document.createElement("button");
