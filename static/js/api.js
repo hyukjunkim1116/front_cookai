@@ -468,11 +468,11 @@ async function bookmarkArticle(articleId) {
 
 	if (response.status == 200 || response.status == 204) {
 		const response_json = await response.json();
-		const bookmarkBtn = document.getElementById("articleBookmarkBtn")
-		if(response_json=="bookmark"){
+		const bookmarkBtn = document.getElementById("articleBookmarkBtn");
+		if (response_json == "bookmark") {
 			bookmarkBtn.setAttribute("class", "btn btn-outline-dark");
 			bookmarkBtn.innerHTML = `북마크 취소`;
-		}else{
+		} else {
 			bookmarkBtn.setAttribute("class", "btn btn-outline-success");
 			bookmarkBtn.innerHTML = `북마크 하기`;
 		}
@@ -491,7 +491,7 @@ async function likeArticle(articleId) {
 			headers: await getHeader((json = false))
 		}
 	);
-	return response
+	return response;
 }
 
 async function deleteComment(commentId) {
