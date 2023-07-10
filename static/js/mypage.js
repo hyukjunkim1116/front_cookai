@@ -389,10 +389,10 @@ async function loadUserDetail() {
 	const bookmark = document.getElementById("bookmark-article");
 
 	bookmark.innerText = `북마크한 글 : ${response.total_bookmark_articles}`;
-	if(!(isYOU(response.id)||response.is_open_likes)){
+	if (!(isYOU(response.id) || response.is_open_likes)) {
 		bookmark.innerHTML += `<i style="cursor:pointer;" class="bi bi-lock"></i>`;
 	}
-	if(firstLoad && (isYOU(response.id)||response.is_open_likes)){
+	if (firstLoad && (isYOU(response.id) || response.is_open_likes)) {
 		bookmark.addEventListener("click", async () => {
 			const articlePageList = document.getElementById("article");
 			const clickedClass = "bookmarkArticlePageListClicked";
@@ -417,11 +417,11 @@ async function loadUserDetail() {
 	const likeArticle = document.getElementById("like-article");
 
 	likeArticle.innerText = `좋아요한 글 : ${response.total_like_articles}`;
-	if(!(isYOU(response.id)||response.is_open_likes)){
+	if (!(isYOU(response.id) || response.is_open_likes)) {
 		likeArticle.innerHTML += `<i style="cursor:pointer;" class="bi bi-lock"></i>`;
 	}
-	
-	if(firstLoad && (isYOU(response.id)||response.is_open_likes)){
+
+	if (firstLoad && (isYOU(response.id) || response.is_open_likes)) {
 		likeArticle.addEventListener("click", async () => {
 			const articlePageList = document.getElementById("article");
 			const clickedClass = "likeArticlePageListClicked";
@@ -445,10 +445,10 @@ async function loadUserDetail() {
 	}
 	const likeComment = document.getElementById("like-comment");
 	likeComment.innerText = `좋아요한 댓글 : ${response.total_like_comments}`;
-	if(!(isYOU(response.id)||response.is_open_likes)){
+	if (!(isYOU(response.id) || response.is_open_likes)) {
 		likeComment.innerHTML += `<i style="cursor:pointer;" class="bi bi-lock"></i>`;
 	}
-	if(firstLoad && (isYOU(response.id)||response.is_open_likes)){
+	if (firstLoad && (isYOU(response.id) || response.is_open_likes)) {
 		likeComment.addEventListener("click", async () => {
 			const commentPageList = document.getElementById("comment");
 			const clickedClass = "likeCommentPageListClicked";
@@ -475,19 +475,19 @@ async function loadUserFridge() {
 	const response = await getUserFridge();
 
 	const userFridgeContent = document.getElementById("fridge-content");
-	userFridgeContent.innerHTML=''
+	userFridgeContent.innerHTML = "";
 	if (isYOU(userId)) {
 		if (response !== []) {
-			var fridge_dic={}
-			response.forEach(element => {
-				if(element.ingredient in fridge_dic){
-					fridge_dic[element.ingredient].push(element.id)
-				}else{
-					fridge_dic[element.ingredient] = [element.id]
+			var fridge_dic = {};
+			response.forEach((element) => {
+				if (element.ingredient in fridge_dic) {
+					fridge_dic[element.ingredient].push(element.id);
+				} else {
+					fridge_dic[element.ingredient] = [element.id];
 				}
 			});
-			console.log(fridge_dic)
-			Object.entries(fridge_dic).forEach(k_vs=> {
+			console.log(fridge_dic);
+			Object.entries(fridge_dic).forEach((k_vs) => {
 				const newUserFridge = document.createElement("div");
 				const deleteUserFridgeBtn = document.createElement("div");
 				deleteUserFridgeBtn.innerHTML = `<div onclick="reloadDeleteUserFridge(${k_vs[1][0]})" class="d-flex align-items-center"><small class="text-muted"style="font-size:0.6rem;">${k_vs[1].length}</small><i style="cursor:pointer;" class="bi bi-dash"></i></div>`;
@@ -503,24 +503,30 @@ async function loadUserFridge() {
 		fridge_container.remove();
 	}
 }
-async function reloadDeleteUserFridge(id){
-	const response=await deleteUserFridge(id)
-	const response_json=await response.json()
-	if(response.status !=200){
-		alert("에러! 다시 로그인후 시도해주세요!")
-		return null
-	}else{
-		loadUserFridge()
+async function reloadDeleteUserFridge(id) {
+	const response = await deleteUserFridge(id);
+	const response_json = await response.json();
+	if (response.status != 200) {
+		alert("에러! 다시 로그인후 시도해주세요!");
+		return null;
+	} else {
+		loadUserFridge();
 	}
 }
-async function reloadPostUserFridge(id){
-	const response=await postUserFridge(id)
-	const response_json=await response.json()
-	if(response.status !=201){
-		alert("에러! 다시 로그인후 시도해주세요!")
-		return null
-	}else{
-		loadUserFridge()
+async function reloadPostUserFridge(id) {
+	const onlyKoreanRegex = /^[ㄱ-ㅎ|가-힣]+$/;
+	const fridgeInput = document.getElementById("ingredient").value;
+	if (!onlyKoreanRegex.test(fridgeInput)) {
+		alert("한글만 입력 가능합니다!");
+		return null;
+	}
+	const response = await postUserFridge(id);
+	const response_json = await response.json();
+	if (response.status != 201) {
+		alert("에러! 다시 로그인후 시도해주세요!");
+		return null;
+	} else {
+		loadUserFridge();
 	}
 }
 async function loadUserArticle(currentPage) {
