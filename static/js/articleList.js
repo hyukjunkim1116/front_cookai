@@ -206,19 +206,43 @@ async function search_() {
 }
 async function categoryQueryString(categoryId, name) {
 	// 1. 카테고리선별
+	const btns=document.getElementsByName("btnradio")
+	const categotyTitle = document.getElementById("category_title");
 	if (categoryId == 0) {
 		category = ``;
-	} else {
-		if (query == ``) {
-			category = `?category=${categoryId}`;
-		} else {
-			category += `&category=${categoryId}`;
+		for(var i=1;i<btns.length;i++){
+			btns[i].checked=false
 		}
+		categotyTitle.innerText = `카테고리:${name}`;
+
+	} else {
+		categotyTitle.innerText = `카테고리:`;
+		btns[0].checked=false
+		if (query == ``) {
+			category = `?category=`;
+		} else {
+			category = `&category=`;
+		}
+		var checkedAtleastOne=false
+		for(var i=1;i<btns.length;i++){
+			if(btns[i].checked){
+				category += `${btns[i].getAttribute("id").slice(8)},`
+				categotyTitle.innerText += btns[i].nextElementSibling.innerText + ", "
+				checkedAtleastOne=true
+			}
+			
+		}
+		if(!checkedAtleastOne){
+			console.log("1")
+			category+="notselected,"
+			categotyTitle.innerText+="없음"
+		}
+		category=category.slice(0,-1)
 	}
 	await loadFrame();
 	await loadArticleList();
-	const categotyTitle = document.getElementById("category_title");
-	categotyTitle.innerText = `카테고리:${name}`;
+	
+	
 }
 async function orderQueryString(orderOption) {
 	// 2. 순서
@@ -235,12 +259,11 @@ async function loadCategory() {
 	const response_json = await getCategory();
 	const categoryBox = document.getElementById("category");
 	categoryBox.innerHTML = "";
-	categoryBox.innerHTML += `<input type="radio" class="btn-check" name="btnradio" id="btnradio0" autocomplete="off"
-		checked>
-	<label class="btn btn-outline-primary" for="btnradio0" onclick="categoryQueryString(0,'전체')">ALL</label>`;
+	categoryBox.innerHTML += `<input type="radio" class="btn-check" name="btnradio" id="btnradio0" onchange="categoryQueryString(0,'전체')" autocomplete="off" checked>
+	<label class="btn btn-outline-primary" for="btnradio0">ALL</label>`;
 	response_json.forEach((category_) => {
-		categoryBox.innerHTML += `<input type="radio" class="btn-check" name="btnradio" id="btnradio${category_.id}" autocomplete="off">
-	<label class="btn btn-outline-primary text-nowrap" for="btnradio${category_.id}" onclick="categoryQueryString(${category_.id},'${category_.name}')">${category_.name}</label>`;
+		categoryBox.innerHTML += `<input type="checkbox" class="btn-check" name="btnradio" id="btnradio${category_.id}" onchange="categoryQueryString(${category_.id},'${category_.name}')" autocomplete="off">
+	<label class="btn btn-outline-primary text-nowrap" for="btnradio${category_.id}">${category_.name}</label>`;
 	});
 }
 async function searchByTag(tagname) {
