@@ -387,9 +387,12 @@ async function loadUserDetail() {
 	}
 
 	const bookmark = document.getElementById("bookmark-article");
-	bookmark.innerText = `북마크한 게시글 : ${response.total_bookmark_articles}`;
-	if(firstLoad){
 
+	bookmark.innerText = `북마크한 글 : ${response.total_bookmark_articles}`;
+	if(!(isYOU(response.id)||response.is_open_likes)){
+		bookmark.innerHTML += `<i style="cursor:pointer;" class="bi bi-lock"></i>`;
+	}
+	if(firstLoad && (isYOU(response.id)||response.is_open_likes)){
 		bookmark.addEventListener("click", async () => {
 			const articlePageList = document.getElementById("article");
 			const clickedClass = "bookmarkArticlePageListClicked";
@@ -412,9 +415,13 @@ async function loadUserDetail() {
 		});
 	}
 	const likeArticle = document.getElementById("like-article");
-	likeArticle.innerText = `좋아요 누른 게시글 : ${response.total_like_articles}`;
-	if(firstLoad){
 
+	likeArticle.innerText = `좋아요한 글 : ${response.total_like_articles}`;
+	if(!(isYOU(response.id)||response.is_open_likes)){
+		likeArticle.innerHTML += `<i style="cursor:pointer;" class="bi bi-lock"></i>`;
+	}
+	
+	if(firstLoad && (isYOU(response.id)||response.is_open_likes)){
 		likeArticle.addEventListener("click", async () => {
 			const articlePageList = document.getElementById("article");
 			const clickedClass = "likeArticlePageListClicked";
@@ -437,9 +444,11 @@ async function loadUserDetail() {
 		});
 	}
 	const likeComment = document.getElementById("like-comment");
-	likeComment.innerText = `좋아요 누른 댓글 : ${response.total_like_comments}`;
-	if(firstLoad){
-
+	likeComment.innerText = `좋아요한 댓글 : ${response.total_like_comments}`;
+	if(!(isYOU(response.id)||response.is_open_likes)){
+		likeComment.innerHTML += `<i style="cursor:pointer;" class="bi bi-lock"></i>`;
+	}
+	if(firstLoad && (isYOU(response.id)||response.is_open_likes)){
 		likeComment.addEventListener("click", async () => {
 			const commentPageList = document.getElementById("comment");
 			const clickedClass = "likeCommentPageListClicked";

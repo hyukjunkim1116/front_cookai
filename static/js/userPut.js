@@ -3,9 +3,16 @@ async function loadUserData() {
 	const response = await getLoginUser();
 	const usernameText = document.getElementById("username");
 	const genderSelect = document.getElementById("gender");
+	const is_open_likes = document.getElementById("is_open_likes");
 	for (var i = 0; i < genderSelect.options.length; i++) {
 		if (genderSelect.options[i].value == response.gender) {
 			genderSelect.options[i].setAttribute("selected", true);
+		}
+	}
+	for (var i = 0; i < is_open_likes.options.length; i++) {
+		console.log(response.is_open_likes)
+		if (is_open_likes.options[i].value == (response.is_open_likes?"1":"0")) {
+			is_open_likes.options[i].setAttribute("selected", true);
 		}
 	}
 	let img = document.createElement("img");
@@ -47,6 +54,7 @@ async function putUserDetail() {
 	const userId = new URLSearchParams(window.location.search).get("user_id");
 	const username = document.getElementById("username").value;
 	const gender = document.getElementById("gender").value;
+	const is_open_likes = document.getElementById("is_open_likes").value=="1"?true:false
 	const file = document.getElementById("file").files[0];
 	if (file && username) {
 		const responseURL = await fetch(`${BACKEND_BASE_URL}/users/get-url/`, {
@@ -68,7 +76,8 @@ async function putUserDetail() {
 			body: JSON.stringify({
 				username: username,
 				gender: gender,
-				avatar: realFileURL
+				avatar: realFileURL,
+				is_open_likes:is_open_likes
 			})
 		});
 		const response_json = await response.json();
@@ -89,7 +98,8 @@ async function putUserDetail() {
 			method: "PUT",
 			body: JSON.stringify({
 				username: username,
-				gender: gender
+				gender: gender,
+				is_open_likes:is_open_likes
 			})
 		});
 		const response_json = await response.json();
